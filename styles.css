@@ -1,0 +1,874 @@
+/* ============================================================
+   АКАДЕМИЯ ТОП — общие стили для всех курсов
+   Подключается на каждой HTML-странице через <link>
+   Структура:
+     1) Переменные
+     2) База
+     3) Header / topbar
+     4) Layout (сетка sidebar + main)
+     5) Sidebar
+     6) Block (секция материала)
+     7) Box / Accent (профильные блоки)
+     8) Tasks (раскрывающиеся задачи)
+     9) Viz / Plot (SVG-обёртки и canvas-плоттер)
+    10) Commands (блоки с копированием)
+    11) Trainer (внешние тренажёры, например miminet)
+    12) Hub (главная страница со всеми курсами)
+    13) Course nav / Topic pager (навигация между темами внутри курса)
+    14) Tables, misc
+    15) Responsive
+    16) Print
+   ============================================================ */
+
+/* ============================================================
+   1) ПЕРЕМЕННЫЕ
+   ============================================================ */
+:root{
+  --bg:#f7f8fb;
+  --card:#ffffff;
+  --ink:#1c2331;
+  --muted:#5b6678;
+  --line:#e5e8ef;
+
+  --accent:#4f46e5;
+  --accent-soft:#eef0ff;
+
+  --design:#e11d48;
+  --design-soft:#fff1f4;
+
+  --dev:#0891b2;
+  --dev-soft:#e6f7fb;
+
+  --ok:#16a34a;
+  --ok-soft:#ecfdf3;
+
+  --warn:#d97706;
+  --warn-soft:#fff9e6;
+
+  --radius:14px;
+  --radius-sm:10px;
+  --shadow:0 1px 2px rgba(20,25,40,.04), 0 8px 24px rgba(20,25,40,.06);
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+}
+
+/* ============================================================
+   2) БАЗА
+   ============================================================ */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:16px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{letter-spacing:-.01em;line-height:1.25;margin:0 0 8px}
+h1{font-size:28px}
+h2{font-size:24px}
+h3{font-size:18px}
+h4{font-size:15.5px}
+p{margin:8px 0}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+code,kbd,pre{font-family:var(--mono)}
+code{
+  background:#f1f3f8;
+  padding:2px 6px;
+  border-radius:5px;
+  font-size:.9em;
+}
+kbd{
+  display:inline-block;
+  background:#eef1f6;
+  border:1px solid #d5dae3;
+  border-bottom-width:2px;
+  border-radius:6px;
+  padding:1px 7px;
+  font-size:.85em;
+  font-family:inherit;
+}
+img,svg{max-width:100%}
+hr{border:0;border-top:1px solid var(--line);margin:18px 0}
+
+/* ============================================================
+   3) HEADER / TOPBAR
+   ============================================================ */
+header.topbar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:rgba(247,248,251,.88);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:12px 24px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.topbar .brand{
+  font-weight:700;
+  font-size:16px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+}
+.topbar .brand a{
+  color:var(--ink);
+  text-decoration:none;
+  white-space:nowrap;
+}
+.topbar .brand a:hover{text-decoration:none;color:var(--accent)}
+.topbar .brand .sub{
+  color:var(--muted);
+  font-weight:500;
+  font-size:13px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.topbar .spacer{margin-left:auto}
+
+/* Переключатель профиля */
+.profile-switch{
+  display:flex;
+  gap:4px;
+  background:#fff;
+  padding:4px;
+  border-radius:var(--radius-sm);
+  border:1px solid var(--line);
+}
+.profile-switch button{
+  border:0;
+  background:transparent;
+  padding:6px 12px;
+  border-radius:7px;
+  font:inherit;
+  font-size:13px;
+  font-weight:600;
+  color:var(--muted);
+  cursor:pointer;
+  transition:.15s;
+}
+.profile-switch button:hover{color:var(--ink)}
+.profile-switch button.active{background:var(--accent);color:#fff}
+
+/* ============================================================
+   4) LAYOUT
+   ============================================================ */
+.layout{
+  max-width:1400px;
+  margin:0 auto;
+  padding:24px;
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:28px;
+  align-items:start;
+}
+.layout.no-sidebar{grid-template-columns:1fr;max-width:1000px}
+
+/* ============================================================
+   5) SIDEBAR
+   ============================================================ */
+aside.sidebar{
+  position:sticky;
+  top:80px;
+  max-height:calc(100vh - 96px);
+  overflow-y:auto;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:14px 10px;
+  box-shadow:var(--shadow);
+}
+aside.sidebar .search{
+  width:100%;
+  padding:8px 12px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  font:inherit;
+  font-size:14px;
+  margin-bottom:10px;
+  background:#fafbfe;
+}
+aside.sidebar .search:focus{
+  outline:none;
+  border-color:var(--accent);
+  background:#fff;
+}
+aside.sidebar h3{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:var(--muted);
+  margin:14px 10px 6px;
+  font-weight:700;
+}
+aside.sidebar h3:first-of-type{margin-top:0}
+aside.sidebar a{
+  display:block;
+  padding:6px 10px;
+  color:var(--ink);
+  text-decoration:none;
+  font-size:13.5px;
+  border-radius:7px;
+  transition:.12s;
+}
+aside.sidebar a:hover{
+  background:var(--accent-soft);
+  color:var(--accent);
+  text-decoration:none;
+}
+aside.sidebar a.hidden{display:none}
+aside.sidebar a.active{
+  background:var(--accent-soft);
+  color:var(--accent);
+  font-weight:600;
+}
+
+/* ============================================================
+   6) BLOCK — секция материала
+   ============================================================ */
+main{min-width:0}
+section.block{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:26px 30px;
+  margin-bottom:22px;
+  box-shadow:var(--shadow);
+  scroll-margin-top:88px;
+}
+section.block > h2{
+  margin:0 0 12px;
+  font-size:23px;
+  padding-bottom:12px;
+  border-bottom:2px solid var(--accent-soft);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+section.block > h2 .num{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:32px;
+  height:32px;
+  padding:0 10px;
+  background:var(--accent);
+  color:#fff;
+  font-size:14px;
+  font-weight:700;
+  border-radius:9px;
+  flex-shrink:0;
+}
+section.block h3{margin:22px 0 8px;font-size:17px}
+section.block h4{margin:16px 0 6px;font-size:15px;color:var(--accent)}
+section.block ul,section.block ol{margin:8px 0;padding-left:22px}
+section.block li{margin:4px 0}
+
+/* ============================================================
+   7) BOX / ACCENT
+   ============================================================ */
+.box,.accent{
+  border-radius:12px;
+  padding:14px 18px;
+  margin:12px 0;
+  border-left:4px solid var(--accent);
+  background:var(--accent-soft);
+  font-size:15px;
+}
+.box .label,.accent .label{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-weight:700;
+  color:var(--accent);
+  margin-bottom:6px;
+}
+.box.example{background:#f8fafc;border-left-color:#64748b}
+.box.example .label{color:#475569}
+.box.note{background:var(--warn-soft);border-left-color:var(--warn)}
+.box.note .label{color:var(--warn)}
+.box.ok{background:var(--ok-soft);border-left-color:var(--ok)}
+.box.ok .label{color:var(--ok)}
+.box.danger{background:#fef2f2;border-left-color:#dc2626}
+.box.danger .label{color:#dc2626}
+
+/* Профильные блоки — показываются по классу body */
+.accent{display:none}
+.accent.design{background:var(--design-soft);border-left-color:var(--design)}
+.accent.design .label{color:var(--design)}
+.accent.dev{background:var(--dev-soft);border-left-color:var(--dev)}
+.accent.dev .label{color:var(--dev)}
+
+body.profile-both .accent{display:block}
+body.profile-design .accent.design{display:block}
+body.profile-dev .accent.dev{display:block}
+body.profile-design .accent.dev,
+body.profile-dev .accent.design{display:none}
+
+/* ============================================================
+   8) TASKS — раскрывающиеся задачи
+   ============================================================ */
+details.task{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  margin:10px 0;
+  overflow:hidden;
+}
+details.task > summary{
+  cursor:pointer;
+  padding:12px 16px;
+  font-weight:600;
+  font-size:14.5px;
+  list-style:none;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:#fafbfe;
+  transition:.15s;
+  user-select:none;
+}
+details.task > summary::-webkit-details-marker{display:none}
+details.task > summary::before{
+  content:"?";
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:var(--accent);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  flex-shrink:0;
+}
+details.task[open] > summary{background:var(--accent-soft)}
+details.task[open] > summary::before{content:"✓";background:var(--ok)}
+details.task > summary:hover{background:var(--accent-soft)}
+details.task .answer{
+  padding:14px 18px;
+  border-top:1px dashed var(--line);
+  background:var(--ok-soft);
+  font-size:15px;
+}
+details.task .answer strong{color:var(--ok)}
+details.task .answer ul,
+details.task .answer ol{padding-left:20px}
+details.task .answer .cmd{margin-top:10px}
+
+/* ============================================================
+   9) VIZ / PLOT
+   ============================================================ */
+.viz{
+  background:#fafbfe;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:14px;
+  margin:14px 0;
+  text-align:center;
+}
+.viz svg,.viz canvas{max-width:100%;height:auto;display:inline-block}
+.viz .cap{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:8px;
+  line-height:1.5;
+}
+
+.plot-wrap{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:16px;
+  margin:14px 0;
+}
+.plot-wrap .controls{
+  display:flex;
+  flex-wrap:wrap;
+  gap:16px;
+  align-items:center;
+  margin-bottom:12px;
+  font-size:13.5px;
+}
+.plot-wrap .controls label{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.plot-wrap .controls input[type=range]{
+  width:130px;
+  accent-color:var(--accent);
+}
+.plot-wrap .controls .val{
+  font-family:var(--mono);
+  background:var(--accent-soft);
+  color:var(--accent);
+  padding:2px 8px;
+  border-radius:6px;
+  font-size:12.5px;
+  min-width:44px;
+  text-align:center;
+}
+canvas.plot{
+  background:#fff;
+  border-radius:8px;
+  display:block;
+  margin:0 auto;
+  width:100%;
+  max-width:560px;
+}
+
+/* ============================================================
+   10) COMMANDS — блоки с копированием
+   ============================================================ */
+.cmd{
+  position:relative;
+  background:#0f172a;
+  color:#e2e8f0;
+  border-radius:10px;
+  margin:10px 0;
+  overflow:hidden;
+  font-size:13.5px;
+}
+.cmd pre{
+  margin:0;
+  padding:14px 80px 14px 16px;
+  overflow-x:auto;
+  font-family:var(--mono);
+  line-height:1.55;
+  white-space:pre;
+}
+.cmd pre .prompt{color:#7dd3fc}
+.cmd pre .cmt{color:#64748b}
+.cmd pre .cmd-key{color:#fbbf24}
+.cmd pre .cmd-str{color:#86efac}
+.cmd .copy-btn{
+  position:absolute;
+  top:8px;
+  right:8px;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.15);
+  color:#cbd5e1;
+  padding:4px 10px;
+  border-radius:6px;
+  cursor:pointer;
+  font:inherit;
+  font-size:12px;
+  transition:.15s;
+}
+.cmd .copy-btn:hover{background:rgba(255,255,255,.18);color:#fff}
+.cmd .copy-btn.done{
+  background:var(--ok);
+  color:#fff;
+  border-color:var(--ok);
+}
+.cmd .desc{
+  padding:8px 14px;
+  background:#1e293b;
+  color:#94a3b8;
+  font-size:12.5px;
+  border-top:1px solid #334155;
+}
+.cmd .desc code{
+  background:rgba(255,255,255,.08);
+  color:#cbd5e1;
+  padding:1px 5px;
+}
+
+/* ============================================================
+   11) TRAINER — внешние тренажёры (miminet и др.)
+   ============================================================ */
+.trainer{
+  background:linear-gradient(135deg,#e0f2fe 0%,#f0f9ff 100%);
+  border:1px solid #7dd3fc;
+  border-radius:12px;
+  padding:16px 18px;
+  margin:14px 0;
+}
+.trainer .head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:10px;
+  font-weight:700;
+  color:#0369a1;
+  font-size:15px;
+  flex-wrap:wrap;
+}
+.trainer .head .badge{
+  background:#0369a1;
+  color:#fff;
+  font-size:11px;
+  padding:2px 8px;
+  border-radius:20px;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+.trainer ol{padding-left:22px;margin:8px 0}
+.trainer li{margin:5px 0}
+.trainer a{color:#0369a1;font-weight:600}
+.trainer .goal{
+  background:#fff;
+  border-left:3px solid #0369a1;
+  border-radius:8px;
+  padding:10px 14px;
+  margin:10px 0;
+  font-size:14px;
+}
+.trainer .cmd{margin:8px 0}
+
+/* ============================================================
+   12) HUB — главная страница со всеми курсами
+   ============================================================ */
+.hub-hero{
+  max-width:1200px;
+  margin:0 auto;
+  padding:40px 24px 20px;
+  text-align:center;
+}
+.hub-hero h1{
+  font-size:34px;
+  margin:0 0 10px;
+  letter-spacing:-.02em;
+}
+.hub-hero p{
+  color:var(--muted);
+  font-size:16px;
+  margin:0;
+  max-width:720px;
+  margin-inline:auto;
+}
+
+.cards{
+  max-width:1200px;
+  margin:0 auto;
+  padding:20px 24px 40px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:20px;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:22px;
+  text-decoration:none;
+  color:var(--ink);
+  transition:.2s;
+  box-shadow:var(--shadow);
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.card:hover{
+  transform:translateY(-3px);
+  border-color:var(--accent);
+  box-shadow:0 12px 32px rgba(79,70,229,.12);
+  text-decoration:none;
+}
+.card .kicker{
+  font-size:11px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-weight:700;
+}
+.card h3{margin:0;font-size:18px}
+.card p{
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.55;
+}
+.card .tags{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-top:auto;
+  padding-top:10px;
+}
+.card .tag{
+  font-size:11px;
+  padding:3px 9px;
+  border-radius:20px;
+  background:var(--accent-soft);
+  color:var(--accent);
+  font-weight:600;
+}
+.card .tag.design{background:var(--design-soft);color:var(--design)}
+.card .tag.dev{background:var(--dev-soft);color:var(--dev)}
+
+/* Группы курсов на главной */
+.course-group{
+  max-width:1200px;
+  margin:0 auto;
+  padding:20px 24px 0;
+}
+.course-group h2{
+  font-size:22px;
+  margin:30px 0 6px;
+  padding-bottom:8px;
+  border-bottom:2px solid var(--accent-soft);
+}
+.course-group .desc{
+  color:var(--muted);
+  font-size:14px;
+  margin:0 0 18px;
+}
+.course-group .cards{padding:0 0 20px}
+
+/* ============================================================
+   13) COURSE NAV / TOPIC PAGER
+   ============================================================ */
+
+/* Хлебные крошки + переключение тем */
+.course-nav{
+  max-width:1400px;
+  margin:0 auto;
+  padding:14px 24px 0;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+  font-size:13.5px;
+}
+.course-nav a{
+  color:var(--muted);
+  text-decoration:none;
+  padding:5px 10px;
+  border-radius:7px;
+  transition:.15s;
+  border:1px solid transparent;
+  white-space:nowrap;
+}
+.course-nav a:hover{
+  background:var(--accent-soft);
+  color:var(--accent);
+  text-decoration:none;
+}
+.course-nav a.current{
+  background:var(--accent);
+  color:#fff;
+  font-weight:600;
+}
+.course-nav a.current:hover{
+  background:var(--accent);
+  color:#fff;
+}
+.course-nav .sep{color:#cbd5e1;user-select:none}
+
+/* Навигация вперёд/назад между темами */
+.topic-pager{
+  max-width:1400px;
+  margin:24px auto 0;
+  padding:0 24px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.topic-pager a{
+  display:flex;
+  flex-direction:column;
+  padding:14px 18px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius-sm);
+  text-decoration:none;
+  color:var(--ink);
+  transition:.15s;
+  box-shadow:var(--shadow);
+}
+.topic-pager a:hover{
+  border-color:var(--accent);
+  transform:translateY(-2px);
+  text-decoration:none;
+}
+.topic-pager a .dir{
+  font-size:11px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-weight:700;
+  margin-bottom:4px;
+}
+.topic-pager a .title{font-size:15px;font-weight:600}
+.topic-pager a.next{text-align:right}
+.topic-pager a.disabled{
+  opacity:.4;
+  pointer-events:none;
+  cursor:default;
+}
+.topic-pager a .empty{color:var(--muted);font-style:italic}
+
+/* Карточки тем внутри курса (используются на *-index.html) */
+.topics-grid{
+  max-width:1200px;
+  margin:0 auto;
+  padding:20px 24px 60px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:18px;
+}
+.topic-card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:20px;
+  text-decoration:none;
+  color:var(--ink);
+  transition:.2s;
+  box-shadow:var(--shadow);
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.topic-card:hover{
+  transform:translateY(-3px);
+  border-color:var(--accent);
+  box-shadow:0 12px 32px rgba(79,70,229,.12);
+  text-decoration:none;
+}
+.topic-card .num-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:36px;
+  height:36px;
+  background:var(--accent);
+  color:#fff;
+  font-weight:700;
+  border-radius:10px;
+  font-size:15px;
+}
+.topic-card h3{margin:6px 0 4px;font-size:17px}
+.topic-card p{
+  margin:0;
+  color:var(--muted);
+  font-size:13.5px;
+  line-height:1.5;
+}
+.topic-card .meta{
+  margin-top:auto;
+  padding-top:10px;
+  font-size:12px;
+  color:var(--muted);
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.topic-card .meta span{display:flex;align-items:center;gap:4px}
+
+/* ============================================================
+   14) TABLES, misc
+   ============================================================ */
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin:12px 0;
+  font-size:14.5px;
+}
+th,td{
+  border:1px solid var(--line);
+  padding:8px 12px;
+  text-align:left;
+  vertical-align:top;
+}
+th{
+  background:#fafbfe;
+  font-weight:600;
+}
+tr:nth-child(even) td{background:#fcfdff}
+
+footer{
+  padding:30px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* Утилиты */
+.text-center{text-align:center}
+.text-muted{color:var(--muted)}
+.mt-0{margin-top:0}
+.mb-0{margin-bottom:0}
+.hidden{display:none}
+.flex{display:flex}
+.gap-8{gap:8px}
+.flex-wrap{flex-wrap:wrap}
+
+/* ============================================================
+   15) RESPONSIVE
+   ============================================================ */
+@media (max-width:980px){
+  .layout{
+    grid-template-columns:1fr;
+    padding:14px;
+    gap:18px;
+  }
+  .layout.no-sidebar{max-width:100%}
+  aside.sidebar{
+    position:static;
+    max-height:none;
+  }
+  section.block{padding:20px 18px}
+  .hub-hero{padding:30px 18px 14px}
+  .hub-hero h1{font-size:26px}
+  .course-nav{padding:12px 14px 0}
+  .topic-pager{padding:0 14px}
+}
+
+@media (max-width:640px){
+  .topbar{padding:10px 14px;gap:10px}
+  .topbar .brand .sub{display:none}
+  .profile-switch button{padding:5px 10px;font-size:12px}
+  .topic-pager{grid-template-columns:1fr}
+  .topic-pager a.next{text-align:left}
+  section.block{padding:16px 14px}
+  section.block > h2{font-size:19px}
+  .hub-hero h1{font-size:22px}
+  table{font-size:13px}
+  th,td{padding:6px 8px}
+  .cmd pre{font-size:12px;padding:12px 60px 12px 12px}
+}
+
+/* ============================================================
+   16) PRINT
+   ============================================================ */
+@media print{
+  header.topbar,
+  aside.sidebar,
+  .profile-switch,
+  .copy-btn,
+  .controls,
+  .course-nav,
+  .topic-pager{display:none !important}
+
+  .layout{grid-template-columns:1fr;padding:0;max-width:100%}
+  section.block{
+    box-shadow:none;
+    border:1px solid #ddd;
+    page-break-inside:avoid;
+    padding:14px;
+    margin-bottom:12px;
+  }
+  details.task{page-break-inside:avoid;border:1px solid #ddd}
+  details.task > summary{background:#f5f5f5}
+  details.task:not([open]) .answer{display:block !important}
+  details.task:not([open]) > summary::before{content:"✓"}
+  .accent{display:block !important}
+  .cmd{background:#f5f5f5;color:#000;border:1px solid #ddd}
+  .cmd pre{color:#000}
+  .cmd .desc{background:#eee;color:#333;border-top:1px solid #ddd}
+  a{color:#000;text-decoration:underline}
+  .viz svg{max-width:100%}
+}
