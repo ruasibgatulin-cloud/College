@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Веб · 2. CSS · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· Веб · Тема 2</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="web-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-html.html">1. HTML</a>
+  <a href="02-css.html" class="current">2. CSS</a>
+  <a href="03-javascript.html">3. JS</a>
+  <a href="04-layouts.html">4. Раскладки</a>
+  <a href="05-responsive.html">5. Адаптив</a>
+  <a href="06-deploy.html">6. Деплой</a>
+  <a href="07-cheatsheet.html">📌 Шпаргалка</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">2</span>CSS — стили и оформление</h2>
+
+    <p><b>CSS</b> (Cascading Style Sheets) — язык стилей. Он говорит браузеру, <b>как выглядит</b> каждый элемент: цвет, размер, шрифт, отступы, положение.</p>
+
+    <h3>2.1. Подключение CSS</h3>
+
+    <p>Три способа, но используем <b>только первый</b> — остальные для быстрых правок.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="&lt;!-- 1. Внешний файл (правильный способ) --&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;style.css&quot;&gt;
+
+&lt;!-- 2. Внутри HTML-файла (для одной страницы) --&gt;
+&lt;style&gt;
+  body { font-family: Arial; }
+&lt;/style&gt;
+
+&lt;!-- 3. Инлайн (только для быстрых правок) --&gt;
+&lt;p style=&quot;color: red;&quot;&gt;Красный текст&lt;/p&gt;">📋 Копировать</button>
+      <pre>&lt;!-- 1. Внешний файл (правильный способ) --&gt;
+&lt;link rel="stylesheet" href="style.css"&gt;
+
+&lt;!-- 2. Внутри HTML-файла (для одной страницы) --&gt;
+&lt;style&gt;
+  body { font-family: Arial; }
+&lt;/style&gt;
+
+&lt;!-- 3. Инлайн (только для быстрых правок) --&gt;
+&lt;p style="color: red;"&gt;Красный текст&lt;/p&gt;</pre>
+    </div>
+
+    <h3>2.2. Синтаксис CSS</h3>
+
+    <div class="viz">
+      <svg viewBox="0 0 620 200" width="620">
+        <text x="30" y="40" font-size="16" font-family="monospace" fill="#1c2331">h1</text>
+        <text x="70" y="40" font-size="16" font-family="monospace" fill="#4f46e5" font-weight="700">{</text>
+        <text x="90" y="40" font-size="16" font-family="monospace" fill="#16a34a">color</text>
+        <text x="160" y="40" font-size="16" font-family="monospace" fill="#1c2331">:</text>
+        <text x="180" y="40" font-size="16" font-family="monospace" fill="#d97706">red</text>
+        <text x="230" y="40" font-size="16" font-family="monospace" fill="#1c2331">;</text>
+        <text x="245" y="40" font-size="16" font-family="monospace" fill="#4f46e5" font-weight="700">}</text>
+
+        <!-- Подписи -->
+        <line x1="40" y1="50" x2="40" y2="80" stroke="#8891a6"/>
+        <text x="40" y="100" font-size="11" fill="#889" text-anchor="middle">селектор</text>
+        <text x="40" y="115" font-size="10" fill="#889" text-anchor="middle">(что стилизуем)</text>
+
+        <line x1="125" y1="50" x2="125" y2="80" stroke="#8891a6"/>
+        <text x="125" y="100" font-size="11" fill="#889" text-anchor="middle">свойство</text>
+
+        <line x1="200" y1="50" x2="200" y2="80" stroke="#8891a6"/>
+        <text x="200" y="100" font-size="11" fill="#889" text-anchor="middle">значение</text>
+
+        <!-- Пример -->
+        <text x="30" y="150" font-size="12" fill="#889">Пример: «Все заголовки h1 — красные»</text>
+      </svg>
+      <div class="cap">Правило CSS: селектор + свойство + значение.</div>
+    </div>
+
+    <h3>2.3. Селекторы</h3>
+
+    <table>
+      <tr><th>Селектор</th><th>Пример</th><th>Что выбирает</th></tr>
+      <tr><td>По тегу</td><td><code>p { }</code></td><td>Все параграфы</td></tr>
+      <tr><td>По классу</td><td><code>.card { }</code></td><td>Все элементы с <code>class="card"</code></td></tr>
+      <tr><td>По id</td><td><code>#header { }</code></td><td>Элемент с <code>id="header"</code></td></tr>
+      <tr><td>Вложенный</td><td><code>nav a { }</code></td><td>Все ссылки внутри <code>nav</code></td></tr>
+      <tr><td>Дочерний</td><td><code>ul &gt; li { }</code></td><td>Прямые <code>li</code> внутри <code>ul</code></td></tr>
+      <tr><td>По атрибуту</td><td><code>input[type="text"]</code></td><td>Все текстовые input</td></tr>
+      <tr><td>Псевдокласс</td><td><code>a:hover { }</code></td><td>Ссылка при наведении</td></tr>
+      <tr><td>Группа</td><td><code>h1, h2, h3 { }</code></td><td>Все заголовки 1-3</td></tr>
+    </table>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="/* По тегу */
+p { color: gray; }
+
+/* По классу */
+.card { border: 1px solid #ddd; }
+
+/* По id */
+#header { background: black; }
+
+/* Вложенный */
+nav a { color: white; text-decoration: none; }
+
+/* Группа */
+h1, h2, h3 { font-family: 'Arial', sans-serif; }
+
+/* Псевдоклассы */
+a:hover { color: red; }
+button:focus { outline: 2px solid blue; }
+li:first-child { font-weight: bold; }
+li:last-child { margin-bottom: 0; }
+li:nth-child(2n) { background: #f5f5f5; }  /* чётные */
+
+/* Псевдоэлементы */
+p::first-line { font-weight: bold; }
+.card::before { content: '★ '; color: gold; }">📋 Копировать</button>
+      <pre>/* По тегу */
+p { color: gray; }
+
+/* По классу */
+.card { border: 1px solid #ddd; }
+
+/* По id */
+#header { background: black; }
+
+/* Вложенный */
+nav a { color: white; text-decoration: none; }
+
+/* Группа */
+h1, h2, h3 { font-family: 'Arial', sans-serif; }
+
+/* Псевдоклассы */
+a:hover { color: red; }
+button:focus { outline: 2px solid blue; }
+li:first-child { font-weight: bold; }
+li:last-child { margin-bottom: 0; }
+li:nth-child(2n) { background: #f5f5f5; }  /* чётные */
+
+/* Псевдоэлементы */
+p::first-line { font-weight: bold; }
+.card::before { content: '★ '; color: gold; }</pre>
+    </div>
+
+    <h3>2.4. Цвета</h3>
+
+    <table>
+      <tr><th>Способ</th><th>Пример</th></tr>
+      <tr><td>Именованный</td><td><code>red</code>, <code>blue</code>, <code>tomato</code>, <code>#fff</code></td></tr>
+      <tr><td>HEX</td><td><code>#ff0000</code>, <code>#4f46e5</code>, <code>#f00</code></td></tr>
+      <tr><td>RGB</td><td><code>rgb(255, 0, 0)</code></td></tr>
+      <tr><td>RGBA (с прозрачностью)</td><td><code>rgba(255, 0, 0, 0.5)</code></td></tr>
+      <tr><td>HSL (оттенок, насыщенность, яркость)</td><td><code>hsl(220, 90%, 60%)</code></td></tr>
+    </table>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy=".color-examples {
+  color: #1c2331;                /* текст */
+  background-color: #f7f8fb;     /* фон */
+  border-color: rgba(79, 70, 229, 0.3);  /* прозрачная рамка */
+}
+
+/* Градиенты */
+.gradient-bg {
+  background: linear-gradient(135deg, #4f46e5, #0891b2);
+}
+
+/* Радиальный градиент */
+.radial-bg {
+  background: radial-gradient(circle, #fff, #f0f0f0);
+}">📋 Копировать</button>
+      <pre>.color-examples {
+  color: #1c2331;                /* текст */
+  background-color: #f7f8fb;     /* фон */
+  border-color: rgba(79, 70, 229, 0.3);  /* прозрачная рамка */
+}
+
+/* Градиенты */
+.gradient-bg {
+  background: linear-gradient(135deg, #4f46e5, #0891b2);
+}
+
+/* Радиальный градиент */
+.radial-bg {
+  background: radial-gradient(circle, #fff, #f0f0f0);
+}</pre>
+    </div>
+
+    <h3>2.5. Шрифты и текст</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy=".text-styles {
+  font-family: 'Arial', 'Helvetica', sans-serif;
+  font-size: 16px;
+  font-weight: bold;         /* или 400, 700 */
+  font-style: italic;
+  line-height: 1.6;          /* межстрочный */
+  text-align: center;        /* left, right, justify */
+  text-decoration: underline;
+  text-transform: uppercase; /* lowercase, capitalize */
+  letter-spacing: 2px;
+  word-spacing: 4px;
+  color: #1c2331;
+}
+
+/* Размеры шрифта */
+h1 { font-size: 2rem; }    /* 1 rem = 16px по умолчанию */
+h2 { font-size: 1.5rem; }
+p  { font-size: 16px; }
+
+/* Подключение Google Fonts (в HTML в &lt;head&gt;) */
+/*
+&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot;&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+*/
+
+/* Использование */
+body { font-family: 'Inter', sans-serif; }">📋 Копировать</button>
+      <pre>.text-styles {
+  font-family: 'Arial', 'Helvetica', sans-serif;
+  font-size: 16px;
+  font-weight: bold;         /* или 400, 700 */
+  font-style: italic;
+  line-height: 1.6;          /* межстрочный */
+  text-align: center;        /* left, right, justify */
+  text-decoration: underline;
+  text-transform: uppercase; /* lowercase, capitalize */
+  letter-spacing: 2px;
+  word-spacing: 4px;
+  color: #1c2331;
+}
+
+/* Размеры шрифта */
+h1 { font-size: 2rem; }    /* 1 rem = 16px по умолчанию */
+h2 { font-size: 1.5rem; }
+p  { font-size: 16px; }
+
+/* Подключение Google Fonts (в HTML в &lt;head&gt;) */
+/*
+&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
+&lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;display=swap" rel="stylesheet"&gt;
+*/
+
+/* Использование */
+body { font-family: 'Inter', sans-serif; }</pre>
+    </div>
+
+    <h3>2.6. Box model — коробочная модель</h3>
+
+    <p>Каждый элемент на странице — это прямоугольник из четырёх слоёв.</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 620 320" width="620">
+        <!-- Margin -->
+        <rect x="30" y="30" width="560" height="260" fill="#fff1f4" stroke="#e11d48" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <text x="50" y="55" font-size="12" fill="#e11d48" font-weight="600">margin (внешний отступ)</text>
+
+        <!-- Border -->
+        <rect x="70" y="70" width="480" height="180" fill="#fff9e6" stroke="#d97706" stroke-width="2"/>
+        <text x="90" y="95" font-size="12" fill="#d97706" font-weight="600">border (рамка)</text>
+
+        <!-- Padding -->
+        <rect x="110" y="110" width="400" height="100" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="130" y="135" font-size="12" fill="#16a34a" font-weight="600">padding (внутренний отступ)</text>
+
+        <!-- Content -->
+        <rect x="170" y="150" width="280" height="40" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5"/>
+        <text x="310" y="175" font-size="13" fill="#4f46e5" text-anchor="middle" font-weight="600">content (содержимое)</text>
+      </svg>
+      <div class="cap">Четыре уровня: content → padding → border → margin.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy=".box {
+  /* Содержимое */
+  width: 300px;
+  height: 200px;
+
+  /* Внутренний отступ */
+  padding: 20px;              /* со всех сторон */
+  padding: 10px 20px;         /* вертикаль | горизонталь */
+  padding: 10px 20px 30px 40px;  /* top right bottom left */
+  padding-top: 10px;
+  padding-left: 20px;
+
+  /* Рамка */
+  border: 2px solid #4f46e5;
+  border-top: 3px dashed red;
+  border-radius: 8px;         /* скругление */
+
+  /* Внешний отступ */
+  margin: 20px;               /* со всех сторон */
+  margin: 0 auto;             /* по центру (горизонталь) */
+  margin-bottom: 30px;
+
+  /* Тень */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Универсальное правило для всех элементов — учитывать padding и border в width */
+* {
+  box-sizing: border-box;
+}">📋 Копировать</button>
+      <pre>.box {
+  /* Содержимое */
+  width: 300px;
+  height: 200px;
+
+  /* Внутренний отступ */
+  padding: 20px;              /* со всех сторон */
+  padding: 10px 20px;         /* вертикаль | горизонталь */
+  padding: 10px 20px 30px 40px;  /* top right bottom left */
+  padding-top: 10px;
+  padding-left: 20px;
+
+  /* Рамка */
+  border: 2px solid #4f46e5;
+  border-top: 3px dashed red;
+  border-radius: 8px;         /* скругление */
+
+  /* Внешний отступ */
+  margin: 20px;               /* со всех сторон */
+  margin: 0 auto;             /* по центру (горизонталь) */
+  margin-bottom: 30px;
+
+  /* Тень */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Универсальное правило для всех элементов — учитывать padding и border в width */
+* {
+  box-sizing: border-box;
+}</pre>
+      <div class="desc"><b>Важно:</b> <code>box-sizing: border-box</code> — устанавливайте всем элементам. Тогда <code>width</code> включает padding и border, и размеры становятся предсказуемыми.</div>
+    </div>
+
+    <h3>2.7. Позиционирование</h3>
+
+    <table>
+      <tr><th>Position</th><th>Что делает</th></tr>
+      <tr><td><code>static</code></td><td>По умолчанию. Обычный поток документа</td></tr>
+      <tr><td><code>relative</code></td><td>Сдвиг относительно обычного места</td></tr>
+      <tr><td><code>absolute</code></td><td>Открепляется от потока, позиционируется относительно ближайшего relative-родителя</td></tr>
+      <tr><td><code>fixed</code></td><td>Фиксируется относительно окна браузера (не двигается при скролле)</td></tr>
+      <tr><td><code>sticky</code></td><td>Ведёт себя как relative, но прилипает при скролле</td></tr>
+    </table>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="/* Относительное */
+.relative {
+  position: relative;
+  top: 10px;
+  left: 20px;
+}
+
+/* Абсолютное — относительно родителя */
+.parent { position: relative; }
+.child {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+/* Фиксированное — например, кнопка «вверх» */
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+}
+
+/* Прилипающая шапка */
+header {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 100;   /* поверх других элементов */
+}">📋 Копировать</button>
+      <pre>/* Относительное */
+.relative {
+  position: relative;
+  top: 10px;
+  left: 20px;
+}
+
+/* Абсолютное — относительно родителя */
+.parent { position: relative; }
+.child {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+/* Фиксированное — например, кнопка «вверх» */
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+}
+
+/* Прилипающая шапка */
+header {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 100;   /* поверх других элементов */
+}</pre>
+    </div>
+
+    <h3>2.8. Свойства display</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="/* block — занимает всю ширину, переносится на новую строку (div, p, h1) */
+div { display: block; }
+
+/* inline — в строке, нельзя задать width/height (span, a) */
+span { display: inline; }
+
+/* inline-block — в строке, но можно задать размеры */
+.badge { display: inline-block; width: 100px; }
+
+/* none — полностью скрыт (не занимает места) */
+.hidden { display: none; }
+
+/* flex — для раскладок (см. тему 4) */
+.container { display: flex; }
+
+/* grid — для сеток (см. тему 4) */
+.grid { display: grid; }">📋 Копировать</button>
+      <pre>/* block — занимает всю ширину, переносится на новую строку (div, p, h1) */
+div { display: block; }
+
+/* inline — в строке, нельзя задать width/height (span, a) */
+span { display: inline; }
+
+/* inline-block — в строке, но можно задать размеры */
+.badge { display: inline-block; width: 100px; }
+
+/* none — полностью скрыт (не занимает места) */
+.hidden { display: none; }
+
+/* flex — для раскладок (см. тему 4) */
+.container { display: flex; }
+
+/* grid — для сеток (см. тему 4) */
+.grid { display: grid; }</pre>
+    </div>
+
+    <h3>2.9. Переходы и анимации</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="/* Плавное изменение при наведении */
+.button {
+  background: #4f46e5;
+  color: white;
+  transition: all 0.3s ease;
+}
+.button:hover {
+  background: #0891b2;
+  transform: scale(1.05);
+}
+
+/* Ключевые кадры — сложная анимация */
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Вращение */
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.spinner {
+  animation: rotate 1s linear infinite;
+}">📋 Копировать</button>
+      <pre>/* Плавное изменение при наведении */
+.button {
+  background: #4f46e5;
+  color: white;
+  transition: all 0.3s ease;
+}
+.button:hover {
+  background: #0891b2;
+  transform: scale(1.05);
+}
+
+/* Ключевые кадры — сложная анимация */
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Вращение */
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.spinner {
+  animation: rotate 1s linear infinite;
+}</pre>
+    </div>
+
+    <h3>2.10. Единицы измерения</h3>
+
+    <table>
+      <tr><th>Единица</th><th>Относительно</th><th>Когда использовать</th></tr>
+      <tr><td><code>px</code></td><td>Пиксели (абсолютно)</td><td>Рамки, точные размеры</td></tr>
+      <tr><td><code>%</code></td><td>Родителя</td><td>Ширина, отступы</td></tr>
+      <tr><td><code>em</code></td><td>Размера шрифта родителя</td><td>Отступы внутри текста</td></tr>
+      <tr><td><code>rem</code></td><td>Размера шрифта корня (html)</td><td>Шрифты, отступы — предпочтительно</td></tr>
+      <tr><td><code>vw</code>, <code>vh</code></td><td>Окна браузера</td><td>Секции во весь экран</td></tr>
+      <tr><td><code>vmin</code>, <code>vmax</code></td><td>Меньшая/большая сторона окна</td><td>Адаптивные элементы</td></tr>
+    </table>
+
+    <h3>2.11. Приоритеты (каскад)</h3>
+
+    <p>Если на один элемент действует несколько правил — побеждает более приоритетное:</p>
+
+    <ol>
+      <li><b>Инлайн-стиль</b> (<code>style="..."</code>) — высший приоритет</li>
+      <li><b>id</b> (<code>#header</code>) — специфичность 100</li>
+      <li><b>класс</b> (<code>.card</code>), атрибут, псевдокласс — 10</li>
+      <li><b>тег</b> (<code>p</code>) — 1</li>
+      <li><b><code>!important</code></b> — бьёт всё, но использовать только в крайнем случае</li>
+    </ol>
+
+    <div class="box note">
+      <div class="label">Правило</div>
+      Старайтесь не использовать <code>!important</code> — это признак «грязного» CSS. Правильнее разобраться в каскаде.
+    </div>
+
+    <h3>2.12. Полный пример стилей</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="/* style.css — базовые стили для сайта */
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #1c2331;
+  background: #f7f8fb;
+  margin: 0;
+  padding: 0;
+}
+
+/* Шапка */
+header {
+  background: #fff;
+  padding: 20px 40px;
+  border-bottom: 1px solid #e5e8ef;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+header h1 {
+  margin: 0 0 10px;
+  font-size: 24px;
+  color: #4f46e5;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 20px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #1c2331;
+  transition: color 0.2s;
+}
+
+nav a:hover {
+  color: #4f46e5;
+}
+
+/* Основной контент */
+main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+section {
+  margin-bottom: 60px;
+}
+
+h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #1c2331;
+}
+
+p {
+  margin-bottom: 15px;
+}
+
+/* Кнопка */
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background: #4f46e5;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #4338ca;
+}
+
+/* Карточка */
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(20, 25, 40, 0.06);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+/* Подвал */
+footer {
+  text-align: center;
+  padding: 40px 20px;
+  color: #5b6678;
+  font-size: 14px;
+  border-top: 1px solid #e5e8ef;
+}">📋 Копировать</button>
+      <pre>/* style.css — базовые стили для сайта */
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #1c2331;
+  background: #f7f8fb;
+  margin: 0;
+  padding: 0;
+}
+
+/* Шапка */
+header {
+  background: #fff;
+  padding: 20px 40px;
+  border-bottom: 1px solid #e5e8ef;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+header h1 {
+  margin: 0 0 10px;
+  font-size: 24px;
+  color: #4f46e5;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 20px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #1c2331;
+  transition: color 0.2s;
+}
+
+nav a:hover {
+  color: #4f46e5;
+}
+
+/* Основной контент */
+main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+section {
+  margin-bottom: 60px;
+}
+
+h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #1c2331;
+}
+
+p {
+  margin-bottom: 15px;
+}
+
+/* Кнопка */
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background: #4f46e5;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #4338ca;
+}
+
+/* Карточка */
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(20, 25, 40, 0.06);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+/* Подвал */
+footer {
+  text-align: center;
+  padding: 40px 20px;
+  color: #5b6678;
+  font-size: 14px;
+  border-top: 1px solid #e5e8ef;
+}</pre>
+      <div class="desc">Сохраните этот CSS в файл <code>style.css</code> рядом с HTML и подключите через <code>&lt;link&gt;</code>. Все страницы сайта сразу станут аккуратными и современными.</div>
+    </div>
+
+    <h3>2.13. Где это применяется</h3>
+
+    <table>
+      <tr><th>Область</th><th>Пример</th></tr>
+      <tr><td><b>Любой веб-сайт</b></td><td>Без CSS страница — это просто чёрный текст на белом фоне</td></tr>
+      <tr><td><b>Мобильные приложения (React Native)</b></td><td>Стили пишутся похоже на CSS</td></tr>
+      <tr><td><b>Electron-приложения</b></td><td>VS Code, Discord, Figma — на HTML+CSS+JS</td></tr>
+      <tr><td><b>Email-рассылки</b></td><td>Почтовые клиенты понимают ограниченный набор CSS</td></tr>
+      <tr><td><b>Печатные документы</b></td><td>Отдельный <code>@media print</code> — как страница выглядит при печати</td></tr>
+    </table>
+
+    <h3>Практические задания</h3>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №4 · Первые стили <span class="badge">30 мин</span></div>
+      <div class="goal"><b>Задача:</b> подключить CSS к странице и стилизовать базовые элементы.</div>
+      <ol>
+        <li>В папке <code>mysite</code> создайте файл <code>style.css</code>.</li>
+        <li>В <code>index.html</code> в <code>&lt;head&gt;</code> добавьте: <code>&lt;link rel="stylesheet" href="style.css"&gt;</code>.</li>
+        <li>Напишите стили:
+          <ul>
+            <li>body — шрифт без засечек, фон, отступы</li>
+            <li>h1 — цвет, размер</li>
+            <li>p — межстрочный интервал</li>
+            <li>a — цвет, без подчёркивания</li>
+            <li>a:hover — подсветка</li>
+          </ul>
+        </li>
+        <li>Обновите страницу — увидите изменения.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №5 · Карточки и кнопки <span class="badge">40 мин</span></div>
+      <div class="goal"><b>Задача:</b> сделать красивую карточку с кнопкой.</div>
+      <ol>
+        <li>В HTML добавьте структуру:
+          <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:8px;">&lt;div class="card"&gt;
+  &lt;h3&gt;Заголовок карточки&lt;/h3&gt;
+  &lt;p&gt;Описание карточки.&lt;/p&gt;
+  &lt;a href="#" class="btn"&gt;Подробнее&lt;/a&gt;
+&lt;/div&gt;</pre>
+        </li>
+        <li>Стилизуйте карточку:
+          <ul>
+            <li>белый фон, скругление, тень, padding</li>
+            <li>hover-эффект — поднятие</li>
+          </ul>
+        </li>
+        <li>Стилизуйте кнопку:
+          <ul>
+            <li>синий фон, белый текст, скруглённые углы</li>
+            <li>hover — темнее</li>
+            <li>плавный переход через <code>transition</code></li>
+          </ul>
+        </li>
+        <li>Добавьте 3 карточки в ряд — пока просто подряд.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №6 · Кнопка «вверх» <span class="badge">30 мин</span></div>
+      <div class="goal"><b>Задача:</b> сделать плавающую кнопку «наверх» с fixed-позиционированием.</div>
+      <ol>
+        <li>В HTML в конце <code>&lt;body&gt;</code> добавьте:
+          <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:8px;">&lt;a href="#" class="back-to-top"&gt;↑&lt;/a&gt;</pre>
+        </li>
+        <li>Стилизуйте:
+          <ul>
+            <li><code>position: fixed</code> — в правом нижнем углу</li>
+            <li>круглая форма, синий фон, белая стрелка</li>
+            <li>при наведении — увеличивается</li>
+          </ul>
+        </li>
+        <li>Сделайте страницу длинной (несколько разделов), чтобы проверить, что кнопка не «уезжает».</li>
+      </ol>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Зачем нужен box-sizing: border-box?</summary>
+      <div class="answer">
+        По умолчанию <code>width</code> в CSS задаёт размер только <b>содержимого</b> (content). Padding и border добавляются сверху.<br><br>
+        Пример:
+        <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:8px;">.box {
+  width: 200px;
+  padding: 20px;
+  border: 5px solid black;
+}</pre>
+        Итоговая ширина элемента = 200 + 40 (padding) + 10 (border) = <b>250px</b>. Неожиданно!<br><br>
+        С <code>box-sizing: border-box</code>:
+        Итоговая ширина = <b>200px</b>, а padding и border «съедаются» из неё.<br><br>
+        <b>Рекомендация:</b> ставьте <code>box-sizing: border-box</code> для всех элементов через:
+        <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:8px;">* { box-sizing: border-box; }</pre>
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. В чём разница между position: absolute и fixed?</summary>
+      <div class="answer">
+        <b>absolute</b> — позиционируется относительно <b>ближайшего родителя с position: relative</b> (или <code>body</code>, если такого нет). Если родитель не указан — ведёт себя как fixed, но привязан к документу, а не к окну.<br><br>
+        <b>fixed</b> — позиционируется относительно <b>окна браузера</b>. При скролле страницы остаётся на месте.<br><br>
+        <b>Примеры:</b>
+        <ul>
+          <li><code>absolute</code> — иконка в углу карточки, всплывающее меню</li>
+          <li><code>fixed</code> — кнопка «вверх», фиксированная шапка, модальное окно</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Что такое каскад и приоритеты?</summary>
+      <div class="answer">
+        <b>Каскад</b> — механизм разрешения конфликтов, когда несколько правил CSS действуют на один элемент.<br><br>
+        <b>Приоритеты (от высшего к низшему):</b>
+        <ol>
+          <li><code>!important</code> (лучше не использовать)</li>
+          <li>Инлайн-стиль: <code>style="..."</code></li>
+          <li>ID-селектор: <code>#header</code> — специфичность 100</li>
+          <li>Класс / псевдокласс / атрибут: <code>.card</code>, <code>:hover</code> — 10</li>
+          <li>Тег: <code>p</code> — 1</li>
+          <li>Универсальный: <code>*</code> — 0</li>
+        </ol>
+        При равной специфичности побеждает правило, <b>объявленное позже</b> в CSS-файле.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 4. Почему не стоит использовать инлайн-стили?</summary>
+      <div class="answer">
+        Четыре причины:
+        <ul>
+          <li><b>Смешивание структуры и оформления.</b> HTML должен описывать структуру, CSS — внешний вид.</li>
+          <li><b>Нельзя переиспользовать.</b> Если у 10 карточек одинаковый стиль — придётся писать его 10 раз.</li>
+          <li><b>Сложно поддерживать.</b> Изменение цвета требует правки в 50 местах.</li>
+          <li><b>Не работает с псевдоклассами.</b> Нельзя задать <code>:hover</code> в инлайн-стиле.</li>
+        </ul>
+        <b>Исключения:</b> быстрые правки в DevTools, стили в письмах (там почтовые клиенты вырезают CSS из <code>&lt;style&gt;</code>), динамические стили, вычисляемые в JS.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание по теме</div>
+      Сдать обновлённый сайт:
+      <ol>
+        <li>Файл <code>style.css</code> с базовыми стилями (шрифты, цвета, отступы)</li>
+        <li>Стилизованная шапка сайта с меню</li>
+        <li>Минимум 3 карточки с hover-эффектом (ПР №5)</li>
+        <li>Кнопка «вверх» с fixed-позиционированием (ПР №6)</li>
+        <li>Все страницы (index, portfolio) должны использовать общий <code>style.css</code></li>
+      </ol>
+      Скриншоты сайта в браузере. Плюс ответы на 4 вопроса.
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="01-html.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">1. HTML — структура</span>
+  </a>
+  <a href="03-javascript.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">3. JavaScript — логика</span>
+  </a>
+</div>
+
+<footer>
+  Веб-разработка · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

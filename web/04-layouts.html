@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Веб · 4. Раскладки · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· Веб · Тема 4</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="web-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-html.html">1. HTML</a>
+  <a href="02-css.html">2. CSS</a>
+  <a href="03-javascript.html">3. JS</a>
+  <a href="04-layouts.html" class="current">4. Раскладки</a>
+  <a href="05-responsive.html">5. Адаптив</a>
+  <a href="06-deploy.html">6. Деплой</a>
+  <a href="07-cheatsheet.html">📌 Шпаргалка</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">4</span>Современные раскладки: Flexbox и Grid</h2>
+
+    <p>Раньше верстальщики использовали <code>float</code>, <code>table</code> и костыли. Сегодня есть два мощных инструмента: <b>Flexbox</b> — для одномерных раскладок, <b>Grid</b> — для двумерных. Вместе они решают любую задачу.</p>
+
+    <div class="box note">
+      <div class="label">Когда что использовать</div>
+      <ul>
+        <li><b>Flexbox</b> — когда элементы выстраиваются <b>в один ряд или столбец</b>: меню, кнопки, иконки, шапка сайта.</li>
+        <li><b>Grid</b> — когда элементы образуют <b>сетку из строк и столбцов</b>: галереи, дашборды, макеты страниц.</li>
+        <li><b>Вместе</b> — часто Grid для общего макета, а Flexbox внутри блоков.</li>
+      </ul>
+    </div>
+
+    <h3>4.1. Flexbox — основы</h3>
+
+    <p><b>Flexbox</b> (Flexible Box) — модель, в которой элементы автоматически выстраиваются по одной оси и распределяют свободное место.</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 620 260" width="620">
+        <!-- Контейнер -->
+        <rect x="30" y="40" width="560" height="180" fill="#fafbfe" stroke="#4f46e5" stroke-width="2" stroke-dasharray="6 3" rx="8"/>
+        <text x="50" y="65" font-size="12" fill="#4f46e5" font-weight="600">display: flex (контейнер)</text>
+
+        <!-- Элементы -->
+        <rect x="60" y="90" width="120" height="100" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5" rx="6"/>
+        <text x="120" y="145" text-anchor="middle" font-size="12" fill="#4f46e5">flex-item 1</text>
+
+        <rect x="200" y="90" width="120" height="100" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5" rx="6"/>
+        <text x="260" y="145" text-anchor="middle" font-size="12" fill="#4f46e5">flex-item 2</text>
+
+        <rect x="340" y="90" width="120" height="100" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5" rx="6"/>
+        <text x="400" y="145" text-anchor="middle" font-size="12" fill="#4f46e5">flex-item 3</text>
+
+        <!-- Оси -->
+        <line x1="50" y1="220" x2="580" y2="220" stroke="#e11d48" stroke-width="2" marker-end="url(#ar-axis)"/>
+        <text x="315" y="245" text-anchor="middle" font-size="11" fill="#e11d48">главная ось (main axis)</text>
+
+        <defs><marker id="ar-axis" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#e11d48"/></marker></defs>
+
+        <line x1="600" y1="40" x2="600" y2="220" stroke="#16a34a" stroke-width="2" marker-end="url(#ar-axis2)"/>
+        <text x="610" y="130" font-size="11" fill="#16a34a" transform="rotate(90 610 130)">поперечная ось</text>
+
+        <defs><marker id="ar-axis2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#16a34a"/></marker></defs>
+      </svg>
+      <div class="cap">Flexbox: элементы выстраиваются вдоль главной оси. По умолчанию — слева направо.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy=".container {
+  display: flex;                    /* включить Flexbox */
+  flex-direction: row;              /* row (по умолчанию) | column | row-reverse | column-reverse */
+  justify-content: flex-start;      /* выравнивание по главной оси */
+  align-items: stretch;             /* выравнивание по поперечной оси */
+  flex-wrap: nowrap;                /* nowrap | wrap | wrap-reverse */
+  gap: 16px;                        /* отступы между элементами */
+}">📋 Копировать</button>
+      <pre>.container {
+  display: flex;                    <span class="cmt">/* включить Flexbox */</span>
+  flex-direction: row;              <span class="cmt">/* row (по умолчанию) | column | row-reverse | column-reverse */</span>
+  justify-content: flex-start;      <span class="cmt">/* выравнивание по главной оси */</span>
+  align-items: stretch;             <span class="cmt">/* выравнивание по поперечной оси */</span>
+  flex-wrap: nowrap;                <span class="cmt">/* nowrap | wrap | wrap-reverse */</span>
+  gap: 16px;                        <span class="cmt">/* отступы между элементами */</span>
+}</pre>
+    </div>
+
+    <h3>4.2. justify-content — выравнивание по главной оси</h3>
+
+    <div class="viz">
+      <svg viewBox="0 0 620 320" width="620">
+        <!-- flex-start -->
+        <rect x="30" y="20" width="560" height="50" fill="#fafbfe" stroke="#cbd5e1" rx="4"/>
+        <rect x="35" y="25" width="60" height="40" fill="#eef0ff" stroke="#4f46e5"/>
+        <rect x="105" y="25" width="60" height="40" fill="#eef0ff" stroke="#4f46e5"/>
+        <rect x="175" y="25" width="60" height="40" fill="#eef0ff" stroke="#4f46e5"/>
+        <text x="600" y="50" font-size="11" fill="#1c2331" text-anchor="end">flex-start</text>
+
+        <!-- center -->
+        <rect x="30" y="80" width="560" height="50" fill="#fafbfe" stroke="#cbd5e1" rx="4"/>
+        <rect x="235" y="85" width="60" height="40" fill="#eef0ff" stroke="#4f46e5"/>
+        <rect x="305" y="85" width="60" height="40" fill="#eef0ff" stroke="#4f46e5"/>
+        <rect x="375" y="85" width="60" height="40" fill="#eef0ff" stroke="#4f46e5"/>
+        <text x="600" y="110" font-size="11" fill="#1c2331" text-anchor="end">center</text>
+
+        <!-- space-between -->
+        <rect x="30" y="140" width="560" height="50" fill="#fafbfe" stroke="#cbd5e1" rx="4"/>
+        <rect x="35" y="145" width="60" height="40" fill="#eef0ff" stroke="#4f46e5"/>
+        <rect x="280" y="145" width="60" height="40" fill="#eef0ff" stroke="#4f46e5"/>
+        <rect x="525" y="145" width="60" height="40" fill="#eef0ff" stroke="#4f46e5"/>
+        <text x="600" y="170" font-size="11" fill="#1c2331" text-anchor="end">space-between</text>
+
+        <!-- space-around -->
+        <rect x="30" y="200" width="560" height="50" fill="#fafbfe" stroke="#cbd5e1" rx="4"/>
+        <rect x="120" y="205" width="60" height="40" fill="#eef0ff" stroke="#4f46e5"/>
+        <rect x="280" y="205" width="60" height="40" fill="#eef0ff" stroke="#4f46e5"/>
+        <rect x="440" y="205" width="60" height="40" fill="#eef0ff" stroke="#4f46e5"/>
+        <text x="600" y="230" font-size="11" fill="#1c2331" text-anchor="end">space-around</text>
+
+        <!-- space-evenly -->
+        <rect x="30" y="260" width="560" height="50" fill="#fafbfe" stroke="#cbd5e1" rx="4"/>
+        <rect x="95" y="265" width="60" height="40" fill="#eef0ff" stroke="#4f46e5"/>
+        <rect x="280" y="265" width="60" height="40" fill="#eef0ff" stroke="#4f46e5"/>
+        <rect x="465" y="265" width="60" height="40" fill="#eef0ff" stroke="#4f46e5"/>
+        <text x="600" y="290" font-size="11" fill="#1c2331" text-anchor="end">space-evenly</text>
+      </svg>
+      <div class="cap">Пять значений justify-content для главной оси.</div>
+    </div>
+
+    <h3>4.3. align-items — выравнивание по поперечной оси</h3>
+
+    <table>
+      <tr><th>Значение</th><th>Что делает</th></tr>
+      <tr><td><code>stretch</code></td><td>Растягивает элементы на всю высоту (по умолчанию)</td></tr>
+      <tr><td><code>flex-start</code></td><td>Прижимает к началу поперечной оси</td></tr>
+      <tr><td><code>flex-end</code></td><td>Прижимает к концу</td></tr>
+      <tr><td><code>center</code></td><td>Центрирует</td></tr>
+      <tr><td><code>baseline</code></td><td>Выравнивает по базовой линии текста</td></tr>
+    </table>
+
+    <h3>4.4. Управление размером элементов</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy=".item {
+  flex-grow: 1;      /* насколько элемент растёт (0 — не растёт) */
+  flex-shrink: 1;    /* насколько сжимается (0 — не сжимается) */
+  flex-basis: 200px; /* базовый размер до распределения */
+}
+
+/* Сокращение */
+.item {
+  flex: 1;           /* = flex: 1 1 0 — растянуть на всё свободное место */
+}
+.item-2 {
+  flex: 0 0 200px;   /* фиксированные 200px, не растёт, не сжимается */
+}">📋 Копировать</button>
+      <pre>.item {
+  flex-grow: 1;      <span class="cmt">/* насколько элемент растёт (0 — не растёт) */</span>
+  flex-shrink: 1;    <span class="cmt">/* насколько сжимается (0 — не сжимается) */</span>
+  flex-basis: 200px; <span class="cmt">/* базовый размер до распределения */</span>
+}
+
+<span class="cmt">/* Сокращение */</span>
+.item {
+  flex: 1;           <span class="cmt">/* = flex: 1 1 0 — растянуть на всё свободное место */</span>
+}
+.item-2 {
+  flex: 0 0 200px;   <span class="cmt">/* фиксированные 200px, не растёт, не сжимается */</span>
+}</pre>
+    </div>
+
+    <h3>4.5. Практические шаблоны Flexbox</h3>
+
+    <h4>Шаблон 1. Шапка с логотипом и меню</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="header {
+  display: flex;
+  justify-content: space-between;  /* логотип слева, меню справа */
+  align-items: center;             /* выровнять по вертикали */
+  padding: 16px 40px;
+}
+
+nav ul {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+}">📋 Копировать</button>
+      <pre>header {
+  display: flex;
+  justify-content: space-between;  <span class="cmt">/* логотип слева, меню справа */</span>
+  align-items: center;             <span class="cmt">/* выровнять по вертикали */</span>
+  padding: 16px 40px;
+}
+
+nav ul {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+}</pre>
+    </div>
+
+    <h4>Шаблон 2. Центрирование по обеим осям</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy=".center-everything {
+  display: flex;
+  justify-content: center;   /* по горизонтали */
+  align-items: center;       /* по вертикали */
+  min-height: 100vh;         /* на всю высоту экрана */
+}">📋 Копировать</button>
+      <pre>.center-everything {
+  display: flex;
+  justify-content: center;   <span class="cmt">/* по горизонтали */</span>
+  align-items: center;       <span class="cmt">/* по вертикали */</span>
+  min-height: 100vh;         <span class="cmt">/* на всю высоту экрана */</span>
+}</pre>
+      <div class="desc">Проще некуда. Раньше это было болью, теперь — две строчки.</div>
+    </div>
+
+    <h4>Шаблон 3. Карточки с переносом</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy=".cards {
+  display: flex;
+  flex-wrap: wrap;    /* разрешаем перенос на новую строку */
+  gap: 20px;
+}
+
+.card {
+  flex: 0 0 280px;    /* фиксированная ширина */
+  /* или flex: 1 1 280px — растёт, но не меньше 280px */
+}">📋 Копировать</button>
+      <pre>.cards {
+  display: flex;
+  flex-wrap: wrap;    <span class="cmt">/* разрешаем перенос на новую строку */</span>
+  gap: 20px;
+}
+
+.card {
+  flex: 0 0 280px;    <span class="cmt">/* фиксированная ширина */</span>
+  <span class="cmt">/* или flex: 1 1 280px — растёт, но не меньше 280px */</span>
+}</pre>
+    </div>
+
+    <h4>Шаблон 4. Прижать футер к низу</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+}
+
+main {
+  flex: 1;    /* занимает всё свободное место */
+}
+
+footer {
+  /* прижат к низу автоматически */
+}">📋 Копировать</button>
+      <pre>body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+}
+
+main {
+  flex: 1;    <span class="cmt">/* занимает всё свободное место */</span>
+}
+
+footer {
+  <span class="cmt">/* прижат к низу автоматически */</span>
+}</pre>
+      <div class="desc">Если контента мало — футер всё равно внизу. Если много — уезжает за пределы экрана.</div>
+    </div>
+
+    <h3>4.6. Grid — основы</h3>
+
+    <p><b>Grid</b> — двумерная раскладка. Работает и со строками, и со столбцами одновременно.</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 620 260" width="620">
+        <!-- Grid-контейнер -->
+        <rect x="30" y="30" width="560" height="200" fill="#fafbfe" stroke="#16a34a" stroke-width="2" stroke-dasharray="6 3" rx="8"/>
+        <text x="50" y="55" font-size="12" fill="#16a34a" font-weight="600">display: grid</text>
+
+        <!-- 3 колонки -->
+        <rect x="60" y="80" width="160" height="60" fill="#ecfdf3" stroke="#16a34a"/>
+        <rect x="230" y="80" width="160" height="60" fill="#ecfdf3" stroke="#16a34a"/>
+        <rect x="400" y="80" width="160" height="60" fill="#ecfdf3" stroke="#16a34a"/>
+
+        <!-- 2 строки -->
+        <rect x="60" y="150" width="160" height="60" fill="#ecfdf3" stroke="#16a34a"/>
+        <rect x="230" y="150" width="160" height="60" fill="#ecfdf3" stroke="#16a34a"/>
+        <rect x="400" y="150" width="160" height="60" fill="#ecfdf3" stroke="#16a34a"/>
+
+        <text x="140" y="115" text-anchor="middle" font-size="11" fill="#16a34a">ячейка</text>
+        <text x="310" y="115" text-anchor="middle" font-size="11" fill="#16a34a">ячейка</text>
+        <text x="480" y="115" text-anchor="middle" font-size="11" fill="#16a34a">ячейка</text>
+      </svg>
+      <div class="cap">Grid создаёт сетку из строк и столбцов. Элементы размещаются в ячейках.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy=".container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;    /* 3 равные колонки */
+  grid-template-rows: auto auto;         /* 2 строки, высота по контенту */
+  gap: 20px;                             /* отступы между ячейками */
+}
+
+/* Единица fr — fraction (доля свободного места) */
+.layout-1 { grid-template-columns: 1fr 2fr; }         /* 1:2 */
+.layout-2 { grid-template-columns: 200px 1fr; }       /* фикс + резина */
+.layout-3 { grid-template-columns: repeat(4, 1fr); }  /* 4 равные */">📋 Копировать</button>
+      <pre>.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;    <span class="cmt">/* 3 равные колонки */</span>
+  grid-template-rows: auto auto;         <span class="cmt">/* 2 строки, высота по контенту */</span>
+  gap: 20px;                             <span class="cmt">/* отступы между ячейками */</span>
+}
+
+<span class="cmt">/* Единица fr — fraction (доля свободного места) */</span>
+.layout-1 { grid-template-columns: 1fr 2fr; }         <span class="cmt">/* 1:2 */</span>
+.layout-2 { grid-template-columns: 200px 1fr; }       <span class="cmt">/* фикс + резина */</span>
+.layout-3 { grid-template-columns: repeat(4, 1fr); }  <span class="cmt">/* 4 равные */</span></pre>
+    </div>
+
+    <h3>4.7. Адаптивные колонки без media queries</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="/* Автоматически подстраивается под ширину экрана */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* Разбор: */
+/* repeat() — повторяем */
+/* auto-fill — сколько влезет колонок */
+/* minmax(280px, 1fr) — минимум 280px, максимум — резина */
+/* На широком экране: 3-4 колонки */
+/* На узком: 1 колонка */">📋 Копировать</button>
+      <pre><span class="cmt">/* Автоматически подстраивается под ширину экрана */</span>
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+<span class="cmt">/* Разбор: */</span>
+<span class="cmt">/* repeat() — повторяем */</span>
+<span class="cmt">/* auto-fill — сколько влезет колонок */</span>
+<span class="cmt">/* minmax(280px, 1fr) — минимум 280px, максимум — резина */</span>
+<span class="cmt">/* На широком экране: 3-4 колонки */</span>
+<span class="cmt">/* На узком: 1 колонка */</span></pre>
+      <div class="desc">Одна строчка CSS заменяет 3 media queries. Карточки сами перестроятся.</div>
+    </div>
+
+    <h3>4.8. Grid-template-areas — макет буквами</h3>
+
+    <p>Самый наглядный способ описать раскладку страницы.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy=".layout {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: 80px 1fr 60px;
+  grid-template-areas:
+    &quot;header  header&quot;
+    &quot;sidebar main&quot;
+    &quot;footer  footer&quot;;
+  min-height: 100vh;
+}
+
+.layout > header  { grid-area: header;  }
+.layout > aside   { grid-area: sidebar; }
+.layout > main    { grid-area: main;    }
+.layout > footer  { grid-area: footer;  }">📋 Копировать</button>
+      <pre>.layout {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: 80px 1fr 60px;
+  grid-template-areas:
+    "header  header"
+    "sidebar main"
+    "footer  footer";
+  min-height: 100vh;
+}
+
+.layout &gt; header  { grid-area: header;  }
+.layout &gt; aside   { grid-area: sidebar; }
+.layout &gt; main    { grid-area: main;    }
+.layout &gt; footer  { grid-area: footer;  }</pre>
+      <div class="desc">Читается как схема: header сверху, sidebar и main в середине, footer снизу. Меняете буквы — меняется макет.</div>
+    </div>
+
+    <h3>4.9. Практические шаблоны Grid</h3>
+
+    <h4>Шаблон 1. Галерея картинок</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy=".gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.gallery img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;    /* обрезать, сохранив пропорции */
+  border-radius: 8px;
+}">📋 Копировать</button>
+      <pre>.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.gallery img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;    <span class="cmt">/* обрезать, сохранив пропорции */</span>
+  border-radius: 8px;
+}</pre>
+    </div>
+
+    <h4>Шаблон 2. Дашборд с блоками разных размеров</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy=".dashboard {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 150px;
+  gap: 16px;
+}
+
+.wide { grid-column: span 2; }     /* на 2 колонки */
+.tall { grid-row: span 2; }        /* на 2 строки */
+.big  { grid-column: span 2; grid-row: span 2; }  /* 2x2 */">📋 Копировать</button>
+      <pre>.dashboard {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 150px;
+  gap: 16px;
+}
+
+.wide { grid-column: span 2; }     <span class="cmt">/* на 2 колонки */</span>
+.tall { grid-row: span 2; }        <span class="cmt">/* на 2 строки */</span>
+.big  { grid-column: span 2; grid-row: span 2; }  <span class="cmt">/* 2x2 */</span></pre>
+    </div>
+
+    <h4>Шаблон 3. Полный макет сайта</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="body {
+  display: grid;
+  grid-template-areas:
+    &quot;header&quot;
+    &quot;main&quot;
+    &quot;footer&quot;;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  margin: 0;
+  gap: 0;
+}
+
+header { grid-area: header; }
+main   { grid-area: main; }
+footer { grid-area: footer; }">📋 Копировать</button>
+      <pre>body {
+  display: grid;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  margin: 0;
+  gap: 0;
+}
+
+header { grid-area: header; }
+main   { grid-area: main; }
+footer { grid-area: footer; }</pre>
+    </div>
+
+    <h3>4.10. Flexbox или Grid — что выбрать</h3>
+
+    <table>
+      <tr><th>Задача</th><th>Инструмент</th></tr>
+      <tr><td>Меню, навигация</td><td>Flexbox</td></tr>
+      <tr><td>Шапка (лого + меню)</td><td>Flexbox</td></tr>
+      <tr><td>Центрирование элемента</td><td>Flexbox</td></tr>
+      <tr><td>Кнопки в ряд с равными отступами</td><td>Flexbox</td></tr>
+      <tr><td>Карточки в ряд с переносом</td><td>Flexbox</td></tr>
+      <tr><td>Галерея картинок</td><td>Grid</td></tr>
+      <tr><td>Макет страницы (header/sidebar/main/footer)</td><td>Grid</td></tr>
+      <tr><td>Дашборд с блоками разных размеров</td><td>Grid</td></tr>
+      <tr><td>Адаптивные колонки</td><td>Grid</td></tr>
+      <tr><td>Форма (label + input)</td><td>Flexbox (column)</td></tr>
+    </table>
+
+    <h3>4.11. Практические работы</h3>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №1 · Шапка сайта на Flexbox <span class="badge">30 мин</span></div>
+      <div class="goal"><b>Задача:</b> сделать шапку с логотипом слева и меню справа.</div>
+      <ol>
+        <li>HTML: <code>&lt;header&gt;</code> с <code>&lt;h1&gt;</code> (лого) и <code>&lt;nav&gt;&lt;ul&gt;</code> (меню).</li>
+        <li>CSS:
+          <ul>
+            <li><code>header { display: flex; justify-content: space-between; align-items: center; }</code></li>
+            <li><code>nav ul { display: flex; gap: 20px; list-style: none; }</code></li>
+          </ul>
+        </li>
+        <li>Проверьте: лого слева, меню справа, всё по одной линии.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №2 · Карточки с переносом <span class="badge">30 мин</span></div>
+      <div class="goal"><b>Задача:</b> сделать сетку карточек через Flexbox.</div>
+      <ol>
+        <li>Создайте 6 карточек с заголовком и описанием.</li>
+        <li>CSS: <code>.cards { display: flex; flex-wrap: wrap; gap: 20px; }</code></li>
+        <li>Каждая карточка: <code>flex: 1 1 280px</code>.</li>
+        <li>Сузьте окно — карточки переносятся.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №3 · Макет сайта на Grid <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> сделать макет через grid-template-areas.</div>
+      <ol>
+        <li>Структура: header, sidebar, main, footer.</li>
+        <li>CSS:
+          <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:8px;">grid-template-columns: 250px 1fr;
+grid-template-areas:
+  "header header"
+  "sidebar main"
+  "footer footer";</pre>
+        </li>
+        <li>Каждому блоку — свой <code>grid-area</code>.</li>
+        <li>Сузьте окно — можете добавить media query для мобильного варианта (одна колонка).</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №4 · Адаптивная галерея <span class="badge">30 мин</span></div>
+      <div class="goal"><b>Задача:</b> сделать галерею из 12 картинок без media queries.</div>
+      <ol>
+        <li>CSS: <code>grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));</code></li>
+        <li>Картинки: <code>width: 100%; height: 200px; object-fit: cover;</code></li>
+        <li>Сузьте окно — количество колонок меняется автоматически.</li>
+        <li>Проверьте: от 1 колонки (телефон) до 6 (широкий монитор).</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №5 · Дашборд с блоками <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> сделать дашборд с блоками разных размеров.</div>
+      <ol>
+        <li>CSS: <code>grid-template-columns: repeat(4, 1fr); grid-auto-rows: 150px;</code></li>
+        <li>Классы для разных размеров:
+          <ul>
+            <li><code>.wide { grid-column: span 2; }</code></li>
+            <li><code>.tall { grid-row: span 2; }</code></li>
+            <li><code>.big { grid-column: span 2; grid-row: span 2; }</code></li>
+          </ul>
+        </li>
+        <li>Сделайте 8 блоков: 4 обычных, 2 wide, 1 tall, 1 big.</li>
+        <li>Стилизуйте как карточки: фон, скругление, тень, padding.</li>
+      </ol>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Чем Flexbox отличается от Grid?</summary>
+      <div class="answer">
+        <b>Flexbox</b> — <b>одномерный</b>. Элементы выстраиваются по одной оси: или в строку, или в столбец.<br><br>
+        <b>Grid</b> — <b>двумерный</b>. Работает и со строками, и со столбцами одновременно.<br><br>
+        <b>Проще:</b> Flexbox — «лента» (элементы в ряд). Grid — «таблица» (сетка).<br><br>
+        <b>Практическое правило:</b> если раскладка выглядит как таблица или сетка — Grid. Если как ряд кнопок или меню — Flexbox.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Что такое главная и поперечная ось?</summary>
+      <div class="answer">
+        В Flexbox есть две оси:
+        <ul>
+          <li><b>Главная ось (main axis)</b> — определяется <code>flex-direction</code>. По умолчанию — слева направо.</li>
+          <li><b>Поперечная ось (cross axis)</b> — перпендикулярна главной.</li>
+        </ul>
+        <b>justify-content</b> работает по главной оси, <b>align-items</b> — по поперечной.<br><br>
+        <b>Если поменять <code>flex-direction: column</code>:</b>
+        <ul>
+          <li>Главная ось идёт сверху вниз.</li>
+          <li>Поперечная — слева направо.</li>
+          <li><code>justify-content</code> теперь выравнивает по вертикали.</li>
+        </ul>
+        Это ключевое понимание Flexbox: меняя direction, меняются оси, но свойства те же.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Что делает единица fr в Grid?</summary>
+      <div class="answer">
+        <b>fr</b> — fraction, доля свободного места.<br><br>
+        <b>Пример:</b>
+        <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:6px;">grid-template-columns: 1fr 2fr 1fr;</pre>
+        Экран делится на 4 части: первая колонка — 1/4, вторая — 2/4, третья — 1/4.<br><br>
+        <b>Можно комбинировать с фиксированными размерами:</b>
+        <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:6px;">grid-template-columns: 250px 1fr;</pre>
+        Первая — фиксированные 250px, вторая — весь остаток.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 4. Почему repeat(auto-fill, minmax(...)) удобнее media queries?</summary>
+      <div class="answer">
+        <b>Меньше кода.</b> Одна строчка CSS заменяет 3-4 media queries.<br><br>
+        <b>Плавнее.</b> Media queries работают «ступеньками»: при 768px одна раскладка, при 769px — другая. Между ними ничего. А <code>auto-fill</code> с <code>minmax</code> пересчитывает колонки <b>на каждый пиксель</b>.<br><br>
+        <b>Универсально.</b> Не нужно думать о конкретных breakpoints — браузер сам решает, сколько колонок влезет.<br><br>
+        <b>Когда всё же нужны media queries:</b> когда раскладка кардинально меняется — например, на мобильном сайдбар становится верхним меню, а не боковым.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание по теме</div>
+      Сдать обновлённый сайт с современными раскладками:
+      <ol>
+        <li>Шапка сайта на Flexbox (ПР №1)</li>
+        <li>Секция карточек на Flexbox с переносом (ПР №2)</li>
+        <li>Полный макет через Grid-areas (ПР №3)</li>
+        <li>Адаптивная галерея без media queries (ПР №4)</li>
+        <li>Дашборд с блоками разных размеров (ПР №5)</li>
+        <li>Ответы на 4 вопроса самопроверки</li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="03-javascript.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">3. JavaScript — логика</span>
+  </a>
+  <a href="05-responsive.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">5. Адаптивность</span>
+  </a>
+</div>
+
+<footer>
+  Веб-разработка · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Веб · 5. Адаптивность · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· Веб · Тема 5</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="web-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-html.html">1. HTML</a>
+  <a href="02-css.html">2. CSS</a>
+  <a href="03-javascript.html">3. JS</a>
+  <a href="04-layouts.html">4. Раскладки</a>
+  <a href="05-responsive.html" class="current">5. Адаптив</a>
+  <a href="06-deploy.html">6. Деплой</a>
+  <a href="07-cheatsheet.html">📌 Шпаргалка</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">5</span>Адаптивность и мобильная вёрстка</h2>
+
+    <p>Больше половины пользователей заходят с телефона. Если сайт не адаптирован — люди уходят. <b>Адаптивность</b> — это умение сайта выглядеть хорошо на любом экране: от 320px (старый iPhone) до 4K-монитора.</p>
+
+    <div class="box note">
+      <div class="label">Цифры, которые важно знать</div>
+      <ul>
+        <li><b>~60%</b> мирового веб-трафика — мобильные устройства</li>
+        <li><b>53%</b> пользователей уходят, если сайт грузится дольше 3 секунд</li>
+        <li>Google ранжирует <b>мобильную версию</b> сайта первой (mobile-first indexing)</li>
+        <li>Если сайт не адаптирован — Google понижает его в поиске</li>
+      </ul>
+    </div>
+
+    <h3>5.1. Метатег viewport</h3>
+
+    <p>Без этой строки в <code>&lt;head&gt;</code> телефон покажет сайт как на десктопе — маленьким, с горизонтальной прокруткой.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;">📋 Копировать</button>
+      <pre>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</pre>
+      <div class="desc">
+        <b>width=device-width</b> — ширина страницы = ширина экрана устройства.<br>
+        <b>initial-scale=1.0</b> — начальный масштаб 100%.
+      </div>
+    </div>
+
+    <div class="viz">
+      <svg viewBox="0 0 620 240" width="620">
+        <!-- Без viewport -->
+        <rect x="30" y="30" width="200" height="180" fill="#fff1f4" stroke="#e11d48" stroke-width="1.5" rx="8"/>
+        <rect x="80" y="60" width="100" height="120" fill="#fff" stroke="#cbd5e1"/>
+        <text x="130" y="120" text-anchor="middle" font-size="9" fill="#1c2331">сайт</text>
+        <text x="130" y="135" text-anchor="middle" font-size="8" fill="#889">мелкий</text>
+        <text x="130" y="225" text-anchor="middle" font-size="12" fill="#e11d48" font-weight="600">Без viewport</text>
+
+        <!-- С viewport -->
+        <rect x="380" y="30" width="200" height="180" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.5" rx="8"/>
+        <rect x="395" y="45" width="170" height="150" fill="#fff" stroke="#cbd5e1"/>
+        <text x="480" y="120" text-anchor="middle" font-size="9" fill="#1c2331">сайт заполняет</text>
+        <text x="480" y="135" text-anchor="middle" font-size="8" fill="#889">весь экран</text>
+        <text x="480" y="225" text-anchor="middle" font-size="12" fill="#16a34a" font-weight="600">С viewport</text>
+      </svg>
+      <div class="cap">С метатегом viewport сайт подстраивается под ширину устройства.</div>
+    </div>
+
+    <h3>5.2. Media queries</h3>
+
+    <p><b>Media query</b> — блок CSS, который применяется только при определённых условиях (например, при ширине экрана меньше 768px).</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="/* Стили для экранов до 768px (мобильные и планшеты) */
+@media (max-width: 768px) {
+  body { font-size: 14px; }
+  .sidebar { display: none; }
+  .cards { grid-template-columns: 1fr; }
+}
+
+/* Только для десктопов */
+@media (min-width: 1024px) {
+  body { font-size: 18px; }
+  .cards { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Комбинировать */
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* планшеты */
+}
+
+/* Другие условия */
+@media print { /* для печати */ }
+@media (orientation: portrait) { /* вертикальная ориентация */ }
+@media (prefers-color-scheme: dark) { /* тёмная тема системы */ }">📋 Копировать</button>
+      <pre><span class="cmt">/* Стили для экранов до 768px (мобильные и планшеты) */</span>
+@media (max-width: 768px) {
+  body { font-size: 14px; }
+  .sidebar { display: none; }
+  .cards { grid-template-columns: 1fr; }
+}
+
+<span class="cmt">/* Только для десктопов */</span>
+@media (min-width: 1024px) {
+  body { font-size: 18px; }
+  .cards { grid-template-columns: repeat(3, 1fr); }
+}
+
+<span class="cmt">/* Комбинировать */</span>
+@media (min-width: 768px) and (max-width: 1024px) {
+  <span class="cmt">/* планшеты */</span>
+}
+
+<span class="cmt">/* Другие условия */</span>
+@media print { <span class="cmt">/* для печати */</span> }
+@media (orientation: portrait) { <span class="cmt">/* вертикальная ориентация */</span> }
+@media (prefers-color-scheme: dark) { <span class="cmt">/* тёмная тема системы */</span> }</pre>
+    </div>
+
+    <h3>5.3. Основные breakpoints</h3>
+
+    <p><b>Breakpoint</b> — ширина экрана, на которой раскладка меняется.</p>
+
+    <table>
+      <tr><th>Устройство</th><th>Ширина</th><th>Breakpoint</th></tr>
+      <tr><td>Старый смартфон</td><td>320px</td><td><code>max-width: 480px</code></td></tr>
+      <tr><td>Современный телефон</td><td>375-414px</td><td><code>max-width: 640px</code></td></tr>
+      <tr><td>Планшет</td><td>768-834px</td><td><code>min-width: 768px</code></td></tr>
+      <tr><td>Ноутбук</td><td>1024-1366px</td><td><code>min-width: 1024px</code></td></tr>
+      <tr><td>Монитор</td><td>1440-1920px</td><td><code>min-width: 1440px</code></td></tr>
+      <tr><td>4K</td><td>2560px+</td><td><code>min-width: 1920px</code></td></tr>
+    </table>
+
+    <div class="box note">
+      <div class="label">Правило</div>
+      Не гонитесь за десятками breakpoints. Обычно <b>3-4 достаточно</b>: мобильный, планшет, десктоп, широкий монитор.
+    </div>
+
+    <h3>5.4. Mobile-first vs Desktop-first</h3>
+
+    <p>Два подхода к написанию CSS с media queries.</p>
+
+    <table>
+      <tr><th>Подход</th><th>Как работает</th><th>Что используется</th></tr>
+      <tr><td><b>Mobile-first</b></td><td>Сначала стили для мобильного, потом усложняем для больших экранов</td><td><code>min-width</code></td></tr>
+      <tr><td><b>Desktop-first</b></td><td>Сначала для десктопа, потом упрощаем для мобильных</td><td><code>max-width</code></td></tr>
+    </table>
+
+    <p><b>Современный стандарт — mobile-first.</b> Причины:</p>
+    <ul>
+      <li>Мобильных пользователей больше.</li>
+      <li>Легче оптимизировать — начинаем с минимума.</li>
+      <li>Google рекомендует (mobile-first indexing).</li>
+      <li>Меньше «лишнего» CSS загружается на мобильном.</li>
+    </ul>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="/* Mobile-first подход */
+
+/* Базовые стили — для мобильного */
+.container {
+  padding: 16px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;    /* 1 колонка */
+  gap: 16px;
+}
+
+/* Планшет и больше */
+@media (min-width: 768px) {
+  .container { padding: 32px; }
+  .cards { grid-template-columns: repeat(2, 1fr); }  /* 2 колонки */
+}
+
+/* Десктоп */
+@media (min-width: 1024px) {
+  .cards { grid-template-columns: repeat(3, 1fr); }  /* 3 колонки */
+}">📋 Копировать</button>
+      <pre><span class="cmt">/* Mobile-first подход */</span>
+
+<span class="cmt">/* Базовые стили — для мобильного */</span>
+.container {
+  padding: 16px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;    <span class="cmt">/* 1 колонка */</span>
+  gap: 16px;
+}
+
+<span class="cmt">/* Планшет и больше */</span>
+@media (min-width: 768px) {
+  .container { padding: 32px; }
+  .cards { grid-template-columns: repeat(2, 1fr); }  <span class="cmt">/* 2 колонки */</span>
+}
+
+<span class="cmt">/* Десктоп */</span>
+@media (min-width: 1024px) {
+  .cards { grid-template-columns: repeat(3, 1fr); }  <span class="cmt">/* 3 колонки */</span>
+}</pre>
+      <div class="desc">Базовые стили — мобильные. Потом «повышаем» для больших экранов.</div>
+    </div>
+
+    <h3>5.5. Гибкие размеры</h3>
+
+    <table>
+      <tr><th>Единица</th><th>Относительно</th><th>Когда использовать</th></tr>
+      <tr><td><code>%</code></td><td>Родителя</td><td>Ширина колонок, отступы</td></tr>
+      <tr><td><code>vw</code></td><td>Ширины окна</td><td>Секции во всю ширину</td></tr>
+      <tr><td><code>vh</code></td><td>Высоты окна</td><td>Секции во всю высоту</td></tr>
+      <tr><td><code>vmin</code></td><td>Меньшей стороны</td><td>Квадратные элементы</td></tr>
+      <tr><td><code>vmax</code></td><td>Большей стороны</td><td>Специальные задачи</td></tr>
+      <tr><td><code>rem</code></td><td>Размера шрифта корня</td><td>Шрифты, отступы</td></tr>
+      <tr><td><code>em</code></td><td>Шрифта родителя</td><td>Внутри текста</td></tr>
+    </table>
+
+    <h3>5.6. Функция clamp() — адаптивные размеры</h3>
+
+    <p><b>clamp(мин, предпочтительно, макс)</b> — размер, который плавно меняется между минимумом и максимумом.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="/* Размер шрифта плавно меняется */
+h1 {
+  font-size: clamp(24px, 5vw, 48px);
+  /* на узком экране — 24px, на широком — до 48px */
+}
+
+/* Отступы */
+section {
+  padding: clamp(20px, 5vw, 60px) clamp(16px, 3vw, 40px);
+}
+
+/* Ширина блока */
+.container {
+  width: clamp(280px, 90%, 1100px);
+  /* минимум 280, максимум 1100, обычно 90% */
+}">📋 Копировать</button>
+      <pre><span class="cmt">/* Размер шрифта плавно меняется */</span>
+h1 {
+  font-size: clamp(24px, 5vw, 48px);
+  <span class="cmt">/* на узком экране — 24px, на широком — до 48px */</span>
+}
+
+<span class="cmt">/* Отступы */</span>
+section {
+  padding: clamp(20px, 5vw, 60px) clamp(16px, 3vw, 40px);
+}
+
+<span class="cmt">/* Ширина блока */</span>
+.container {
+  width: clamp(280px, 90%, 1100px);
+  <span class="cmt">/* минимум 280, максимум 1100, обычно 90% */</span>
+}</pre>
+      <div class="desc">Одна строчка заменяет media queries для шрифтов и отступов.</div>
+    </div>
+
+    <h3>5.7. Адаптивные изображения</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="/* Базовая адаптивность */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* object-fit — как вписывается в контейнер */
+.card-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;   /* обрезать, сохранив пропорции */
+  /* contain — вписать целиком */
+  /* fill — растянуть (по умолчанию) */
+}
+
+/* Тег picture — разные картинки для разных экранов */
+&lt;picture&gt;
+  &lt;source media=&quot;(max-width: 600px)&quot; srcset=&quot;small.jpg&quot;&gt;
+  &lt;source media=&quot;(max-width: 1200px)&quot; srcset=&quot;medium.jpg&quot;&gt;
+  &lt;img src=&quot;large.jpg&quot; alt=&quot;Описание&quot;&gt;
+&lt;/picture&gt;
+
+/* srcset — выбрать картинку по разрешению */
+&lt;img src=&quot;photo.jpg&quot;
+     srcset=&quot;photo-400.jpg 400w,
+             photo-800.jpg 800w,
+             photo-1600.jpg 1600w&quot;
+     sizes=&quot;(max-width: 600px) 100vw, 50vw&quot;
+     alt=&quot;Фото&quot;&gt;">📋 Копировать</button>
+      <pre><span class="cmt">/* Базовая адаптивность */</span>
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+<span class="cmt">/* object-fit — как вписывается в контейнер */</span>
+.card-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;   <span class="cmt">/* обрезать, сохранив пропорции */</span>
+  <span class="cmt">/* contain — вписать целиком */</span>
+  <span class="cmt">/* fill — растянуть (по умолчанию) */</span>
+}
+
+<span class="cmt">/* Тег picture — разные картинки для разных экранов */</span>
+&lt;picture&gt;
+  &lt;source media="(max-width: 600px)" srcset="small.jpg"&gt;
+  &lt;source media="(max-width: 1200px)" srcset="medium.jpg"&gt;
+  &lt;img src="large.jpg" alt="Описание"&gt;
+&lt;/picture&gt;
+
+<span class="cmt">/* srcset — выбрать картинку по разрешению */</span>
+&lt;img src="photo.jpg"
+     srcset="photo-400.jpg 400w,
+             photo-800.jpg 800w,
+             photo-1600.jpg 1600w"
+     sizes="(max-width: 600px) 100vw, 50vw"
+     alt="Фото"&gt;</pre>
+    </div>
+
+    <h3>5.8. Бургер-меню</h3>
+
+    <p>Самая частая задача в адаптивной вёрстке: на десктопе — обычное меню, на мобильном — кнопка с выпадающим списком.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="&lt;!-- HTML --&gt;
+&lt;header&gt;
+  &lt;div class=&quot;logo&quot;&gt;Мой сайт&lt;/div&gt;
+  &lt;button class=&quot;burger&quot; aria-label=&quot;Меню&quot;&gt;☰&lt;/button&gt;
+  &lt;nav class=&quot;menu&quot;&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Главная&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;О нас&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Контакты&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;
+
+&lt;!-- CSS --&gt;
+&lt;style&gt;
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: #fff;
+  position: relative;
+}
+
+.burger {
+  display: none;      /* скрыт на десктопе */
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.menu ul {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+/* На мобильных */
+@media (max-width: 640px) {
+  .burger { display: block; }
+
+  .menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-top: 1px solid #eee;
+  }
+
+  .menu.open { display: block; }
+
+  .menu ul {
+    flex-direction: column;
+    padding: 20px;
+    gap: 12px;
+  }
+}
+&lt;/style&gt;
+
+&lt;!-- JS --&gt;
+&lt;script&gt;
+const burger = document.querySelector('.burger');
+const menu = document.querySelector('.menu');
+
+burger.addEventListener('click', () =&gt; {
+  menu.classList.toggle('open');
+  burger.textContent = menu.classList.contains('open') ? '✕' : '☰';
+});
+&lt;/script&gt;">📋 Копировать</button>
+      <pre><span class="cmt">&lt;!-- HTML --&gt;</span>
+&lt;header&gt;
+  &lt;div class="logo"&gt;Мой сайт&lt;/div&gt;
+  &lt;button class="burger" aria-label="Меню"&gt;☰&lt;/button&gt;
+  &lt;nav class="menu"&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href="#"&gt;Главная&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#"&gt;О нас&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#"&gt;Контакты&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;
+
+<span class="cmt">&lt;!-- CSS --&gt;</span>
+&lt;style&gt;
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: #fff;
+  position: relative;
+}
+
+.burger {
+  display: none;      <span class="cmt">/* скрыт на десктопе */</span>
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.menu ul {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+<span class="cmt">/* На мобильных */</span>
+@media (max-width: 640px) {
+  .burger { display: block; }
+
+  .menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-top: 1px solid #eee;
+  }
+
+  .menu.open { display: block; }
+
+  .menu ul {
+    flex-direction: column;
+    padding: 20px;
+    gap: 12px;
+  }
+}
+&lt;/style&gt;
+
+<span class="cmt">&lt;!-- JS --&gt;</span>
+&lt;script&gt;
+const burger = document.querySelector('.burger');
+const menu = document.querySelector('.menu');
+
+burger.addEventListener('click', () =&gt; {
+  menu.classList.toggle('open');
+  burger.textContent = menu.classList.contains('open') ? '✕' : '☰';
+});
+&lt;/script&gt;</pre>
+      <div class="desc">Такой шаблон подходит для 90% сайтов.</div>
+    </div>
+
+    <h3>5.9. Проверка адаптивности</h3>
+
+    <div class="box note">
+      <div class="label">Как проверить сайт на разных экранах</div>
+      <ol>
+        <li><b>DevTools (F12):</b> нажмите <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd> — включится режим устройства.</li>
+        <li><b>Выберите устройство:</b> iPhone, iPad, Galaxy и т.д. — или задайте свою ширину.</li>
+        <li><b>Покрутите ползунок:</b> меняйте ширину и смотрите, где ломается.</li>
+        <li><b>Проверьте ключевые точки:</b> 320, 375, 414, 768, 1024, 1440, 1920.</li>
+        <li><b>Реальное устройство:</b> откройте сайт на своём телефоне.</li>
+        <li><b>Сервис:</b> responsinator.com, ami.responsivedesign.is</li>
+      </ol>
+    </div>
+
+    <h3>5.10. Частые проблемы и решения</h3>
+
+    <table>
+      <tr><th>Проблема</th><th>Причина</th><th>Решение</th></tr>
+      <tr><td>Горизонтальная прокрутка</td><td>Элемент шире экрана</td><td><code>overflow-x: hidden</code>, проверить width</td></tr>
+      <tr><td>Мелкий текст</td><td>Фиксированный <code>font-size</code></td><td><code>clamp()</code> или <code>rem</code></td></tr>
+      <tr><td>Кнопки мелкие для пальца</td><td>Мало padding</td><td>Минимум 44×44px</td></tr>
+      <tr><td>Картинки растягиваются</td><td>Фиксированные размеры</td><td><code>max-width: 100%; height: auto;</code></td></tr>
+      <tr><td>Меню ломается на мобильном</td><td>Длинные пункты</td><td>Бургер-меню или скрытие части</td></tr>
+      <tr><td>Таблицы шире экрана</td><td>Много колонок</td><td>Обернуть в <code>overflow-x: auto</code></td></tr>
+      <tr><td>Формы неудобно заполнять</td><td>Поля мелкие</td><td>Минимум 16px шрифт (иначе iOS зумит)</td></tr>
+    </table>
+
+    <h3>5.11. Практические работы</h3>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №1 · Адаптировать готовый сайт <span class="badge">40 мин</span></div>
+      <div class="goal"><b>Задача:</b> взять свой сайт и сделать его адаптивным.</div>
+      <ol>
+        <li>Добавьте <code>&lt;meta name="viewport"&gt;</code>, если ещё нет.</li>
+        <li>Проверьте сайт в DevTools (F12 → Ctrl+Shift+M).</li>
+        <li>Найдите проблемы:
+          <ul>
+            <li>Горизонтальная прокрутка?</li>
+            <li>Текст мелкий?</li>
+            <li>Карточки в один столбец на мобильном — читаются?</li>
+          </ul>
+        </li>
+        <li>Добавьте media queries:
+          <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:8px;">@media (max-width: 768px) {
+  /* мобильные стили */
+}</pre>
+        </li>
+        <li>Проверьте на 320, 375, 768, 1024 px.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №2 · Бургер-меню <span class="badge">40 мин</span></div>
+      <div class="goal"><b>Задача:</b> сделать бургер-меню по шаблону выше.</div>
+      <ol>
+        <li>Скопируйте HTML/CSS/JS шаблон.</li>
+        <li>Адаптируйте под свой сайт: цвета, шрифты, логотип.</li>
+        <li>Проверьте:
+          <ul>
+            <li>На десктопе — обычное горизонтальное меню.</li>
+            <li>На мобильном — кнопка ☰.</li>
+            <li>Клик по кнопке — меню раскрывается.</li>
+            <li>Повторный клик — скрывается.</li>
+            <li>Значок меняется на ✕.</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №3 · Адаптивная галерея <span class="badge">30 мин</span></div>
+      <div class="goal"><b>Задача:</b> сделать галерею с разными картинками для разных экранов.</div>
+      <ol>
+        <li>Возьмите 3 картинки: маленькую (400px), среднюю (800px), большую (1600px).</li>
+        <li>Используйте тег <code>&lt;picture&gt;</code>:
+          <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:8px;">&lt;picture&gt;
+  &lt;source media="(max-width: 600px)" srcset="small.jpg"&gt;
+  &lt;source media="(max-width: 1200px)" srcset="medium.jpg"&gt;
+  &lt;img src="large.jpg" alt="Фото"&gt;
+&lt;/picture&gt;</pre>
+        </li>
+        <li>Проверьте в DevTools: при сужении окна загружается другая картинка (видно в Network).</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №4 · Типографика с clamp() <span class="badge">30 мин</span></div>
+      <div class="goal"><b>Задача:</b> сделать шрифты, которые плавно масштабируются.</div>
+      <ol>
+        <li>Замените фиксированные размеры на <code>clamp()</code>:
+          <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:8px;">h1 { font-size: clamp(28px, 5vw, 56px); }
+h2 { font-size: clamp(22px, 3vw, 36px); }
+p  { font-size: clamp(14px, 1.5vw, 18px); }</pre>
+        </li>
+        <li>Проверьте: на телефоне мелкий, на десктопе крупный, переход плавный.</li>
+        <li>Уберите media queries для шрифтов — они больше не нужны.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №5 · Полный адаптив <span class="badge">50 мин</span></div>
+      <div class="goal"><b>Задача:</b> сделать сайт, который отлично смотрится на 5 размерах экрана.</div>
+      <ol>
+        <li>Проверьте сайт на: <b>320, 375, 768, 1024, 1440 px</b>.</li>
+        <li>На каждом размере:
+          <ul>
+            <li>Нет горизонтальной прокрутки.</li>
+            <li>Текст читается (не слишком мелкий).</li>
+            <li>Кнопки удобно нажимать (44×44 минимум).</li>
+            <li>Меню работает (бургер на мобильном).</li>
+            <li>Карточки перестраиваются.</li>
+          </ul>
+        </li>
+        <li>Сделайте скриншоты каждого размера.</li>
+        <li>Сдайте отчёт: скриншоты + описание, что исправляли.</li>
+      </ol>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Зачем нужен метатег viewport?</summary>
+      <div class="answer">
+        Без него мобильные браузеры показывают сайт <b>как на десктопе</b>, но уменьшенным. Пользователь видит мелкий текст и вынужден постоянно зумить.<br><br>
+        <b>Что делает метатег:</b>
+        <ul>
+          <li>Указывает браузеру, что ширина страницы = ширина экрана устройства.</li>
+          <li>Начальный масштаб 100% — без автоматического зума.</li>
+          <li>Это <b>основа</b> адаптивности — без него media queries не сработают правильно.</li>
+        </ul>
+        <b>Правило:</b> всегда добавляйте в <code>&lt;head&gt;</code> при создании новой страницы.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Почему mobile-first лучше desktop-first?</summary>
+      <div class="answer">
+        Три причины:
+        <ol>
+          <li><b>Большинство пользователей — мобильные.</b> Логично начинать с того, что важнее.</li>
+          <li><b>Меньше CSS на мобильном.</b> Браузер загружает только базовые стили + несколько media queries. При desktop-first мобильные стили «отменяют» десктопные — это лишний код.</li>
+          <li><b>Проще усложнять, чем упрощать.</b> Добавить колонки для широкого экрана легче, чем «отменять» их для узкого.</li>
+        </ol>
+        <b>Пример:</b> карточки.
+        <ul>
+          <li><b>Mobile-first:</b> сначала 1 колонка, потом добавляем 2 на планшете, 3 на десктопе.</li>
+          <li><b>Desktop-first:</b> сначала 3 колонки, потом отменяем до 2, до 1. Больше кода и путаницы.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Что такое object-fit и зачем он нужен?</summary>
+      <div class="answer">
+        <b>object-fit</b> — свойство, которое определяет, как изображение вписывается в свой контейнер.<br><br>
+        Проблема: если задать картинке фиксированные <code>width</code> и <code>height</code>, она искажается — теряет пропорции.<br><br>
+        <b>Решения:</b>
+        <ul>
+          <li><code>object-fit: cover</code> — картинка заполняет контейнер, обрезая лишнее. Пропорции сохраняются.</li>
+          <li><code>object-fit: contain</code> — картинка вписывается целиком, по краям остаётся пустое место.</li>
+          <li><code>object-fit: fill</code> — растягивается (по умолчанию, искажается).</li>
+          <li><code>object-fit: none</code> — картинка в исходном размере.</li>
+        </ul>
+        <b>Где применяется:</b> галереи, карточки товаров, аватары, обложки статей — где нужно, чтобы все картинки были одного размера.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 4. Как проверить адаптивность без телефона?</summary>
+      <div class="answer">
+        <b>Основной способ — DevTools:</b>
+        <ol>
+          <li><kbd>F12</kbd> — открыть инструменты разработчика.</li>
+          <li><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd> — переключить в режим устройства.</li>
+          <li>В верхней панели выбрать модель (iPhone, iPad, Galaxy) или задать свои размеры.</li>
+          <li>Менять размеры и смотреть, где ломается вёрстка.</li>
+        </ol>
+        <b>Совет:</b> проверьте «крайние» размеры: 320px (старый iPhone), 768px (планшет), 1920px (большой монитор). Часто проблемы только на границах.<br><br>
+        <b>Онлайн-сервисы:</b> responsinator.com, ami.responsivedesign.is — показывают сайт в разных разрешениях.<br><br>
+        <b>Но:</b> реальный телефон всё равно лучше. DevTools не всегда показывает, как работают касания, скролл, зум. Если есть возможность — проверьте на живом устройстве.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание по теме</div>
+      Сдать полностью адаптивный сайт:
+      <ol>
+        <li>Metateg viewport в <code>&lt;head&gt;</code></li>
+        <li>Media queries для 3+ breakpoints</li>
+        <li>Бургер-меню на мобильном (ПР №2)</li>
+        <li>Адаптивные картинки через <code>object-fit</code> и <code>&lt;picture&gt;</code> (ПР №3)</li>
+        <li>Адаптивная типографика с <code>clamp()</code> (ПР №4)</li>
+        <li>Скриншоты сайта на 5 размерах (ПР №5)</li>
+        <li>Ответы на 4 вопроса самопроверки</li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="04-layouts.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">4. Раскладки: Flexbox и Grid</span>
+  </a>
+  <a href="06-deploy.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">6. Публикация сайта</span>
+  </a>
+</div>
+
+<footer>
+  Веб-разработка · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

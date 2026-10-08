@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Веб · Шпаргалка и шаблон · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· Веб · Шпаргалка</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="web-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-html.html">1. HTML</a>
+  <a href="02-css.html">2. CSS</a>
+  <a href="03-javascript.html">3. JS</a>
+  <a href="04-layouts.html">4. Раскладки</a>
+  <a href="05-responsive.html">5. Адаптив</a>
+  <a href="06-deploy.html">6. Деплой</a>
+  <a href="07-cheatsheet.html" class="current">📌 Шпаргалка</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">📌</span>Шпаргалка + шаблон проекта</h2>
+
+    <p>Всё, что нужно для старта — на одной странице. Используйте при работе, держите под рукой.</p>
+
+    <h3>HTML — основные теги</h3>
+
+    <table>
+      <tr><th>Категория</th><th>Теги</th></tr>
+      <tr><td>Каркас</td><td><code>&lt;!DOCTYPE html&gt;</code>, <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, <code>&lt;body&gt;</code></td></tr>
+      <tr><td>Метаданные</td><td><code>&lt;title&gt;</code>, <code>&lt;meta&gt;</code>, <code>&lt;link&gt;</code>, <code>&lt;script&gt;</code>, <code>&lt;style&gt;</code></td></tr>
+      <tr><td>Заголовки</td><td><code>&lt;h1&gt;</code>, <code>&lt;h2&gt;</code>, <code>&lt;h3&gt;</code>, <code>&lt;h4&gt;</code>, <code>&lt;h5&gt;</code>, <code>&lt;h6&gt;</code></td></tr>
+      <tr><td>Текст</td><td><code>&lt;p&gt;</code>, <code>&lt;strong&gt;</code>, <code>&lt;em&gt;</code>, <code>&lt;br&gt;</code>, <code>&lt;hr&gt;</code>, <code>&lt;blockquote&gt;</code>, <code>&lt;code&gt;</code>, <code>&lt;pre&gt;</code></td></tr>
+      <tr><td>Списки</td><td><code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code>, <code>&lt;li&gt;</code></td></tr>
+      <tr><td>Ссылки и графика</td><td><code>&lt;a&gt;</code>, <code>&lt;img&gt;</code>, <code>&lt;figure&gt;</code>, <code>&lt;figcaption&gt;</code></td></tr>
+      <tr><td>Таблицы</td><td><code>&lt;table&gt;</code>, <code>&lt;thead&gt;</code>, <code>&lt;tbody&gt;</code>, <code>&lt;tr&gt;</code>, <code>&lt;th&gt;</code>, <code>&lt;td&gt;</code></td></tr>
+      <tr><td>Формы</td><td><code>&lt;form&gt;</code>, <code>&lt;input&gt;</code>, <code>&lt;label&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;option&gt;</code>, <code>&lt;textarea&gt;</code>, <code>&lt;button&gt;</code></td></tr>
+      <tr><td>Семантика</td><td><code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;article&gt;</code>, <code>&lt;aside&gt;</code>, <code>&lt;footer&gt;</code></td></tr>
+      <tr><td>Контейнеры</td><td><code>&lt;div&gt;</code>, <code>&lt;span&gt;</code></td></tr>
+    </table>
+
+    <h3>CSS — основные свойства</h3>
+
+    <table>
+      <tr><th>Категория</th><th>Свойства</th></tr>
+      <tr><td>Текст</td><td><code>color</code>, <code>font-family</code>, <code>font-size</code>, <code>font-weight</code>, <code>line-height</code>, <code>text-align</code>, <code>text-decoration</code></td></tr>
+      <tr><td>Блок</td><td><code>width</code>, <code>height</code>, <code>max-width</code>, <code>min-height</code>, <code>padding</code>, <code>margin</code>, <code>border</code>, <code>border-radius</code></td></tr>
+      <tr><td>Фон</td><td><code>background</code>, <code>background-color</code>, <code>background-image</code>, <code>background-size</code>, <code>background-position</code></td></tr>
+      <tr><td>Позиция</td><td><code>position</code>, <code>top</code>, <code>right</code>, <code>bottom</code>, <code>left</code>, <code>z-index</code></td></tr>
+      <tr><td>Раскладка</td><td><code>display</code>, <code>flex</code> (см. flexbox), <code>grid</code> (см. grid), <code>gap</code>, <code>justify-content</code>, <code>align-items</code></td></tr>
+      <tr><td>Эффекты</td><td><code>box-shadow</code>, <code>text-shadow</code>, <code>opacity</code>, <code>transform</code>, <code>transition</code>, <code>animation</code></td></tr>
+    </table>
+
+    <h3>Готовый HTML-шаблон</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ru&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;meta name=&quot;description&quot; content=&quot;Описание сайта&quot;&gt;
+  &lt;title&gt;Мой сайт&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;header&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;h1&gt;&lt;a href=&quot;/&quot;&gt;Мой сайт&lt;/a&gt;&lt;/h1&gt;
+      &lt;nav&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#home&quot;&gt;Главная&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#about&quot;&gt;О нас&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#contact&quot;&gt;Контакты&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/nav&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;main&gt;
+    &lt;section id=&quot;home&quot; class=&quot;hero&quot;&gt;
+      &lt;h2&gt;Добро пожаловать&lt;/h2&gt;
+      &lt;p&gt;Краткое описание того, что здесь есть.&lt;/p&gt;
+      &lt;a href=&quot;#about&quot; class=&quot;btn&quot;&gt;Узнать больше&lt;/a&gt;
+    &lt;/section&gt;
+
+    &lt;section id=&quot;about&quot;&gt;
+      &lt;h2&gt;О нас&lt;/h2&gt;
+      &lt;div class=&quot;cards&quot;&gt;
+        &lt;div class=&quot;card&quot;&gt;
+          &lt;h3&gt;Что-то важное&lt;/h3&gt;
+          &lt;p&gt;Описание.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;card&quot;&gt;
+          &lt;h3&gt;Ещё одна вещь&lt;/h3&gt;
+          &lt;p&gt;Описание.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;card&quot;&gt;
+          &lt;h3&gt;Третья карточка&lt;/h3&gt;
+          &lt;p&gt;Описание.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;section id=&quot;contact&quot;&gt;
+      &lt;h2&gt;Связаться с нами&lt;/h2&gt;
+      &lt;form&gt;
+        &lt;label for=&quot;name&quot;&gt;Имя&lt;/label&gt;
+        &lt;input type=&quot;text&quot; id=&quot;name&quot; required&gt;
+
+        &lt;label for=&quot;email&quot;&gt;Email&lt;/label&gt;
+        &lt;input type=&quot;email&quot; id=&quot;email&quot; required&gt;
+
+        &lt;label for=&quot;message&quot;&gt;Сообщение&lt;/label&gt;
+        &lt;textarea id=&quot;message&quot; rows=&quot;5&quot;&gt;&lt;/textarea&gt;
+
+        &lt;button type=&quot;submit&quot; class=&quot;btn&quot;&gt;Отправить&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/section&gt;
+  &lt;/main&gt;
+
+  &lt;footer&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;p&gt;&amp;copy; 2026 Мой сайт&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/footer&gt;
+
+  &lt;script src=&quot;script.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;">📋 Копировать</button>
+      <pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;meta name="description" content="Описание сайта"&gt;
+  &lt;title&gt;Мой сайт&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;header&gt;
+    &lt;div class="container"&gt;
+      &lt;h1&gt;&lt;a href="/"&gt;Мой сайт&lt;/a&gt;&lt;/h1&gt;
+      &lt;nav&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href="#home"&gt;Главная&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="#about"&gt;О нас&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="#contact"&gt;Контакты&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/nav&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;main&gt;
+    &lt;section id="home" class="hero"&gt;
+      &lt;h2&gt;Добро пожаловать&lt;/h2&gt;
+      &lt;p&gt;Краткое описание того, что здесь есть.&lt;/p&gt;
+      &lt;a href="#about" class="btn"&gt;Узнать больше&lt;/a&gt;
+    &lt;/section&gt;
+
+    &lt;section id="about"&gt;
+      &lt;h2&gt;О нас&lt;/h2&gt;
+      &lt;div class="cards"&gt;
+        &lt;div class="card"&gt;
+          &lt;h3&gt;Что-то важное&lt;/h3&gt;
+          &lt;p&gt;Описание.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="card"&gt;
+          &lt;h3&gt;Ещё одна вещь&lt;/h3&gt;
+          &lt;p&gt;Описание.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="card"&gt;
+          &lt;h3&gt;Третья карточка&lt;/h3&gt;
+          &lt;p&gt;Описание.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;section id="contact"&gt;
+      &lt;h2&gt;Связаться с нами&lt;/h2&gt;
+      &lt;form&gt;
+        &lt;label for="name"&gt;Имя&lt;/label&gt;
+        &lt;input type="text" id="name" required&gt;
+
+        &lt;label for="email"&gt;Email&lt;/label&gt;
+        &lt;input type="email" id="email" required&gt;
+
+        &lt;label for="message"&gt;Сообщение&lt;/label&gt;
+        &lt;textarea id="message" rows="5"&gt;&lt;/textarea&gt;
+
+        &lt;button type="submit" class="btn"&gt;Отправить&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/section&gt;
+  &lt;/main&gt;
+
+  &lt;footer&gt;
+    &lt;div class="container"&gt;
+      &lt;p&gt;&amp;copy; 2026 Мой сайт&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/footer&gt;
+
+  &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+    </div>
+
+    <h3>Готовый CSS-шаблон</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="/* style.css — базовый шаблон для сайта */
+
+/* Сброс */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #1c2331;
+  background: #f7f8fb;
+}
+
+/* Контейнер для центрирования */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Шапка */
+header {
+  background: #fff;
+  border-bottom: 1px solid #e5e8ef;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 16px 0;
+}
+
+header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+header h1 a {
+  color: #4f46e5;
+  text-decoration: none;
+  font-size: 22px;
+}
+
+nav ul {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+}
+
+nav a {
+  color: #1c2331;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+nav a:hover { color: #4f46e5; }
+
+/* Секции */
+main { padding: 0; }
+
+section {
+  padding: 60px 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Hero-секция */
+.hero {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.hero h2 {
+  font-size: 40px;
+  margin-bottom: 20px;
+  color: #1c2331;
+}
+
+.hero p {
+  font-size: 18px;
+  color: #5b6678;
+  margin-bottom: 30px;
+}
+
+/* Кнопка */
+.btn {
+  display: inline-block;
+  padding: 12px 28px;
+  background: #4f46e5;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.btn:hover {
+  background: #4338ca;
+  transform: translateY(-2px);
+}
+
+/* Карточки */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.card {
+  background: #fff;
+  padding: 28px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(20, 25, 40, 0.06);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(20, 25, 40, 0.1);
+}
+
+.card h3 {
+  color: #4f46e5;
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+
+/* Форма */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+label {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: -8px;
+}
+
+input, textarea {
+  padding: 12px 14px;
+  border: 1px solid #e5e8ef;
+  border-radius: 8px;
+  font: inherit;
+  background: #fff;
+  transition: border-color 0.2s;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #4f46e5;
+}
+
+/* Подвал */
+footer {
+  background: #1c2331;
+  color: #cbd5e1;
+  padding: 40px 20px;
+  text-align: center;
+  margin-top: 60px;
+}
+
+footer p { color: #cbd5e1; font-size: 14px; }
+
+/* Заголовки h2 в секциях */
+section h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Плавная прокрутка для якорей */
+:target {
+  scroll-margin-top: 80px;
+}
+
+/* Адаптив для телефона */
+@media (max-width: 640px) {
+  .hero h2 { font-size: 28px; }
+  nav ul { gap: 16px; font-size: 14px; }
+  section { padding: 40px 16px; }
+  section h2 { font-size: 24px; }
+}">📋 Копировать</button>
+      <pre>/* style.css — базовый шаблон для сайта */
+
+/* Сброс */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #1c2331;
+  background: #f7f8fb;
+}
+
+/* Контейнер для центрирования */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Шапка */
+header {
+  background: #fff;
+  border-bottom: 1px solid #e5e8ef;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 16px 0;
+}
+
+header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+header h1 a {
+  color: #4f46e5;
+  text-decoration: none;
+  font-size: 22px;
+}
+
+nav ul {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+}
+
+nav a {
+  color: #1c2331;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+nav a:hover { color: #4f46e5; }
+
+/* Секции */
+main { padding: 0; }
+
+section {
+  padding: 60px 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Hero-секция */
+.hero {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.hero h2 {
+  font-size: 40px;
+  margin-bottom: 20px;
+  color: #1c2331;
+}
+
+.hero p {
+  font-size: 18px;
+  color: #5b6678;
+  margin-bottom: 30px;
+}
+
+/* Кнопка */
+.btn {
+  display: inline-block;
+  padding: 12px 28px;
+  background: #4f46e5;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.btn:hover {
+  background: #4338ca;
+  transform: translateY(-2px);
+}
+
+/* Карточки */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.card {
+  background: #fff;
+  padding: 28px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(20, 25, 40, 0.06);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(20, 25, 40, 0.1);
+}
+
+.card h3 {
+  color: #4f46e5;
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+
+/* Форма */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+label {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: -8px;
+}
+
+input, textarea {
+  padding: 12px 14px;
+  border: 1px solid #e5e8ef;
+  border-radius: 8px;
+  font: inherit;
+  background: #fff;
+  transition: border-color 0.2s;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #4f46e5;
+}
+
+/* Подвал */
+footer {
+  background: #1c2331;
+  color: #cbd5e1;
+  padding: 40px 20px;
+  text-align: center;
+  margin-top: 60px;
+}
+
+footer p { color: #cbd5e1; font-size: 14px; }
+
+/* Заголовки h2 в секциях */
+section h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Плавная прокрутка для якорей */
+:target {
+  scroll-margin-top: 80px;
+}
+
+/* Адаптив для телефона */
+@media (max-width: 640px) {
+  .hero h2 { font-size: 28px; }
+  nav ul { gap: 16px; font-size: 14px; }
+  section { padding: 40px 16px; }
+  section h2 { font-size: 24px; }
+}</pre>
+      <div class="desc">Этот CSS — полностью рабочий. Скопируйте в <code>style.css</code>, и сайт сразу станет современным: адаптивным, с красивыми карточками и кнопками.</div>
+    </div>
+
+    <h3>Горячие клавиши VS Code</h3>
+
+    <table>
+      <tr><th>Клавиши</th><th>Действие</th></tr>
+      <tr><td><kbd>!</kbd> + <kbd>Tab</kbd></td><td>Создать HTML-каркас страницы (эммет)</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>/</kbd></td><td>Закомментировать строку</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>D</kbd></td><td>Выделить следующее вхождение</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd></td><td>Палитра команд</td></tr>
+      <tr><td><kbd>Alt</kbd>+<kbd>↑</kbd> / <kbd>↓</kbd></td><td>Переместить строку</td></tr>
+      <tr><td><kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>↓</kbd></td><td>Дублировать строку</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>↓</kbd></td><td>Мультикурсор</td></tr>
+    </table>
+
+    <h3>Эммет — сокращения HTML</h3>
+
+    <table>
+      <tr><th>Аббревиатура</th><th>Что развернётся</th></tr>
+      <tr><td><code>!</code></td><td>Полный HTML-каркас</td></tr>
+      <tr><td><code>h1</code></td><td><code>&lt;h1&gt;&lt;/h1&gt;</code></td></tr>
+      <tr><td><code>p.lead</code></td><td><code>&lt;p class="lead"&gt;&lt;/p&gt;</code></td></tr>
+      <tr><td><code>div#hero</code></td><td><code>&lt;div id="hero"&gt;&lt;/div&gt;</code></td></tr>
+      <tr><td><code>ul&gt;li*3</code></td><td>Список с 3 пунктами</td></tr>
+      <tr><td><code>a[href="#"]</code></td><td><code>&lt;a href="#"&gt;&lt;/a&gt;</code></td></tr>
+      <tr><td><code>.card&gt;h3+p+button</code></td><td>Карточка с заголовком, текстом, кнопкой</td></tr>
+    </table>
+
+    <h3>Полезные онлайн-ресурсы</h3>
+
+    <table>
+      <tr><th>Ссылка</th><th>Для чего</th></tr>
+      <tr><td><a href="https://developer.mozilla.org/ru/" target="_blank">MDN Web Docs</a></td><td>Лучший справочник по HTML, CSS, JS</td></tr>
+      <tr><td><a href="https://caniuse.com/" target="_blank">caniuse.com</a></td><td>Поддержка браузерами CSS-свойств</td></tr>
+      <tr><td><a href="https://fonts.google.com/" target="_blank">Google Fonts</a></td><td>Бесплатные шрифты</td></tr>
+      <tr><td><a href="https://coolors.co/" target="_blank">Coolors</a></td><td>Генератор цветовых палитр</td></tr>
+      <tr><td><a href="https://validator.w3.org/" target="_blank">W3C Validator</a></td><td>Проверка HTML на ошибки</td></tr>
+      <tr><td><a href="https://codepen.io/" target="_blank">CodePen</a></td><td>Онлайн-песочница для HTML/CSS/JS</td></tr>
+      <tr><td><a href="https://flexboxfroggy.com/#ru" target="_blank">Flexbox Froggy</a></td><td>Игра для изучения Flexbox</td></tr>
+      <tr><td><a href="https://cssgridgarden.com/#ru" target="_blank">Grid Garden</a></td><td>Игра для изучения Grid</td></tr>
+    </table>
+
+    <h3>Структура проекта сайта</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="mysite/
+├── index.html          # главная страница
+├── about.html          # о нас
+├── contact.html        # контакты
+├── css/
+│   └── style.css       # стили
+├── js/
+│   └── script.js       # скрипты
+├── images/             # картинки
+│   ├── logo.png
+│   └── photo.jpg
+└── README.md           # описание проекта (по желанию)">📋 Копировать</button>
+      <pre>mysite/
+├── index.html          <span class="cmt"># главная страница</span>
+├── about.html          <span class="cmt"># о нас</span>
+├── contact.html        <span class="cmt"># контакты</span>
+├── css/
+│   └── style.css       <span class="cmt"># стили</span>
+├── js/
+│   └── script.js       <span class="cmt"># скрипты</span>
+├── images/             <span class="cmt"># картинки</span>
+│   ├── logo.png
+│   └── photo.jpg
+└── README.md           <span class="cmt"># описание проекта (по желанию)</span></pre>
+      <div class="desc">Такая структура — стандарт для небольших сайтов. Когда проект растёт, добавляются папки для отдельных страниц, компонентов и т.д.</div>
+    </div>
+
+    <h3>Чек-лист перед публикацией</h3>
+
+    <div class="box example">
+      <div class="label">Проверьте перед тем, как выкладывать сайт</div>
+      <ul>
+        <li>☐ Все ссылки работают (нет <code>#</code> вместо реальных страниц)</li>
+        <li>☐ Изображения загружаются, у всех есть <code>alt</code></li>
+        <li>☐ Заголовок страницы (<code>&lt;title&gt;</code>) осмысленный</li>
+        <li>☐ Есть <code>meta viewport</code> для адаптивности</li>
+        <li>☐ Сайт корректно отображается на телефоне (F12 → режим устройства)</li>
+        <li>☐ Нет ошибок в консоли браузера (F12 → Console)</li>
+        <li>☐ Формы валидируются (пустые поля не отправляются)</li>
+        <li>☐ Тексты проверены на опечатки</li>
+        <li>☐ Favicon (иконка вкладки) добавлен</li>
+        <li>☐ Сайт открывается по ссылке у других людей</li>
+      </ul>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="06-deploy.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">6. Публикация сайта</span>
+  </a>
+  <a href="web-index.html" class="next">
+    <span class="dir">К оглавлению →</span>
+    <span class="title">Все темы курса</span>
+  </a>
+</div>
+
+<footer>
+  Веб-разработка · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

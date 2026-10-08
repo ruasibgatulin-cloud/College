@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Веб · 6. Публикация сайта · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· Веб · Тема 6</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="web-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-html.html">1. HTML</a>
+  <a href="02-css.html">2. CSS</a>
+  <a href="03-javascript.html">3. JS</a>
+  <a href="04-layouts.html">4. Раскладки</a>
+  <a href="05-responsive.html">5. Адаптив</a>
+  <a href="06-deploy.html" class="current">6. Деплой</a>
+  <a href="07-cheatsheet.html">📌 Шпаргалка</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">6</span>Публикация сайта в интернете</h2>
+
+    <p>Сделать сайт — половина дела. Вторая половина — <b>выложить его в интернет</b>, чтобы у вас была ссылка, которую можно отправить друзьям, преподавателю или работодателю.</p>
+
+    <div class="box note">
+      <div class="label">Что даёт публикация</div>
+      <ul>
+        <li><b>Ссылка на сайт</b> — можно отправить кому угодно</li>
+        <li><b>Портфолио</b> — реальное доказательство навыков</li>
+        <li><b>Резюме</b> — работодатель откроет и увидит</li>
+        <li><b>Практика</b> — понять, как работает хостинг и домены</li>
+        <li><b>Бесплатно</b> — все современные сервисы дают базовый план без оплаты</li>
+      </ul>
+    </div>
+
+    <h3>6.1. Что нужно для публикации</h3>
+
+    <table>
+      <tr><th>Компонент</th><th>Что это</th><th>Пример</th></tr>
+      <tr><td><b>Файлы сайта</b></td><td>HTML, CSS, JS, картинки</td><td>Папка <code>mysite/</code></td></tr>
+      <tr><td><b>Хостинг</b></td><td>Место, где хранятся файлы в интернете</td><td>GitHub Pages, Netlify</td></tr>
+      <tr><td><b>Домен</b></td><td>Адрес сайта</td><td>my-site.ru, example.netlify.app</td></tr>
+      <tr><td><b>HTTPS</b></td><td>Шифрование (зелёный замок)</td><td>Автоматически у большинства сервисов</td></tr>
+    </table>
+
+    <h3>6.2. Домен — как выбрать</h3>
+
+    <p><b>Домен</b> — адрес сайта, который вводит пользователь.</p>
+
+    <table>
+      <tr><th>Зона</th><th>Значение</th><th>Стоимость</th></tr>
+      <tr><td><code>.ru</code></td><td>Россия</td><td>~200 ₽/год</td></tr>
+      <tr><td><code>.com</code></td><td>Коммерческий</td><td>~1000 ₽/год</td></tr>
+      <tr><td><code>.org</code></td><td>Организации</td><td>~1000 ₽/год</td></tr>
+      <tr><td><code>.io</code></td><td>Технологические компании</td><td>~3000 ₽/год</td></tr>
+      <tr><td><code>.dev</code></td><td>Для разработчиков</td><td>~1000 ₽/год</td></tr>
+      <tr><td><code>.me</code></td><td>Личные сайты</td><td>~1500 ₽/год</td></tr>
+    </table>
+
+    <p><b>Регистраторы в России:</b> reg.ru, nic.ru, timeweb.ru, beget.com.<br>
+    <b>Международные:</b> namecheap.com, godaddy.com, cloudflare.com.</p>
+
+    <div class="box note">
+      <div class="label">Для учёбы можно бесплатно</div>
+      Домен не обязателен для старта. GitHub Pages, Netlify и Vercel дают <b>бесплатный поддомен</b>:<br>
+      <code>username.github.io</code>, <code>my-site.netlify.app</code>, <code>my-site.vercel.app</code><br><br>
+      Такой адрес вполне подходит для портфолио и презентаций. Свой домен — когда проект станет важным.
+    </div>
+
+    <h3>6.3. Способ 1. GitHub Pages</h3>
+
+    <p>Самый популярный бесплатный хостинг для статических сайтов. Подходит для HTML/CSS/JS без сервера.</p>
+
+    <h4>Пошаговая инструкция</h4>
+
+    <ol>
+      <li><b>Создайте аккаунт на <a href="https://github.com" target="_blank">github.com</a>.</b></li>
+      <li><b>Создайте репозиторий:</b>
+        <ul>
+          <li>Нажмите <b>New repository</b>.</li>
+          <li>Имя: <code>username.github.io</code>, где <code>username</code> — ваш ник на GitHub.</li>
+          <li>Тип: <b>Public</b>.</li>
+          <li>Нажмите <b>Create</b>.</li>
+        </ul>
+      </li>
+      <li><b>Загрузите файлы:</b>
+        <ul>
+          <li>Откройте репозиторий.</li>
+          <li><b>Add file → Upload files</b>.</li>
+          <li>Перетащите <code>index.html</code>, <code>style.css</code>, <code>script.js</code>, папку с картинками.</li>
+          <li><b>Commit changes</b>.</li>
+        </ul>
+      </li>
+      <li><b>Готово!</b> Через 1-2 минуты сайт доступен по адресу:
+        <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:13px;margin-top:8px;">https://username.github.io</pre>
+      </li>
+    </ol>
+
+    <div class="box note">
+      <div class="label">Если хотите другой репозиторий</div>
+      Для проекта с именем <code>portfolio</code> сайт будет доступен по адресу:<br>
+      <code>https://username.github.io/portfolio/</code><br><br>
+      Настройка: <b>Settings → Pages → Source → main branch</b>.
+    </div>
+
+    <h4>Как обновлять сайт</h4>
+
+    <p>Каждый раз, когда меняете файлы, надо загружать их заново:</p>
+    <ol>
+      <li>Откройте репозиторий.</li>
+      <li>Нажмите на файл, который изменили.</li>
+      <li>Карандаш (Edit) → внесите изменения → <b>Commit changes</b>.</li>
+    </ol>
+
+    <p>Или через Git (см. раздел 6.6).</p>
+
+    <h3>6.4. Способ 2. Netlify</h3>
+
+    <p>Самый быстрый способ выложить сайт — за 30 секунд.</p>
+
+    <ol>
+      <li><b>Откройте <a href="https://netlify.com" target="_blank">netlify.com</a>.</b></li>
+      <li><b>Зарегистрируйтесь</b> через GitHub или email.</li>
+      <li>На главной странице найдите раздел <b>Drag and drop your site folder here</b>.</li>
+      <li><b>Перетащите папку</b> <code>mysite/</code> в это поле.</li>
+      <li>Через 10-20 секунд появится ссылка вида:
+        <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:13px;margin-top:8px;">https://sparkling-cat-123abc.netlify.app</pre>
+      </li>
+      <li><b>Переименуйте:</b> в настройках сайта → <b>Change site name</b> → получите <code>my-portfolio.netlify.app</code>.</li>
+    </ol>
+
+    <p><b>Обновление:</b> снова перетащите папку в окно — сайт обновится.</p>
+
+    <p><b>Плюсы Netlify:</b></p>
+    <ul>
+      <li>Загрузка в один клик.</li>
+      <li>Автоматический HTTPS.</li>
+      <li>Бесплатно до 100 ГБ трафика в месяц.</li>
+      <li>Можно подключить свой домен бесплатно.</li>
+      <li>Формы работают из коробки (без бэкенда).</li>
+    </ul>
+
+    <h3>6.5. Способ 3. Vercel</h3>
+
+    <p>Аналог Netlify, но чуть мощнее для современных фреймворков (React, Next.js).</p>
+
+    <ol>
+      <li><b>Откройте <a href="https://vercel.com" target="_blank">vercel.com</a>.</b></li>
+      <li>Войдите через GitHub.</li>
+      <li>Нажмите <b>Add New → Project</b>.</li>
+      <li>Загрузите файлы через <b>Import</b> или начните проект с шаблона.</li>
+      <li>Получите ссылку вида <code>my-project.vercel.app</code>.</li>
+    </ol>
+
+    <p>Подходит, если в будущем перейдёте на фреймворки.</p>
+
+    <h3>6.6. Git и командная строка</h3>
+
+    <p>Для профессиональной работы используют <b>Git</b> — систему контроля версий. Через неё удобнее обновлять сайт.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="# Проверить, установлен ли Git
+git --version
+
+# Настроить имя и email (один раз)
+git config --global user.name &quot;Ваше Имя&quot;
+git config --global user.email &quot;email@example.com&quot;
+
+# Инициализировать репозиторий в папке сайта
+cd путь/к/папке/mysite
+git init
+
+# Добавить все файлы
+git add .
+
+# Сделать первый коммит
+git commit -m &quot;Первый коммит: сайт&quot;
+
+# Связать с GitHub (URL из вашего репозитория)
+git remote add origin https://github.com/username/username.github.io.git
+
+# Отправить на GitHub
+git branch -M main
+git push -u origin main">📋 Копировать</button>
+      <pre><span class="cmt"># Проверить, установлен ли Git</span>
+git --version
+
+<span class="cmt"># Настроить имя и email (один раз)</span>
+git config --global user.name "Ваше Имя"
+git config --global user.email "email@example.com"
+
+<span class="cmt"># Инициализировать репозиторий в папке сайта</span>
+cd путь/к/папке/mysite
+git init
+
+<span class="cmt"># Добавить все файлы</span>
+git add .
+
+<span class="cmt"># Сделать первый коммит</span>
+git commit -m "Первый коммит: сайт"
+
+<span class="cmt"># Связать с GitHub (URL из вашего репозитория)</span>
+git remote add origin https://github.com/username/username.github.io.git
+
+<span class="cmt"># Отправить на GitHub</span>
+git branch -M main
+git push -u origin main</pre>
+    </div>
+
+    <p><b>Обновление сайта после изменений:</b></p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="git add .
+git commit -m &quot;Обновил дизайн главной&quot;
+git push">📋 Копировать</button>
+      <pre>git add .
+git commit -m "Обновил дизайн главной"
+git push</pre>
+      <div class="desc">Три команды — и сайт обновлён. GitHub Pages автоматически подхватит изменения.</div>
+    </div>
+
+    <h3>6.7. Подключение своего домена</h3>
+
+    <p>Если купили домен (например, <code>my-portfolio.ru</code>), можно подключить его к GitHub Pages или Netlify.</p>
+
+    <h4>Для GitHub Pages</h4>
+    <ol>
+      <li>В настройках репозитория: <b>Settings → Pages → Custom domain</b>.</li>
+      <li>Введите ваш домен: <code>my-portfolio.ru</code>.</li>
+      <li>В панели регистратора домена настройте <b>DNS-записи</b>:
+        <ul>
+          <li><b>A-записи</b> для корневого домена: <code>185.199.108.153</code>, <code>185.199.109.153</code>, <code>185.199.110.153</code>, <code>185.199.111.153</code></li>
+          <li><b>CNAME</b> для <code>www</code>: <code>username.github.io</code></li>
+        </ul>
+      </li>
+      <li>Включите <b>Enforce HTTPS</b>.</li>
+      <li>Подождите 1-24 часа — DNS обновится.</li>
+    </ol>
+
+    <h4>Для Netlify</h4>
+    <ol>
+      <li>В настройках сайта: <b>Domain settings → Add custom domain</b>.</li>
+      <li>Введите домен.</li>
+      <li>Netlify покажет, какие DNS-записи настроить.</li>
+      <li>Настройте в панели регистратора — обычно это CNAME или A-запись.</li>
+      <li>HTTPS включится автоматически.</li>
+    </ol>
+
+    <h3>6.8. HTTPS — обязательно</h3>
+
+    <p><b>HTTPS</b> — защищённое соединение. Браузер показывает зелёный замок, данные шифруются.</p>
+
+    <ul>
+      <li><b>Google понижает</b> сайты без HTTPS в поиске.</li>
+      <li><b>Браузеры предупреждают</b> «Не защищено» — пользователи уходят.</li>
+      <li><b>Формы и пароли</b> без HTTPS передаются в открытом виде.</li>
+    </ul>
+
+    <p><b>Хорошая новость:</b> GitHub Pages, Netlify, Vercel выдают HTTPS-сертификат <b>бесплатно и автоматически</b>. Ничего делать не нужно.</p>
+
+    <p>Если нужен свой сертификат — <a href="https://letsencrypt.org/" target="_blank">Let's Encrypt</a> выдаёт бесплатно на 90 дней с автообновлением.</p>
+
+    <h3>6.9. Оптимизация перед публикацией</h3>
+
+    <h4>1. Сжать картинки</h4>
+    <p>Большие картинки — главная причина медленной загрузки.</p>
+    <ul>
+      <li><b>TinyPNG</b> (<a href="https://tinypng.com" target="_blank">tinypng.com</a>) — сжимает PNG и JPG на 60-80% без видимой потери качества.</li>
+      <li><b>Squoosh</b> (<a href="https://squoosh.app" target="_blank">squoosh.app</a>) — от Google, можно конвертировать в WebP/AVIF.</li>
+      <li><b>ImageOptim</b> — приложение для Mac.</li>
+    </ul>
+
+    <h4>2. Минификация CSS и JS</h4>
+    <p>Удаление пробелов, комментариев, переносов строк уменьшает размер файлов на 20-40%.</p>
+    <ul>
+      <li><b>CSS Minifier</b> (<a href="https://cssminifier.com" target="_blank">cssminifier.com</a>)</li>
+      <li><b>JSCompress</b> (<a href="https://jscompress.com" target="_blank">jscompress.com</a>)</li>
+      <li>Или автоматически — сервисы вроде Netlify делают это сами.</li>
+    </ul>
+
+    <h4>3. Проверить скорость</h4>
+    <p>PageSpeed Insights (<a href="https://pagespeed.web.dev" target="_blank">pagespeed.web.dev</a>) — Google анализирует сайт и говорит, что улучшить.</p>
+
+    <h4>4. Оптимизировать загрузку</h4>
+    <ul>
+      <li>Шрифты подключить через <code>preconnect</code>.</li>
+      <li>Ленивая загрузка картинок: <code>&lt;img loading="lazy"&gt;</code>.</li>
+      <li>Скрипты — с <code>defer</code> или <code>async</code>.</li>
+    </ul>
+
+    <h3>6.10. Проверка после публикации</h3>
+
+    <div class="box example">
+      <div class="label">Чек-лист перед тем, как давать ссылку</div>
+      <ul>
+        <li>☐ Сайт открывается по HTTPS (зелёный замок)</li>
+        <li>☐ Работает на телефоне (откройте на своём)</li>
+        <li>☐ Все ссылки ведут куда надо</li>
+        <li>☐ Картинки загружаются</li>
+        <li>☐ Нет ошибок в консоли (F12)</li>
+        <li>☐ Формы работают</li>
+        <li>☐ Favicon отображается во вкладке</li>
+        <li>☐ Заголовок страницы (<code>&lt;title&gt;</code>) осмысленный</li>
+        <li>☐ Сайт быстрый (по PageSpeed &gt; 70)</li>
+      </ul>
+    </div>
+
+    <h3>6.11. Favicon — иконка сайта</h3>
+
+    <p>Маленькая иконка во вкладке браузера. Мелочь, но добавляет завершённости.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="&lt;!-- В &lt;head&gt; --&gt;
+&lt;link rel=&quot;icon&quot; href=&quot;favicon.ico&quot; type=&quot;image/x-icon&quot;&gt;
+&lt;link rel=&quot;icon&quot; type=&quot;image/png&quot; sizes=&quot;32x32&quot; href=&quot;favicon-32x32.png&quot;&gt;
+&lt;link rel=&quot;apple-touch-icon&quot; sizes=&quot;180x180&quot; href=&quot;apple-touch-icon.png&quot;&gt;
+
+&lt;!-- Сгенерировать favicon: --&gt;
+&lt;!-- https://favicon.io/ --&gt;
+&lt;!-- https://realfavicongenerator.net/ --&gt;">📋 Копировать</button>
+      <pre><span class="cmt">&lt;!-- В &lt;head&gt; --&gt;</span>
+&lt;link rel="icon" href="favicon.ico" type="image/x-icon"&gt;
+&lt;link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"&gt;
+&lt;link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"&gt;
+
+<span class="cmt">&lt;!-- Сгенерировать favicon: --&gt;</span>
+<span class="cmt">&lt;!-- https://favicon.io/ --&gt;</span>
+<span class="cmt">&lt;!-- https://realfavicongenerator.net/ --&gt;</span></pre>
+    </div>
+
+    <h3>6.12. Практические работы</h3>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №1 · Публикация на GitHub Pages <span class="badge">30 мин</span></div>
+      <div class="goal"><b>Задача:</b> выложить свой сайт на GitHub Pages.</div>
+      <ol>
+        <li>Создайте аккаунт на github.com (если ещё нет).</li>
+        <li>Создайте репозиторий <code>username.github.io</code>.</li>
+        <li>Загрузите файлы сайта.</li>
+        <li>Дождитесь публикации (1-2 минуты).</li>
+        <li>Откройте <code>https://username.github.io</code>.</li>
+        <li>Сдайте ссылку.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №2 · Netlify за 5 минут <span class="badge">15 мин</span></div>
+      <div class="goal"><b>Задача:</b> выложить сайт на Netlify и переименовать адрес.</div>
+      <ol>
+        <li>Откройте netlify.com, зарегистрируйтесь.</li>
+        <li>Перетащите папку с сайтом в браузер.</li>
+        <li>Получите ссылку.</li>
+        <li>В настройках: <b>Site settings → Change site name</b> → например, <code>ivan-portfolio</code>.</li>
+        <li>Сдайте итоговую ссылку.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №3 · Домен (опционально) <span class="badge">30 мин</span></div>
+      <div class="goal"><b>Задача:</b> подключить свой домен к сайту.</div>
+      <ol>
+        <li>Купите домен на reg.ru или любом регистраторе (200-1000 ₽/год).</li>
+        <li>В настройках Netlify/GitHub Pages добавьте custom domain.</li>
+        <li>Настройте DNS-записи:
+          <ul>
+            <li>A-записи для корневого домена</li>
+            <li>CNAME для www</li>
+          </ul>
+        </li>
+        <li>Дождитесь распространения DNS (от 15 минут до 24 часов).</li>
+        <li>Проверьте HTTPS — замок должен быть зелёным.</li>
+      </ol>
+      <div class="goal"><b>Результат:</b> сайт открывается по вашему домену.</div>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №4 · Оптимизация сайта <span class="badge">30 мин</span></div>
+      <div class="goal"><b>Задача:</b> ускорить сайт и проверить в PageSpeed.</div>
+      <ol>
+        <li>Проверьте сайт на <a href="https://pagespeed.web.dev" target="_blank">pagespeed.web.dev</a>.</li>
+        <li>Запишите текущий результат (0-100).</li>
+        <li>Улучшите:
+          <ul>
+            <li>Сожмите картинки через TinyPNG</li>
+            <li>Минифицируйте CSS и JS</li>
+            <li>Добавьте <code>loading="lazy"</code> к картинкам ниже первого экрана</li>
+            <li>Подключите шрифты через <code>preconnect</code></li>
+          </ul>
+        </li>
+        <li>Проверьте снова. Сравните результаты.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №5 · Итоговый проект <span class="badge">60 мин</span></div>
+      <div class="goal"><b>Задача:</b> сделать сайт-портфолио и выложить его в интернет.</div>
+      <ol>
+        <li>Структура сайта:
+          <ul>
+            <li>О себе (фото, краткое описание)</li>
+            <li>Навыки (списком)</li>
+            <li>Проекты (минимум 3 карточки с описанием)</li>
+            <li>Контакты (email, ссылки на соцсети)</li>
+          </ul>
+        </li>
+        <li>Требования:
+          <ul>
+            <li>Адаптивный (проверить на телефоне)</li>
+            <li>Красивое оформление (CSS, карточки, hover-эффекты)</li>
+            <li>Кнопка «вверх»</li>
+            <li>Мобильное меню (бургер)</li>
+            <li>Тёмная/светлая тема (опционально)</li>
+            <li>Favicon</li>
+          </ul>
+        </li>
+        <li>Опубликуйте на GitHub Pages или Netlify.</li>
+        <li>Сдайте:
+          <ul>
+            <li>Ссылку на сайт</li>
+            <li>Ссылку на GitHub-репозиторий</li>
+            <li>Скриншоты (десктоп + мобильный)</li>
+            <li>Краткое описание (10 предложений): что делали, какие технологии использовали, что было сложно</li>
+          </ul>
+        </li>
+      </ol>
+      <div class="box note">
+        <div class="label">Это итоговый проект всего веб-курса</div>
+        Здесь применяется всё: HTML, CSS, JS, раскладки, адаптивность. Сайт-портфолио можно показывать преподавателю, друзьям, работодателю.
+      </div>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Чем хостинг отличается от домена?</summary>
+      <div class="answer">
+        <b>Хостинг</b> — это «дом», где живут ваши файлы в интернете. Физически — это сервер (компьютер), который отдаёт файлы посетителям.<br><br>
+        <b>Домен</b> — это «адрес дома». То, что вводит пользователь в браузере.<br><br>
+        <b>Аналогия:</b>
+        <ul>
+          <li>Файлы сайта — вещи в квартире.</li>
+          <li>Хостинг — сама квартира (где живут вещи).</li>
+          <li>Домен — адрес квартиры (как её найти).</li>
+        </ul>
+        Можно иметь хостинг без домена (адрес как у GitHub Pages: <code>username.github.io</code>) и домен без хостинга (тогда он никуда не ведёт). Обычно используют вместе.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Что такое HTTPS и зачем он нужен?</summary>
+      <div class="answer">
+        <b>HTTPS</b> — защищённая версия HTTP. Все данные между браузером и сервером <b>шифруются</b>.<br><br>
+        <b>Что даёт:</b>
+        <ul>
+          <li>Защита от перехвата — никто в сети (например, Wi-Fi в кафе) не увидит, что вы вводите.</li>
+          <li>Подтверждение подлинности — сайт именно тот, за кого себя выдаёт.</li>
+          <li>Доверие пользователей — зелёный замок в адресной строке.</li>
+          <li>Google не понижает сайты без HTTPS в поиске.</li>
+        </ul>
+        <b>Что было бы без HTTPS:</b> пароли, номера карт, личные сообщения могли бы перехватить злоумышленники в той же сети. Это критично для любых сайтов с формами.<br><br>
+        <b>Раньше:</b> HTTPS был только у банков и крупных сервисов — сертификаты стоили дорого.<br>
+        <b>Сейчас:</b> Let's Encrypt и автоматические сервисы сделали HTTPS бесплатным. Его можно включить в один клик.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Чем GitHub Pages отличается от Netlify?</summary>
+      <div class="answer">
+        <table style="margin-top:8px;">
+          <tr><th>Критерий</th><th>GitHub Pages</th><th>Netlify</th></tr>
+          <tr><td>Загрузка</td><td>Через репозиторий</td><td>Перетащить папку в браузер</td></tr>
+          <tr><td>Обновление</td><td>Через git push или вручную</td><td>Перетащить снова</td></tr>
+          <tr><td>Свой домен</td><td>Да</td><td>Да</td></tr>
+          <tr><td>HTTPS</td><td>Автоматически</td><td>Автоматически</td></tr>
+          <tr><td>Формы (без бэкенда)</td><td>Нет</td><td>Да (Netlify Forms)</td></tr>
+          <tr><td>Дополнительные функции</td><td>Минимум</td><td>Много (functions, redirects, split testing)</td></tr>
+          <tr><td>Когда выбирать</td><td>Для портфолио, если уже есть GitHub</td><td>Для быстрого деплоя или нестандартных задач</td></tr>
+        </table>
+        <b>Рекомендация:</b> для учёбы — GitHub Pages (заодно освоите Git). Для быстрого прототипа — Netlify.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 4. Зачем оптимизировать картинки?</summary>
+      <div class="answer">
+        <b>Картинки — самая тяжёлая часть сайта.</b> Одна фотография может весить больше, чем вся остальная страница вместе.<br><br>
+        <b>Пример:</b>
+        <ul>
+          <li>Фото с телефона: 5 МБ</li>
+          <li>HTML + CSS + JS: 100 КБ</li>
+          <li>Итого: 5,1 МБ — сайт грузится 10+ секунд на медленном интернете</li>
+        </ul>
+        <b>После сжатия:</b>
+        <ul>
+          <li>Фото: 300 КБ (TinyPNG)</li>
+          <li>HTML + CSS + JS: 100 КБ</li>
+          <li>Итого: 400 КБ — сайт грузится 1-2 секунды</li>
+        </ul>
+        <b>Что теряется:</b> почти ничего. 90% качества достаточно для веба.<br><br>
+        <b>Правила:</b>
+        <ul>
+          <li>Загружать сжатые картинки (JPG/WebP, не PNG для фото).</li>
+          <li>Указывать правильный размер (не 4000px, если показывается в 400px).</li>
+          <li>Использовать <code>loading="lazy"</code> для картинок ниже первого экрана.</li>
+        </ul>
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание по теме</div>
+      Сдать проект-портфолио:
+      <ol>
+        <li>Сайт из 1-4 страниц с описанием себя, навыков, проектов, контактов</li>
+        <li>Адаптивный (проверен на телефоне)</li>
+        <li>Опубликован на GitHub Pages или Netlify</li>
+        <li>Ссылка на сайт + ссылка на репозиторий</li>
+        <li>Оптимизирован (PageSpeed ≥ 70)</li>
+        <li>Скриншоты (десктоп + мобильный)</li>
+        <li>Краткое эссе: что делали, какие технологии, что было сложно, чему научились</li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="05-responsive.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">5. Адаптивность</span>
+  </a>
+  <a href="07-cheatsheet.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">📌 Шпаргалка + шаблон</span>
+  </a>
+</div>
+
+<footer>
+  Веб-разработка · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

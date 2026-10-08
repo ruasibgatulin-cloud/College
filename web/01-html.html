@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Веб · 1. HTML · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· Веб · Тема 1</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="web-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-html.html" class="current">1. HTML</a>
+  <a href="02-css.html">2. CSS</a>
+  <a href="03-javascript.html">3. JS</a>
+  <a href="04-layouts.html">4. Раскладки</a>
+  <a href="05-responsive.html">5. Адаптив</a>
+  <a href="06-deploy.html">6. Деплой</a>
+  <a href="07-cheatsheet.html">📌 Шпаргалка</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">1</span>HTML — структура веб-страницы</h2>
+
+    <p><b>HTML</b> (HyperText Markup Language) — язык разметки, который описывает <b>структуру</b> страницы: что здесь заголовок, что параграф, что картинка. HTML не отвечает за красоту — за это отвечает CSS.</p>
+
+    <h3>1.1. Минимальная страница</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ru&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Моя первая страница&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Привет, мир!&lt;/h1&gt;
+  &lt;p&gt;Это моя первая веб-страница.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;">📋 Копировать</button>
+      <pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Моя первая страница&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Привет, мир!&lt;/h1&gt;
+  &lt;p&gt;Это моя первая веб-страница.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+      <div class="desc">Сохраните в файл <code>index.html</code> и откройте в браузере — увидите заголовок и текст.</div>
+    </div>
+
+    <h3>1.2. Структура документа</h3>
+
+    <div class="viz">
+      <svg viewBox="0 0 620 320" width="620">
+        <!-- html -->
+        <rect x="20" y="20" width="580" height="280" fill="none" stroke="#4f46e5" stroke-width="1.5" stroke-dasharray="6 3" rx="8"/>
+        <text x="40" y="42" font-size="11" font-family="monospace" fill="#4f46e5">&lt;html&gt;</text>
+
+        <!-- head -->
+        <rect x="60" y="60" width="240" height="100" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5" rx="6"/>
+        <text x="80" y="82" font-size="12" font-family="monospace" fill="#4f46e5" font-weight="600">&lt;head&gt;</text>
+        <text x="80" y="105" font-size="11" font-family="monospace" fill="#1c2331">&lt;meta charset&gt;</text>
+        <text x="80" y="125" font-size="11" font-family="monospace" fill="#1c2331">&lt;title&gt;</text>
+        <text x="80" y="145" font-size="11" font-family="monospace" fill="#1c2331">&lt;link css&gt;</text>
+        <text x="80" y="165" font-size="12" font-family="monospace" fill="#4f46e5" font-weight="600">&lt;/head&gt;</text>
+
+        <!-- body -->
+        <rect x="330" y="60" width="250" height="220" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.5" rx="6"/>
+        <text x="350" y="82" font-size="12" font-family="monospace" fill="#16a34a" font-weight="600">&lt;body&gt;</text>
+        <text x="350" y="105" font-size="11" font-family="monospace" fill="#1c2331">&lt;header&gt;</text>
+        <text x="350" y="125" font-size="11" font-family="monospace" fill="#1c2331">&lt;nav&gt;</text>
+        <text x="350" y="145" font-size="11" font-family="monospace" fill="#1c2331">&lt;main&gt;</text>
+        <text x="350" y="165" font-size="11" font-family="monospace" fill="#1c2331">  &lt;section&gt;</text>
+        <text x="350" y="185" font-size="11" font-family="monospace" fill="#1c2331">  &lt;article&gt;</text>
+        <text x="350" y="205" font-size="11" font-family="monospace" fill="#1c2331">&lt;footer&gt;</text>
+        <text x="350" y="225" font-size="11" font-family="monospace" fill="#1c2331">&lt;script&gt;</text>
+        <text x="350" y="265" font-size="12" font-family="monospace" fill="#16a34a" font-weight="600">&lt;/body&gt;</text>
+      </svg>
+      <div class="cap">В <code>&lt;head&gt;</code> — информация о странице (невидимая). В <code>&lt;body&gt;</code> — всё, что видит пользователь.</div>
+    </div>
+
+    <h3>1.3. Основные теги</h3>
+
+    <h4>Текст</h4>
+
+    <table>
+      <tr><th>Тег</th><th>Значение</th></tr>
+      <tr><td><code>&lt;h1&gt;</code> — <code>&lt;h6&gt;</code></td><td>Заголовки от самого важного (h1) до самого мелкого (h6)</td></tr>
+      <tr><td><code>&lt;p&gt;</code></td><td>Параграф (абзац)</td></tr>
+      <tr><td><code>&lt;strong&gt;</code></td><td>Важный текст (жирный по смыслу)</td></tr>
+      <tr><td><code>&lt;em&gt;</code></td><td>Акцент (курсив по смыслу)</td></tr>
+      <tr><td><code>&lt;br&gt;</code></td><td>Перенос строки (одиночный тег)</td></tr>
+      <tr><td><code>&lt;hr&gt;</code></td><td>Горизонтальная линия-разделитель</td></tr>
+      <tr><td><code>&lt;blockquote&gt;</code></td><td>Цитата (блок)</td></tr>
+      <tr><td><code>&lt;code&gt;</code></td><td>Код в строке текста</td></tr>
+      <tr><td><code>&lt;pre&gt;</code></td><td>Форматированный текст (сохраняет пробелы)</td></tr>
+    </table>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="&lt;h1&gt;Заголовок страницы&lt;/h1&gt;
+&lt;h2&gt;Подзаголовок раздела&lt;/h2&gt;
+&lt;p&gt;Это обычный &lt;strong&gt;параграф&lt;/strong&gt; с &lt;em&gt;выделением&lt;/em&gt;.&lt;/p&gt;
+&lt;blockquote&gt;
+  «Простота — высшая ступень искусства.»
+&lt;/blockquote&gt;
+&lt;p&gt;Формула воды: &lt;code&gt;H₂O&lt;/code&gt;.&lt;/p&gt;">📋 Копировать</button>
+      <pre>&lt;h1&gt;Заголовок страницы&lt;/h1&gt;
+&lt;h2&gt;Подзаголовок раздела&lt;/h2&gt;
+&lt;p&gt;Это обычный &lt;strong&gt;параграф&lt;/strong&gt; с &lt;em&gt;выделением&lt;/em&gt;.&lt;/p&gt;
+&lt;blockquote&gt;
+  «Простота — высшая ступень искусства.»
+&lt;/blockquote&gt;
+&lt;p&gt;Формула воды: &lt;code&gt;H₂O&lt;/code&gt;.&lt;/p&gt;</pre>
+    </div>
+
+    <h4>Списки</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="&lt;!-- Маркированный список --&gt;
+&lt;ul&gt;
+  &lt;li&gt;Яблоко&lt;/li&gt;
+  &lt;li&gt;Банан&lt;/li&gt;
+  &lt;li&gt;Апельсин&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- Нумерованный список --&gt;
+&lt;ol&gt;
+  &lt;li&gt;Открыть файл&lt;/li&gt;
+  &lt;li&gt;Найти ошибку&lt;/li&gt;
+  &lt;li&gt;Исправить&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;!-- Вложенный список --&gt;
+&lt;ul&gt;
+  &lt;li&gt;Фрукты
+    &lt;ul&gt;
+      &lt;li&gt;Яблоко&lt;/li&gt;
+      &lt;li&gt;Груша&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Овощи&lt;/li&gt;
+&lt;/ul&gt;">📋 Копировать</button>
+      <pre>&lt;!-- Маркированный список --&gt;
+&lt;ul&gt;
+  &lt;li&gt;Яблоко&lt;/li&gt;
+  &lt;li&gt;Банан&lt;/li&gt;
+  &lt;li&gt;Апельсин&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- Нумерованный список --&gt;
+&lt;ol&gt;
+  &lt;li&gt;Открыть файл&lt;/li&gt;
+  &lt;li&gt;Найти ошибку&lt;/li&gt;
+  &lt;li&gt;Исправить&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;!-- Вложенный список --&gt;
+&lt;ul&gt;
+  &lt;li&gt;Фрукты
+    &lt;ul&gt;
+      &lt;li&gt;Яблоко&lt;/li&gt;
+      &lt;li&gt;Груша&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Овощи&lt;/li&gt;
+&lt;/ul&gt;</pre>
+    </div>
+
+    <h4>Ссылки</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="&lt;!-- Обычная ссылка --&gt;
+&lt;a href=&quot;https://example.com&quot;&gt;Внешний сайт&lt;/a&gt;
+
+&lt;!-- Ссылка на другую страницу сайта --&gt;
+&lt;a href=&quot;about.html&quot;&gt;О нас&lt;/a&gt;
+
+&lt;!-- Ссылка на раздел этой же страницы --&gt;
+&lt;a href=&quot;#contact&quot;&gt;Контакты&lt;/a&gt;
+
+&lt;!-- Открыть в новой вкладке --&gt;
+&lt;a href=&quot;https://example.com&quot; target=&quot;_blank&quot;&gt;Откроется в новой вкладке&lt;/a&gt;
+
+&lt;!-- Ссылка на email --&gt;
+&lt;a href=&quot;mailto:info@example.com&quot;&gt;Написать нам&lt;/a&gt;
+
+&lt;!-- Ссылка на телефон --&gt;
+&lt;a href=&quot;tel:+79991234567&quot;&gt;Позвонить&lt;/a&gt;">📋 Копировать</button>
+      <pre>&lt;!-- Обычная ссылка --&gt;
+&lt;a href="https://example.com"&gt;Внешний сайт&lt;/a&gt;
+
+&lt;!-- Ссылка на другую страницу сайта --&gt;
+&lt;a href="about.html"&gt;О нас&lt;/a&gt;
+
+&lt;!-- Ссылка на раздел этой же страницы --&gt;
+&lt;a href="#contact"&gt;Контакты&lt;/a&gt;
+
+&lt;!-- Открыть в новой вкладке --&gt;
+&lt;a href="https://example.com" target="_blank"&gt;Откроется в новой вкладке&lt;/a&gt;
+
+&lt;!-- Ссылка на email --&gt;
+&lt;a href="mailto:info@example.com"&gt;Написать нам&lt;/a&gt;
+
+&lt;!-- Ссылка на телефон --&gt;
+&lt;a href="tel:+79991234567"&gt;Позвонить&lt;/a&gt;</pre>
+    </div>
+
+    <h4>Изображения</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="&lt;!-- Простое изображение --&gt;
+&lt;img src=&quot;images/photo.jpg&quot; alt=&quot;Описание фото&quot;&gt;
+
+&lt;!-- С заданными размерами --&gt;
+&lt;img src=&quot;photo.jpg&quot; alt=&quot;Фото&quot; width=&quot;400&quot; height=&quot;300&quot;&gt;
+
+&lt;!-- Адаптивное изображение --&gt;
+&lt;img src=&quot;photo.jpg&quot; alt=&quot;Фото&quot; style=&quot;max-width: 100%; height: auto;&quot;&gt;
+
+&lt;!-- figure — изображение с подписью --&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;photo.jpg&quot; alt=&quot;Закат&quot;&gt;
+  &lt;figcaption&gt;Закат на море, 2026&lt;/figcaption&gt;
+&lt;/figure&gt;">📋 Копировать</button>
+      <pre>&lt;!-- Простое изображение --&gt;
+&lt;img src="images/photo.jpg" alt="Описание фото"&gt;
+
+&lt;!-- С заданными размерами --&gt;
+&lt;img src="photo.jpg" alt="Фото" width="400" height="300"&gt;
+
+&lt;!-- Адаптивное изображение --&gt;
+&lt;img src="photo.jpg" alt="Фото" style="max-width: 100%; height: auto;"&gt;
+
+&lt;!-- figure — изображение с подписью --&gt;
+&lt;figure&gt;
+  &lt;img src="photo.jpg" alt="Закат"&gt;
+  &lt;figcaption&gt;Закат на море, 2026&lt;/figcaption&gt;
+&lt;/figure&gt;</pre>
+      <div class="desc"><b>alt</b> — обязательно! Это текст, который покажется, если картинка не загрузится. И его читают скринридеры.</div>
+    </div>
+
+    <h4>Таблицы</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Имя&lt;/th&gt;
+      &lt;th&gt;Возраст&lt;/th&gt;
+      &lt;th&gt;Город&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Иван&lt;/td&gt;
+      &lt;td&gt;17&lt;/td&gt;
+      &lt;td&gt;Москва&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Мария&lt;/td&gt;
+      &lt;td&gt;18&lt;/td&gt;
+      &lt;td&gt;СПб&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;">📋 Копировать</button>
+      <pre>&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Имя&lt;/th&gt;
+      &lt;th&gt;Возраст&lt;/th&gt;
+      &lt;th&gt;Город&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Иван&lt;/td&gt;
+      &lt;td&gt;17&lt;/td&gt;
+      &lt;td&gt;Москва&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Мария&lt;/td&gt;
+      &lt;td&gt;18&lt;/td&gt;
+      &lt;td&gt;СПб&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</pre>
+      <div class="desc"><code>&lt;thead&gt;</code> — шапка, <code>&lt;tbody&gt;</code> — тело, <code>&lt;th&gt;</code> — заголовочная ячейка, <code>&lt;td&gt;</code> — обычная.</div>
+    </div>
+
+    <h4>Формы</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="&lt;form action=&quot;/submit&quot; method=&quot;post&quot;&gt;
+  &lt;!-- Текстовое поле --&gt;
+  &lt;label for=&quot;name&quot;&gt;Имя:&lt;/label&gt;
+  &lt;input type=&quot;text&quot; id=&quot;name&quot; name=&quot;name&quot; required&gt;
+
+  &lt;!-- Email --&gt;
+  &lt;label for=&quot;email&quot;&gt;Email:&lt;/label&gt;
+  &lt;input type=&quot;email&quot; id=&quot;email&quot; name=&quot;email&quot; required&gt;
+
+  &lt;!-- Пароль --&gt;
+  &lt;label for=&quot;pwd&quot;&gt;Пароль:&lt;/label&gt;
+  &lt;input type=&quot;password&quot; id=&quot;pwd&quot; name=&quot;pwd&quot; minlength=&quot;8&quot;&gt;
+
+  &lt;!-- Число --&gt;
+  &lt;input type=&quot;number&quot; min=&quot;1&quot; max=&quot;100&quot; value=&quot;50&quot;&gt;
+
+  &lt;!-- Дата --&gt;
+  &lt;input type=&quot;date&quot;&gt;
+
+  &lt;!-- Флажок --&gt;
+  &lt;label&gt;
+    &lt;input type=&quot;checkbox&quot; name=&quot;agree&quot;&gt;
+    Согласен с условиями
+  &lt;/label&gt;
+
+  &lt;!-- Переключатель --&gt;
+  &lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;gender&quot; value=&quot;m&quot;&gt; Муж&lt;/label&gt;
+  &lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;gender&quot; value=&quot;f&quot;&gt; Жен&lt;/label&gt;
+
+  &lt;!-- Выпадающий список --&gt;
+  &lt;select name=&quot;city&quot;&gt;
+    &lt;option value=&quot;msk&quot;&gt;Москва&lt;/option&gt;
+    &lt;option value=&quot;spb&quot;&gt;СПб&lt;/option&gt;
+  &lt;/select&gt;
+
+  &lt;!-- Многострочное поле --&gt;
+  &lt;textarea name=&quot;comment&quot; rows=&quot;5&quot;&gt;&lt;/textarea&gt;
+
+  &lt;!-- Кнопка отправки --&gt;
+  &lt;button type=&quot;submit&quot;&gt;Отправить&lt;/button&gt;
+&lt;/form&gt;">📋 Копировать</button>
+      <pre>&lt;form action="/submit" method="post"&gt;
+  &lt;!-- Текстовое поле --&gt;
+  &lt;label for="name"&gt;Имя:&lt;/label&gt;
+  &lt;input type="text" id="name" name="name" required&gt;
+
+  &lt;!-- Email --&gt;
+  &lt;label for="email"&gt;Email:&lt;/label&gt;
+  &lt;input type="email" id="email" name="email" required&gt;
+
+  &lt;!-- Пароль --&gt;
+  &lt;label for="pwd"&gt;Пароль:&lt;/label&gt;
+  &lt;input type="password" id="pwd" name="pwd" minlength="8"&gt;
+
+  &lt;!-- Число --&gt;
+  &lt;input type="number" min="1" max="100" value="50"&gt;
+
+  &lt;!-- Дата --&gt;
+  &lt;input type="date"&gt;
+
+  &lt;!-- Флажок --&gt;
+  &lt;label&gt;
+    &lt;input type="checkbox" name="agree"&gt;
+    Согласен с условиями
+  &lt;/label&gt;
+
+  &lt;!-- Переключатель --&gt;
+  &lt;label&gt;&lt;input type="radio" name="gender" value="m"&gt; Муж&lt;/label&gt;
+  &lt;label&gt;&lt;input type="radio" name="gender" value="f"&gt; Жен&lt;/label&gt;
+
+  &lt;!-- Выпадающий список --&gt;
+  &lt;select name="city"&gt;
+    &lt;option value="msk"&gt;Москва&lt;/option&gt;
+    &lt;option value="spb"&gt;СПб&lt;/option&gt;
+  &lt;/select&gt;
+
+  &lt;!-- Многострочное поле --&gt;
+  &lt;textarea name="comment" rows="5"&gt;&lt;/textarea&gt;
+
+  &lt;!-- Кнопка отправки --&gt;
+  &lt;button type="submit"&gt;Отправить&lt;/button&gt;
+&lt;/form&gt;</pre>
+    </div>
+
+    <h3>1.4. Семантические теги</h3>
+
+    <p>Семантика — использование тегов «по смыслу». Вместо <code>&lt;div class="header"&gt;</code> используем <code>&lt;header&gt;</code>. Это помогает поисковикам и скринридерам.</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 620 320" width="620">
+        <!-- header -->
+        <rect x="30" y="20" width="560" height="50" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5" rx="4"/>
+        <text x="310" y="52" text-anchor="middle" font-size="13" fill="#4f46e5" font-weight="600">&lt;header&gt; — шапка сайта</text>
+
+        <!-- nav -->
+        <rect x="30" y="80" width="560" height="40" fill="#e6f7fb" stroke="#0891b2" stroke-width="1.5" rx="4"/>
+        <text x="310" y="105" text-anchor="middle" font-size="13" fill="#0891b2" font-weight="600">&lt;nav&gt; — меню навигации</text>
+
+        <!-- main -->
+        <rect x="30" y="130" width="400" height="120" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.5" rx="4"/>
+        <text x="230" y="152" text-anchor="middle" font-size="13" fill="#16a34a" font-weight="600">&lt;main&gt; — основной контент</text>
+
+        <rect x="50" y="165" width="360" height="35" fill="#fff" stroke="#16a34a" stroke-width="1" rx="3"/>
+        <text x="230" y="187" text-anchor="middle" font-size="11" fill="#16a34a">&lt;section&gt; — раздел</text>
+
+        <rect x="50" y="205" width="360" height="35" fill="#fff" stroke="#16a34a" stroke-width="1" rx="3"/>
+        <text x="230" y="227" text-anchor="middle" font-size="11" fill="#16a34a">&lt;article&gt; — статья, самостоятельный блок</text>
+
+        <!-- aside -->
+        <rect x="440" y="130" width="150" height="120" fill="#fff9e6" stroke="#d97706" stroke-width="1.5" rx="4"/>
+        <text x="515" y="195" text-anchor="middle" font-size="12" fill="#d97706" font-weight="600">&lt;aside&gt;</text>
+        <text x="515" y="215" text-anchor="middle" font-size="11" fill="#889">боковая колонка</text>
+
+        <!-- footer -->
+        <rect x="30" y="260" width="560" height="45" fill="#f1f3f8" stroke="#64748b" stroke-width="1.5" rx="4"/>
+        <text x="310" y="288" text-anchor="middle" font-size="13" fill="#64748b" font-weight="600">&lt;footer&gt; — подвал сайта</text>
+      </svg>
+      <div class="cap">Типичная структура страницы с семантическими тегами.</div>
+    </div>
+
+    <table>
+      <tr><th>Тег</th><th>Назначение</th></tr>
+      <tr><td><code>&lt;header&gt;</code></td><td>Шапка сайта или раздела</td></tr>
+      <tr><td><code>&lt;nav&gt;</code></td><td>Навигация (меню)</td></tr>
+      <tr><td><code>&lt;main&gt;</code></td><td>Основной контент (один на странице)</td></tr>
+      <tr><td><code>&lt;section&gt;</code></td><td>Раздел с заголовком</td></tr>
+      <tr><td><code>&lt;article&gt;</code></td><td>Самостоятельная статья (можно вынести отдельно)</td></tr>
+      <tr><td><code>&lt;aside&gt;</code></td><td>Боковая колонка, сноски</td></tr>
+      <tr><td><code>&lt;footer&gt;</code></td><td>Подвал</td></tr>
+      <tr><td><code>&lt;div&gt;</code></td><td>Просто контейнер (без смысла)</td></tr>
+      <tr><td><code>&lt;span&gt;</code></td><td>Контейнер для части текста</td></tr>
+    </table>
+
+    <h3>1.5. Атрибуты</h3>
+
+    <p><b>Атрибут</b> — дополнительная информация в теге. Пишется в открывающем теге через пробел: <code>имя="значение"</code>.</p>
+
+    <table>
+      <tr><th>Атрибут</th><th>Где</th><th>Значение</th></tr>
+      <tr><td><code>id</code></td><td>Любой тег</td><td>Уникальный идентификатор (один на странице)</td></tr>
+      <tr><td><code>class</code></td><td>Любой тег</td><td>Класс для CSS (может быть много)</td></tr>
+      <tr><td><code>href</code></td><td><code>&lt;a&gt;</code></td><td>Куда ведёт ссылка</td></tr>
+      <tr><td><code>src</code></td><td><code>&lt;img&gt;</code>, <code>&lt;script&gt;</code></td><td>Путь к файлу</td></tr>
+      <tr><td><code>alt</code></td><td><code>&lt;img&gt;</code></td><td>Альтернативный текст</td></tr>
+      <tr><td><code>title</code></td><td>Любой</td><td>Всплывающая подсказка</td></tr>
+      <tr><td><code>style</code></td><td>Любой</td><td>Инлайн-CSS</td></tr>
+      <tr><td><code>data-*</code></td><td>Любой</td><td>Свои данные для JS</td></tr>
+    </table>
+
+    <h3>1.6. Комментарии</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="&lt;!-- Это HTML-комментарий. Браузер его не покажет. --&gt;
+&lt;p&gt;Видимый текст&lt;/p&gt;
+&lt;!-- 
+  Многострочный
+  комментарий
+--&gt;">📋 Копировать</button>
+      <pre>&lt;!-- Это HTML-комментарий. Браузер его не покажет. --&gt;
+&lt;p&gt;Видимый текст&lt;/p&gt;
+&lt;!-- 
+  Многострочный
+  комментарий
+--&gt;</pre>
+    </div>
+
+    <h3>1.7. Полный шаблон страницы</h3>
+
+    <p>Этот шаблон можно использовать как стартовую точку для любого проекта.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ru&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;meta name=&quot;description&quot; content=&quot;Описание страницы для поисковиков&quot;&gt;
+  &lt;title&gt;Название страницы&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;header&gt;
+    &lt;h1&gt;Название сайта&lt;/h1&gt;
+    &lt;nav&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&quot;#home&quot;&gt;Главная&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#about&quot;&gt;О нас&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#contact&quot;&gt;Контакты&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/nav&gt;
+  &lt;/header&gt;
+
+  &lt;main&gt;
+    &lt;section id=&quot;home&quot;&gt;
+      &lt;h2&gt;Добро пожаловать&lt;/h2&gt;
+      &lt;p&gt;Это главная страница сайта.&lt;/p&gt;
+    &lt;/section&gt;
+
+    &lt;section id=&quot;about&quot;&gt;
+      &lt;h2&gt;О нас&lt;/h2&gt;
+      &lt;p&gt;Здесь информация о компании.&lt;/p&gt;
+    &lt;/section&gt;
+
+    &lt;section id=&quot;contact&quot;&gt;
+      &lt;h2&gt;Контакты&lt;/h2&gt;
+      &lt;p&gt;Email: info@example.com&lt;/p&gt;
+    &lt;/section&gt;
+  &lt;/main&gt;
+
+  &lt;footer&gt;
+    &lt;p&gt;&amp;copy; 2026 Мой сайт&lt;/p&gt;
+  &lt;/footer&gt;
+
+  &lt;script src=&quot;script.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;">📋 Копировать</button>
+      <pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;meta name="description" content="Описание страницы для поисковиков"&gt;
+  &lt;title&gt;Название страницы&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;header&gt;
+    &lt;h1&gt;Название сайта&lt;/h1&gt;
+    &lt;nav&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href="#home"&gt;Главная&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="#about"&gt;О нас&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="#contact"&gt;Контакты&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/nav&gt;
+  &lt;/header&gt;
+
+  &lt;main&gt;
+    &lt;section id="home"&gt;
+      &lt;h2&gt;Добро пожаловать&lt;/h2&gt;
+      &lt;p&gt;Это главная страница сайта.&lt;/p&gt;
+    &lt;/section&gt;
+
+    &lt;section id="about"&gt;
+      &lt;h2&gt;О нас&lt;/h2&gt;
+      &lt;p&gt;Здесь информация о компании.&lt;/p&gt;
+    &lt;/section&gt;
+
+    &lt;section id="contact"&gt;
+      &lt;h2&gt;Контакты&lt;/h2&gt;
+      &lt;p&gt;Email: info@example.com&lt;/p&gt;
+    &lt;/section&gt;
+  &lt;/main&gt;
+
+  &lt;footer&gt;
+    &lt;p&gt;&amp;copy; 2026 Мой сайт&lt;/p&gt;
+  &lt;/footer&gt;
+
+  &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+      <div class="desc">Этот шаблон — основа для большинства сайтов. Дальше добавляем CSS и JS.</div>
+    </div>
+
+    <h3>1.8. Где это применяется</h3>
+
+    <table>
+      <tr><th>Область</th><th>Пример</th></tr>
+      <tr><td><b>Лендинги</b></td><td>Страница для презентации продукта или услуги</td></tr>
+      <tr><td><b>Портфолио</b></td><td>Личный сайт разработчика с проектами</td></tr>
+      <tr><td><b>Блоги</b></td><td>Структура статей, комментарии, теги</td></tr>
+      <tr><td><b>Интернет-магазины</b></td><td>Карточки товаров, корзина, оформление заказа</td></tr>
+      <tr><td><b>Админ-панели</b></td><td>Формы, таблицы, графики (HTML + JS)</td></tr>
+      <tr><td><b>Email-рассылки</b></td><td>Письма верстают на HTML — почтовики понимают только таблицы и инлайн-CSS</td></tr>
+    </table>
+
+    <h3>Практические задания</h3>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №1 · Первая страница <span class="badge">30 мин</span></div>
+      <div class="goal"><b>Задача:</b> создать и открыть первую HTML-страницу.</div>
+      <ol>
+        <li>Создайте папку <code>mysite</code> на рабочем столе.</li>
+        <li>Внутри создайте файл <code>index.html</code> (в блокноте, VS Code или Sublime).</li>
+        <li>Наберите минимальный шаблон страницы.</li>
+        <li>Добавьте:
+          <ul>
+            <li><code>&lt;h1&gt;</code> с вашим именем</li>
+            <li><code>&lt;p&gt;</code> — параграф о себе</li>
+            <li><code>&lt;ul&gt;</code> — список из 3 любимых занятий</li>
+          </ul>
+        </li>
+        <li>Откройте файл в браузере (двойной клик).</li>
+        <li>Измените заголовок страницы в <code>&lt;title&gt;</code> — обновите вкладку и увидите изменение.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №2 · Портфолио <span class="badge">50 мин</span></div>
+      <div class="goal"><b>Задача:</b> сделать страницу-портфолио с семантическими тегами.</div>
+      <ol>
+        <li>Создайте новый файл <code>portfolio.html</code>.</li>
+        <li>Структура:
+          <ul>
+            <li><code>&lt;header&gt;</code> — имя и профессия</li>
+            <li><code>&lt;nav&gt;</code> — меню с ссылками на разделы (якоря)</li>
+            <li><code>&lt;main&gt;</code> — основной контент
+              <ul>
+                <li><code>&lt;section id="about"&gt;</code> — о себе</li>
+                <li><code>&lt;section id="skills"&gt;</code> — навыки списком</li>
+                <li><code>&lt;section id="projects"&gt;</code> — 3 проекта в <code>&lt;article&gt;</code></li>
+                <li><code>&lt;section id="contact"&gt;</code> — контакты</li>
+              </ul>
+            </li>
+            <li><code>&lt;footer&gt;</code> — копирайт</li>
+          </ul>
+        </li>
+        <li>Добавьте своё фото через <code>&lt;img&gt;</code> с <code>alt</code>.</li>
+        <li>Проверьте: клик на пункт меню — плавно переходим к разделу.</li>
+      </ol>
+      <div class="goal"><b>Результат:</b> рабочая страница-портфолио. Сохраните как <code>portfolio.html</code>.</div>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №3 · Форма обратной связи <span class="badge">40 мин</span></div>
+      <div class="goal"><b>Задача:</b> сделать форму для связи.</div>
+      <ol>
+        <li>В файле <code>portfolio.html</code> в разделе «Контакты» добавьте форму:
+          <ul>
+            <li>Имя (text, required)</li>
+            <li>Email (email, required)</li>
+            <li>Тема (select с 3 вариантами)</li>
+            <li>Сообщение (textarea)</li>
+            <li>Чекбокс «Согласен на обработку»</li>
+            <li>Кнопка «Отправить»</li>
+          </ul>
+        </li>
+        <li>Каждое поле должно иметь <code>&lt;label&gt;</code>.</li>
+        <li>Попробуйте отправить пустую форму — браузер не даст (HTML-валидация).</li>
+      </ol>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Чем HTML отличается от CSS и JavaScript?</summary>
+      <div class="answer">
+        Три разные технологии, каждая решает свою задачу:
+        <ul>
+          <li><b>HTML</b> — структура. Что здесь есть: заголовок, параграф, картинка.</li>
+          <li><b>CSS</b> — оформление. Как это выглядит: цвета, шрифты, размеры, положение.</li>
+          <li><b>JavaScript</b> — поведение. Что происходит: клики, анимация, отправка данных.</li>
+        </ul>
+        <b>Аналогия:</b> сайт — это дом. HTML — стены и комнаты, CSS — обои и мебель, JS — электрика и водопровод (то, что работает).
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Зачем нужны семантические теги, если есть div?</summary>
+      <div class="answer">
+        <b>Смысл.</b> <code>&lt;div&gt;</code> — просто контейнер. <code>&lt;header&gt;</code> — шапка. Для браузера визуально разницы нет, но для:
+        <ul>
+          <li><b>Поисковиков</b> — Google понимает структуру, лучше ранжирует.</li>
+          <li><b>Скринридеров</b> — слепые пользователи слышат «шапка сайта», «навигация», «основное содержимое».</li>
+          <li><b>Разработчиков</b> — код читается легче: сразу видно, где шапка, где контент.</li>
+        </ul>
+        <b>Правило:</b> используйте семантику везде, где она уместна. <code>&lt;div&gt;</code> оставьте для случаев, когда смысла нет (обёртка для стилизации).
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Почему alt у изображения обязателен?</summary>
+      <div class="answer">
+        <b>Четыре причины:</b>
+        <ol>
+          <li><b>Доступность.</b> Скринридеры читают <code>alt</code> слепым пользователям вместо картинки.</li>
+          <li><b>Если картинка не загрузилась</b> — браузер покажет alt-текст, а не пустое место.</li>
+          <li><b>SEO.</b> Google не «видит» картинки, но читает alt-текст — это помогает в поиске.</li>
+          <li><b>Скорость загрузки.</b> Пока грузится большая картинка, alt виден сразу.</li>
+        </ol>
+        <b>Как писать alt:</b> если картинка несёт смысл — опишите что на ней («График роста продаж»). Если картинка декоративная (просто фоновая) — <code>alt=""</code>.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 4. Что произойдёт, если в HTML забыть закрывающий тег?</summary>
+      <div class="answer">
+        Зависит от тега:
+        <ul>
+          <li><b><code>&lt;p&gt;</code>, <code>&lt;li&gt;</code>, <code>&lt;h1&gt;</code></b> — браузер попробует восстановить сам. Обычно работает, но могут быть неожиданные эффекты.</li>
+          <li><b><code>&lt;div&gt;</code>, <code>&lt;section&gt;</code></b> — браузер закроет все вложенные блоки, начиная с текущего. Вёрстка может сломаться.</li>
+          <li><b><code>&lt;table&gt;</code>, <code>&lt;form&gt;</code></b> — критично. Таблица или форма могут работать неправильно.</li>
+        </ul>
+        <b>Решение:</b> не забывайте закрывать. В VS Code есть автозакрытие и подсветка пар. Валидатор (validator.w3.org) найдёт все незакрытые теги.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание по теме</div>
+      Сдать папку <code>mysite</code> с файлами:
+      <ol>
+        <li><code>index.html</code> — первая страница (ПР №1)</li>
+        <li><code>portfolio.html</code> — портфолио с семантикой (ПР №2)</li>
+        <li><code>contact.html</code> или форма на портфолио (ПР №3)</li>
+        <li>Папка <code>images/</code> с 2-3 картинками</li>
+      </ol>
+      Все страницы должны открываться и корректно отображаться.
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="web-index.html">
+    <span class="dir">← К оглавлению</span>
+    <span class="title">Все темы курса</span>
+  </a>
+  <a href="02-css.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">2. CSS — стили и оформление</span>
+  </a>
+</div>
+
+<footer>
+  Веб-разработка · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>
