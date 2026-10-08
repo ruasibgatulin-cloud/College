@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ИТ · 6. Excel — функции и диаграммы · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ОП.03 ИТ · Раздел 6</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="it-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-info.html">1. Информация</a>
+  <a href="02-word-basics.html">2. Word</a>
+  <a href="03-word-advanced.html">3. Word+</a>
+  <a href="04-word-graphics.html">4. Word 🖼</a>
+  <a href="05-excel-basics.html">5. Excel</a>
+  <a href="06-excel-functions.html" class="current">6. Excel+</a>
+  <a href="07-presentations.html">7. Презентации</a>
+  <a href="08-graphics.html">8. Графика</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">6</span>Функции, диаграммы, сводные таблицы</h2>
+
+    <h3>6.1. Основные функции Excel</h3>
+
+    <h4>Математические</h4>
+    <table>
+      <tr><th>Функция</th><th>Что делает</th><th>Пример</th></tr>
+      <tr><td><code>SUM</code></td><td>Сумма</td><td><code>=SUM(A1:A10)</code></td></tr>
+      <tr><td><code>PRODUCT</code></td><td>Произведение</td><td><code>=PRODUCT(A1:A5)</code></td></tr>
+      <tr><td><code>ROUND</code></td><td>Округление</td><td><code>=ROUND(A1; 2)</code></td></tr>
+      <tr><td><code>ABS</code></td><td>Модуль</td><td><code>=ABS(-5) → 5</code></td></tr>
+      <tr><td><code>SQRT</code></td><td>Корень</td><td><code>=SQRT(16) → 4</code></td></tr>
+      <tr><td><code>POWER</code></td><td>Степень</td><td><code>=POWER(2; 10) → 1024</code></td></tr>
+    </table>
+
+    <h4>Статистические</h4>
+    <table>
+      <tr><th>Функция</th><th>Что делает</th></tr>
+      <tr><td><code>AVERAGE</code></td><td>Среднее арифметическое</td></tr>
+      <tr><td><code>MEDIAN</code></td><td>Медиана</td></tr>
+      <tr><td><code>MIN</code> / <code>MAX</code></td><td>Минимум / максимум</td></tr>
+      <tr><td><code>COUNT</code></td><td>Количество числовых ячеек</td></tr>
+      <tr><td><code>COUNTA</code></td><td>Количество непустых ячеек</td></tr>
+      <tr><td><code>COUNTIF</code></td><td>Количество по условию</td></tr>
+      <tr><td><code>AVERAGEIF</code></td><td>Среднее по условию</td></tr>
+    </table>
+
+    <h4>Логические</h4>
+    <table>
+      <tr><th>Функция</th><th>Что делает</th></tr>
+      <tr><td><code>IF</code></td><td>Если..., то..., иначе...</td></tr>
+      <tr><td><code>AND</code></td><td>И (все условия истинны)</td></tr>
+      <tr><td><code>OR</code></td><td>ИЛИ (хотя бы одно истинно)</td></tr>
+      <tr><td><code>NOT</code></td><td>НЕ</td></tr>
+      <tr><td><code>IFS</code></td><td>Несколько условий (новое в Excel)</td></tr>
+      <tr><td><code>IFERROR</code></td><td>Обработка ошибок</td></tr>
+    </table>
+
+    <h4>Поиск и ссылки</h4>
+    <table>
+      <tr><th>Функция</th><th>Что делает</th></tr>
+      <tr><td><code>VLOOKUP</code> (ВПР)</td><td>Ищет значение в первом столбце, возвращает из указанного</td></tr>
+      <tr><td><code>HLOOKUP</code></td><td>То же, но по строкам</td></tr>
+      <tr><td><code>INDEX</code></td><td>Возвращает значение по номеру строки/столбца</td></tr>
+      <tr><td><code>MATCH</code></td><td>Находит позицию значения в диапазоне</td></tr>
+      <tr><td><code>INDEX+MATCH</code></td><td>Гибкая замена VLOOKUP</td></tr>
+      <tr><td><code>XLOOKUP</code></td><td>Современная замена VLOOKUP (Excel 365)</td></tr>
+    </table>
+
+    <h4>Текстовые</h4>
+    <table>
+      <tr><th>Функция</th><th>Что делает</th></tr>
+      <tr><td><code>CONCAT</code></td><td>Объединяет текст</td></tr>
+      <tr><td><code>LEN</code></td><td>Длина строки</td></tr>
+      <tr><td><code>LEFT</code>, <code>RIGHT</code></td><td>Первые/последние N символов</td></tr>
+      <tr><td><code>MID</code></td><td>Символы из середины</td></tr>
+      <tr><td><code>TRIM</code></td><td>Удаляет лишние пробелы</td></tr>
+      <tr><td><code>UPPER</code>, <code>LOWER</code></td><td>Верхний / нижний регистр</td></tr>
+    </table>
+
+    <h3>6.2. Функция IF (ЕСЛИ)</h3>
+
+    <div class="box example">
+      <div class="label">Синтаксис</div>
+      <code>=IF(условие; значение_если_истина; значение_если_ложь)</code>
+    </div>
+
+    <p><b>Вложенные IF:</b></p>
+    <div class="cmd">
+      <button class="copy-btn" data-copy="=IF(A1>=90; &quot;отлично&quot;; IF(A1>=75; &quot;хорошо&quot;; IF(A1>=60; &quot;удовлетворительно&quot;; &quot;неуд&quot;)))">📋 Копировать формулу</button>
+      <pre>=IF(A1&gt;=90; "отлично"; IF(A1&gt;=75; "хорошо"; IF(A1&gt;=60; "удовлетворительно"; "неуд")))</pre>
+      <div class="desc">Оценка по баллу: 90+ отлично, 75+ хорошо, 60+ удовл., иначе неуд.</div>
+    </div>
+
+    <p><b>IF + AND / OR:</b></p>
+    <div class="cmd">
+      <button class="copy-btn" data-copy="=IF(AND(A1>=60; B1>=60); &quot;Зачёт&quot;; &quot;Не зачёт&quot;)">📋 Копировать формулу</button>
+      <pre>=IF(AND(A1&gt;=60; B1&gt;=60); "Зачёт"; "Не зачёт")</pre>
+      <div class="desc">Зачёт, если оба балла ≥ 60.</div>
+    </div>
+
+    <h3>6.3. COUNTIF и AVERAGEIF</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="=COUNTIF(A1:A100; &quot;&gt;100&quot;)
+=COUNTIF(B1:B100; &quot;Москва&quot;)
+=AVERAGEIF(A1:A100; &quot;&gt;50&quot;; B1:B100)">📋 Копировать формулы</button>
+      <pre>=COUNTIF(A1:A100; "&gt;100")           <span class="cmt"># сколько значений > 100</span>
+=COUNTIF(B1:B100; "Москва")           <span class="cmt"># сколько ячеек содержат "Москва"</span>
+=AVERAGEIF(A1:A100; "&gt;50"; B1:B100)   <span class="cmt"># среднее B по строкам, где A > 50</span></pre>
+      <div class="desc">Условные подсчёты и средние.</div>
+    </div>
+
+    <p><b>Несколько условий</b> — используйте <code>COUNTIFS</code> и <code>AVERAGEIFS</code>:</p>
+    <div class="cmd">
+      <button class="copy-btn" data-copy="=COUNTIFS(A:A; &quot;Москва&quot;; B:B; &quot;&gt;1000&quot;)">📋 Копировать</button>
+      <pre>=COUNTIFS(A:A; "Москва"; B:B; "&gt;1000")</pre>
+      <div class="desc">Сколько строк, где в A «Москва», а в B больше 1000.</div>
+    </div>
+
+    <h3>6.4. VLOOKUP (ВПР)</h3>
+
+    <p>Ищет значение в первом столбце таблицы и возвращает значение из другого столбца той же строки.</p>
+
+    <div class="box example">
+      <div class="label">Синтаксис</div>
+      <code>=VLOOKUP(что_искать; где_искать; номер_столбца; режим)</code>
+      <ul>
+        <li><b>что_искать</b> — значение (например, артикул товара)</li>
+        <li><b>где_искать</b> — диапазон таблицы</li>
+        <li><b>номер_столбца</b> — из какого столбца возвращать</li>
+        <li><b>режим</b> — <code>FALSE</code> (точное совпадение) или <code>TRUE</code> (приблизительное)</li>
+      </ul>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="=VLOOKUP(A1; Sheet2!A:C; 3; FALSE)">📋 Копировать</button>
+      <pre>=VLOOKUP(A1; Sheet2!A:C; 3; FALSE)</pre>
+      <div class="desc">Найти значение из A1 в столбце A листа Sheet2, вернуть значение из 3-го столбца.</div>
+    </div>
+
+    <div class="box note">
+      <div class="label">Ограничения VLOOKUP</div>
+      <ul>
+        <li>Ищет только <b>в первом столбце</b> диапазона.</li>
+        <li>Возвращает <b>только справа</b> от ключевого столбца.</li>
+        <li>Не работает, если таблица поменяет структуру.</li>
+      </ul>
+      <b>Альтернатива:</b> <code>INDEX+MATCH</code> — работает в любом направлении:
+      <br><code>=INDEX(B:B; MATCH(A1; A:A; 0))</code>
+    </div>
+
+    <h3>6.5. Диаграммы</h3>
+
+    <table>
+      <tr><th>Тип</th><th>Когда использовать</th></tr>
+      <tr><td>Столбчатая (гистограмма)</td><td>Сравнение категорий</td></tr>
+      <tr><td>Линейчатая</td><td>Сравнение с длинными названиями</td></tr>
+      <tr><td>Круговая</td><td>Доли целого (не более 6-7 секторов)</td></tr>
+      <tr><td>Линейная</td><td>Динамика во времени</td></tr>
+      <tr><td>Точечная</td><td>Взаимосвязь двух переменных</td></tr>
+      <tr><td>Область</td><td>Накопительное изменение во времени</td></tr>
+      <tr><td>Биржевая</td><td>Котировки акций</td></tr>
+    </table>
+
+    <div class="viz">
+      <svg viewBox="0 0 480 200" width="480">
+        <!-- Оси -->
+        <line x1="40" y1="170" x2="460" y2="170" stroke="#889" stroke-width="1.2"/>
+        <line x1="40" y1="20" x2="40" y2="170" stroke="#889" stroke-width="1.2"/>
+        <!-- Столбцы -->
+        <rect x="70"  y="120" width="40" height="50" fill="#7d8aff" stroke="#4f46e5"/>
+        <rect x="130" y="90"  width="40" height="80" fill="#7d8aff" stroke="#4f46e5"/>
+        <rect x="190" y="60"  width="40" height="110" fill="#7d8aff" stroke="#4f46e5"/>
+        <rect x="250" y="80"  width="40" height="90" fill="#7d8aff" stroke="#4f46e5"/>
+        <rect x="310" y="40"  width="40" height="130" fill="#7d8aff" stroke="#4f46e5"/>
+        <rect x="370" y="100" width="40" height="70" fill="#7d8aff" stroke="#4f46e5"/>
+        <!-- Подписи -->
+        <g font-size="11" fill="#1c2331" text-anchor="middle">
+          <text x="90"  y="185">Янв</text>
+          <text x="150" y="185">Фев</text>
+          <text x="210" y="185">Мар</text>
+          <text x="270" y="185">Апр</text>
+          <text x="330" y="185">Май</text>
+          <text x="390" y="185">Июн</text>
+        </g>
+        <text x="250" y="15" text-anchor="middle" font-size="12" fill="#4f46e5" font-weight="600">Продажи по месяцам</text>
+      </svg>
+      <div class="cap">Пример столбчатой диаграммы.</div>
+    </div>
+
+    <h3>6.6. Сводные таблицы</h3>
+    <p><b>Сводная таблица (Pivot Table)</b> — инструмент для быстрой агрегации больших данных. Позволяет за пару кликов получить итоги по категориям, посчитать среднее, суммы, количество.</p>
+
+    <p><b>Как построить:</b></p>
+    <ol>
+      <li>Выделить исходную таблицу.</li>
+      <li>Меню: <code>Вставка → Сводная таблица</code>.</li>
+      <li>Выбрать место размещения (новый лист или существующий).</li>
+      <li>В панели справа перетащить поля:
+        <ul>
+          <li><b>Строки</b> — категории (например, «Город»)</li>
+          <li><b>Столбцы</b> — дополнительная категоризация (например, «Месяц»)</li>
+          <li><b>Значения</b> — что считать (например, «Сумма продаж»)</li>
+          <li><b>Фильтры</b> — фильтр всей таблицы (например, «Год»)</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h3>6.7. Макросы и VBA</h3>
+    <p><b>Макрос</b> — записанная последовательность действий, которую можно запустить одной командой.</p>
+    <p><b>VBA</b> (Visual Basic for Applications) — встроенный язык программирования Excel для автоматизации.</p>
+
+    <p><b>Как записать макрос:</b></p>
+    <ol>
+      <li>Включить вкладку «Разработчик»: <code>Файл → Параметры → Настроить ленту</code>.</li>
+      <li><code>Разработчик → Запись макроса</code>.</li>
+      <li>Задать имя, назначить горячую клавишу.</li>
+      <li>Выполнить действия (например, отформатировать выделенные ячейки).</li>
+      <li><code>Разработчик → Остановить запись</code>.</li>
+    </ol>
+
+    <div class="box note">
+      <div class="label">Файлы с макросами</div>
+      Сохранять нужно в формате <code>.xlsm</code> (Excel Macro-Enabled). Стандартный <code>.xlsx</code> не сохраняет VBA-код.
+    </div>
+
+    <h3>Практические работы №13-14</h3>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №13 · Диаграммы <span class="badge">40 мин</span></div>
+      <div class="goal"><b>Задача:</b> построить 3 разных типа диаграмм на основе данных.</div>
+      <ol>
+        <li>Создайте таблицу продаж:
+          <table style="margin:10px 0;">
+            <tr><th>Месяц</th><th>Продажи</th></tr>
+            <tr><td>Янв</td><td>150</td></tr>
+            <tr><td>Фев</td><td>230</td></tr>
+            <tr><td>Мар</td><td>180</td></tr>
+            <tr><td>Апр</td><td>310</td></tr>
+            <tr><td>Май</td><td>270</td></tr>
+            <tr><td>Июн</td><td>420</td></tr>
+          </table>
+        </li>
+        <li>Постройте <b>столбчатую диаграмму</b> по этим данным.</li>
+        <li>Добавьте вторую серию — «Расходы» (200, 180, 190, 210, 220, 250).</li>
+        <li>Настройте заголовок, подписи осей, легенду.</li>
+        <li>Постройте <b>линейную диаграмму</b> для этих же данных.</li>
+        <li>Постройте <b>круговую диаграмму</b> по доле каждого месяца в сумме продаж.</li>
+        <li>Разместите три диаграммы на разных листах.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №14 · Сводные таблицы и макросы <span class="badge">50 мин</span></div>
+      <div class="goal"><b>Задача:</b> освоить сводные таблицы и записать простой макрос.</div>
+
+      <h4>Часть 1. Сводная таблица</h4>
+      <ol>
+        <li>Создайте таблицу 50+ строк: Дата, Город, Товар, Количество, Сумма.</li>
+        <li>Вставьте сводную таблицу: <code>Вставка → Сводная таблица</code>.</li>
+        <li>Разместите:
+          <ul>
+            <li>В строках — Город</li>
+            <li>В столбцах — Товар</li>
+            <li>В значениях — Сумма (Сумма по полю)</li>
+          </ul>
+        </li>
+        <li>Добавьте фильтр по Дате (например, только 1-й квартал).</li>
+        <li>Поменяйте агрегацию: посчитайте не сумму, а количество — правый клик по полю → «Параметры поля» → «Количество».</li>
+      </ol>
+
+      <h4>Часть 2. Макрос</h4>
+      <ol>
+        <li>Включите вкладку «Разработчик».</li>
+        <li><code>Разработчик → Запись макроса</code> → имя <code>FormatHeader</code>, горячая клавиша <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>H</kbd>.</li>
+        <li>Выделите шапку таблицы → сделайте жирной, залейте цветом, выровняйте по центру.</li>
+        <li>Остановите запись.</li>
+        <li>Проверьте: перейдите на другой лист, выделите другую таблицу, нажмите <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>H</kbd> — макрос применит форматирование.</li>
+        <li>Сохраните файл в формате <code>.xlsm</code>.</li>
+      </ol>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Задача 1. Найти среднее по столбцу A, но только для значений больше 10.</summary>
+      <div class="answer">
+        <div class="cmd" style="margin-top:10px">
+          <button class="copy-btn" data-copy="=AVERAGEIF(A1:A100; &quot;&gt;10&quot;)">📋</button>
+          <pre>=AVERAGEIF(A1:A100; "&gt;10")</pre>
+        </div>
+        В русской локали Excel: <code>=СРЗНАЧЕСЛИ(A1:A100; "&gt;10")</code>.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Задача 2. Чем отличается VLOOKUP от INDEX+MATCH?</summary>
+      <div class="answer">
+        <b>VLOOKUP</b>:
+        <ul>
+          <li>Ищет только в первом столбце диапазона.</li>
+          <li>Возвращает значения только справа.</li>
+          <li>При добавлении столбца слева — все ссылки «ломаются».</li>
+        </ul>
+        <b>INDEX+MATCH</b>:
+        <ul>
+          <li>Ищет в любом столбце.</li>
+          <li>Возвращает из любого направления.</li>
+          <li>Не ломается при изменении структуры таблицы.</li>
+          <li>Работает быстрее на больших данных.</li>
+        </ul>
+        Если Excel 365 — используйте <code>XLOOKUP</code>: он объединяет преимущества обоих.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Задача 3. Как сделать сводную таблицу, где строки — месяцы, столбцы — товары, а значения — среднее количество?</summary>
+      <div class="answer">
+        <ol>
+          <li>Выделить исходные данные.</li>
+          <li><code>Вставка → Сводная таблица</code>.</li>
+          <li>Перетащить поля:
+            <ul>
+              <li>«Месяц» → в область «Строки»</li>
+              <li>«Товар» → в область «Столбцы»</li>
+              <li>«Количество» → в область «Значения»</li>
+            </ul>
+          </li>
+          <li>В области «Значения» правый клик по полю «Количество» → «Параметры поля значений» → выбрать «Среднее».</li>
+        </ol>
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Задача 4. Почему макросы не работают в файле .xlsx?</summary>
+      <div class="answer">
+        Формат <code>.xlsx</code> не хранит VBA-код (из соображений безопасности). При сохранении файла с макросом в этом формате Excel предупредит, что код будет потерян.<br><br>
+        Нужно сохранять как <code>.xlsm</code> (Excel Macro-Enabled Workbook). Он поддерживает макросы и открывается обычным Excel — но при первом запуске может попросить разрешить макросы.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание по разделу</div>
+      Сдать файл <code>practice-excel-functions.xlsm</code>:
+      <ol>
+        <li>Лист «Данные» — таблица 50 строк: Дата, Город, Товар, Количество, Сумма</li>
+        <li>Лист «Функции» — примеры использования IF, COUNTIF, AVERAGEIF, VLOOKUP</li>
+        <li>Лист «Диаграммы» — 3 диаграммы разных типов</li>
+        <li>Лист «Сводная» — сводная таблица: Строки=Город, Столбцы=Товар, Значения=Сумма</li>
+        <li>Макрос <code>FormatHeader</code> — форматирование шапки (горячая клавиша <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>H</kbd>)</li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="05-excel-basics.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">5. Excel — основы</span>
+  </a>
+  <a href="07-presentations.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">7. Программа подготовки презентаций</span>
+  </a>
+</div>
+
+<footer>
+  ОП.03 Информационные технологии · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

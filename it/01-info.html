@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ИТ · 1. Информация и ИТ · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ОП.03 ИТ · Раздел 1</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="it-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-info.html" class="current">1. Информация</a>
+  <a href="02-word-basics.html">2. Word</a>
+  <a href="03-word-advanced.html">3. Word+</a>
+  <a href="04-word-graphics.html">4. Word 🖼</a>
+  <a href="05-excel-basics.html">5. Excel</a>
+  <a href="06-excel-functions.html">6. Excel+</a>
+  <a href="07-presentations.html">7. Презентации</a>
+  <a href="08-graphics.html">8. Графика</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">1</span>Информация и информационные технологии</h2>
+
+    <h3>1.1. Что такое информация и ИТ</h3>
+    <p><b>Информация</b> — сведения об объектах и явлениях окружающего мира, которые уменьшают неопределённость. В быту — это новости, данные, знания, факты.</p>
+    <p><b>Информационные технологии (ИТ)</b> — совокупность методов и средств для сбора, хранения, обработки, передачи и представления информации.</p>
+
+    <div class="box note">
+      <div class="label">Аналогия</div>
+      Информация — как вода. ИТ — как водопровод: трубы (сети), насосы (процессоры), резервуары (хранилища), фильтры (обработка). Без инфраструктуры вода (информация) остаётся в колодце и не приносит пользы в нужный момент.
+    </div>
+
+    <h3>1.2. Свойства информации</h3>
+    <table>
+      <tr><th>Свойство</th><th>Что значит</th><th>Пример</th></tr>
+      <tr><td>Объективность</td><td>Не зависит от чьего-то мнения</td><td>«Вода кипит при 100°C»</td></tr>
+      <tr><td>Достоверность</td><td>Отражает реальное положение дел</td><td>Проверенный факт</td></tr>
+      <tr><td>Полнота</td><td>Достаточно для принятия решения</td><td>Полный отчёт, а не пара строк</td></tr>
+      <tr><td>Актуальность</td><td>Важна в данный момент</td><td>Курс валют на сегодня</td></tr>
+      <tr><td>Ценность</td><td>Полезна для конкретной задачи</td><td>Рецепт для повара</td></tr>
+      <tr><td>Понятность</td><td>Выражена на доступном языке</td><td>Без жаргона для новичка</td></tr>
+    </table>
+
+    <h3>1.3. Классификация ИТ по назначению</h3>
+    <table>
+      <tr><th>Категория</th><th>Что делает</th><th>Примеры программ</th></tr>
+      <tr><td>Обработка текста</td><td>Создание и форматирование документов</td><td>MS Word, Google Docs, LibreOffice Writer</td></tr>
+      <tr><td>Обработка чисел</td><td>Расчёты, таблицы, диаграммы</td><td>MS Excel, Google Sheets, LibreOffice Calc</td></tr>
+      <tr><td>Презентации</td><td>Показ материала с экрана</td><td>MS PowerPoint, Google Slides</td></tr>
+      <tr><td>Графика</td><td>Работа с изображениями</td><td>Photoshop, GIMP, Figma, Inkscape</td></tr>
+      <tr><td>Базы данных</td><td>Хранение и запросы к структурированным данным</td><td>PostgreSQL, MySQL, MS SQL</td></tr>
+      <tr><td>Коммуникации</td><td>Общение, обмен файлами</td><td>Email, Slack, Discord, ВКС</td></tr>
+      <tr><td>Разработка</td><td>Написание кода</td><td>VS Code, IntelliJ IDEA, Visual Studio</td></tr>
+    </table>
+
+    <h3>1.4. Устройства ввода-вывода</h3>
+    <table>
+      <tr><th>Категория</th><th>Устройства</th></tr>
+      <tr><td>Ввод</td><td>Клавиатура, мышь, сканер, микрофон, веб-камера, тачскрин, геймпад, датчики</td></tr>
+      <tr><td>Вывод</td><td>Монитор, принтер, колонки, наушники, проектор, плоттер</td></tr>
+      <tr><td>Ввод-вывод</td><td>Сетевые адаптеры, USB-флешки, внешние диски, smart-устройства</td></tr>
+    </table>
+
+    <div class="viz">
+      <svg viewBox="0 0 500 180" width="500">
+        <rect x="200" y="70" width="100" height="40" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5" rx="6"/>
+        <text x="250" y="95" text-anchor="middle" font-size="12" fill="#4f46e5" font-weight="600">Компьютер</text>
+        <g font-size="11" fill="#0891b2">
+          <rect x="20" y="20" width="120" height="30" fill="#e6f7fb" stroke="#0891b2" rx="4"/>
+          <text x="80" y="40" text-anchor="middle">Клавиатура</text>
+          <rect x="20" y="70" width="120" height="30" fill="#e6f7fb" stroke="#0891b2" rx="4"/>
+          <text x="80" y="90" text-anchor="middle">Мышь</text>
+          <rect x="20" y="120" width="120" height="30" fill="#e6f7fb" stroke="#0891b2" rx="4"/>
+          <text x="80" y="140" text-anchor="middle">Микрофон</text>
+        </g>
+        <g font-size="11" fill="#e11d48">
+          <rect x="360" y="20" width="120" height="30" fill="#fff1f4" stroke="#e11d48" rx="4"/>
+          <text x="420" y="40" text-anchor="middle">Монитор</text>
+          <rect x="360" y="70" width="120" height="30" fill="#fff1f4" stroke="#e11d48" rx="4"/>
+          <text x="420" y="90" text-anchor="middle">Принтер</text>
+          <rect x="360" y="120" width="120" height="30" fill="#fff1f4" stroke="#e11d48" rx="4"/>
+          <text x="420" y="140" text-anchor="middle">Колонки</text>
+        </g>
+        <g stroke="#8891a6" stroke-width="1.4" marker-end="url(#ar1)">
+          <defs><marker id="ar1" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8891a6"/></marker></defs>
+          <line x1="145" y1="35" x2="195" y2="80"/>
+          <line x1="145" y1="85" x2="195" y2="90"/>
+          <line x1="145" y1="135" x2="195" y2="100"/>
+          <line x1="305" y1="80" x2="355" y2="35"/>
+          <line x1="305" y1="90" x2="355" y2="85"/>
+          <line x1="305" y1="100" x2="355" y2="135"/>
+        </g>
+      </svg>
+      <div class="cap">Периферийные устройства: ввод (слева) и вывод (справа).</div>
+    </div>
+
+    <h3>1.5. Операционные системы — краткий обзор</h3>
+    <p><b>ОС</b> — базовый комплекс программ, который управляет ресурсами компьютера и обеспечивает работу приложений. Подробнее — в курсе ОП.01 «Операционные системы».</p>
+    <table>
+      <tr><th>ОС</th><th>Где применяется</th></tr>
+      <tr><td>Windows 10/11</td><td>Домашние и офисные ПК</td></tr>
+      <tr><td>Linux (Ubuntu, Fedora, Debian)</td><td>Серверы, разработка, встраиваемые системы</td></tr>
+      <tr><td>macOS</td><td>Компьютеры Apple, дизайн, разработка</td></tr>
+      <tr><td>Android</td><td>Смартфоны и планшеты (на базе ядра Linux)</td></tr>
+      <tr><td>iOS</td><td>iPhone и iPad</td></tr>
+    </table>
+
+    <h3>1.6. Антивирусное ПО</h3>
+    <p><b>Антивирус</b> — программа для обнаружения, блокировки и удаления вредоносного ПО.</p>
+
+    <table>
+      <tr><th>Тип</th><th>Как работает</th><th>Примеры</th></tr>
+      <tr><td>Классический (сигнатурный)</td><td>Сверяет файлы с базой известных вирусов</td><td>Kaspersky, ESET NOD32, Avast</td></tr>
+      <tr><td>Эвристический</td><td>Анализирует поведение кода</td><td>Dr.Web, Defender</td></tr>
+      <tr><td>Поведенческий</td><td>Следит за подозрительными действиями в реальном времени</td><td>Встроен в современные антивирусы</td></tr>
+    </table>
+
+    <div class="box note">
+      <div class="label">Правило безопасности</div>
+      Никакой антивирус не заменит здравого смысла:
+      <ul>
+        <li>Не открывайте вложения от незнакомцев</li>
+        <li>Проверяйте URL перед вводом пароля</li>
+        <li>Не запускайте <code>.exe</code> из непроверенных источников</li>
+        <li>Регулярно обновляйте ОС и программы</li>
+      </ul>
+    </div>
+
+    <h3>1.7. Практическая работа №1 — входная диагностика</h3>
+    <div class="box example">
+      <div class="label">Что нужно уметь до начала курса</div>
+      <ol>
+        <li>Включать/выключать компьютер, входить в систему под своим логином.</li>
+        <li>Открывать файл, создавать папку, копировать/перемещать файлы.</li>
+        <li>Пользоваться браузером: открыть сайт, найти информацию, скачать файл.</li>
+        <li>Проверить место на диске (<code>Этот компьютер</code> в Windows).</li>
+        <li>Сделать скриншот: <kbd>Win</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> в Windows, <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>4</kbd> в macOS.</li>
+      </ol>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Почему свойство «достоверность» важнее «полноты»?</summary>
+      <div class="answer">
+        Недостоверная информация (даже если её много) хуже, чем её отсутствие: она может привести к <b>неверным решениям</b>.<br><br>
+        Пример: неправильный курс валют в отчёте = финансовые потери. Лучше признать «данных нет», чем использовать ошибочные.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Какие ИТ относятся к «прикладным», а какие — к «системным»?</summary>
+      <div class="answer">
+        <b>Системные ИТ</b> — обеспечивают работу компьютера: ОС, драйверы, утилиты, антивирусы, системы резервного копирования. Пользователь их не «видит», но без них ничего не работает.<br><br>
+        <b>Прикладные ИТ</b> — решают конкретные задачи пользователя: текстовые редакторы, таблицы, браузер, игры, бухгалтерия, CRM.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Что такое «умные устройства» (smart-devices)?</summary>
+      <div class="answer">
+        Устройства, которые:
+        <ul>
+          <li>подключены к интернету,</li>
+          <li>собирают и передают данные,</li>
+          <li>управляются удалённо,</li>
+          <li>часто взаимодействуют друг с другом (IoT).</li>
+        </ul>
+        Примеры: умные часы, колонки (Алиса, Siri), лампочки, розетки, холодильники, камеры, автомобили.<br><br>
+        Эти устройства — часть «Интернета вещей» (IoT — Internet of Things).
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Задание на пару</div>
+      Составьте таблицу «ИТ в моей жизни» из 10 строк:
+      <ol>
+        <li>Название программы или сервиса</li>
+        <li>Категория (текст / числа / графика / коммуникации / и т.д.)</li>
+        <li>Как часто используете (ежедневно / иногда / редко)</li>
+        <li>Для какой задачи</li>
+      </ol>
+      Обсуждение на следующей паре.
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a class="disabled">
+    <span class="dir">← Предыдущая</span>
+    <span class="title empty">Это первая тема</span>
+  </a>
+  <a href="02-word-basics.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">2. Текстовый процессор — основы</span>
+  </a>
+</div>
+
+<footer>
+  ОП.03 Информационные технологии · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

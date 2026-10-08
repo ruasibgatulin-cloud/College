@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ИТ · 5. Excel — основы · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ОП.03 ИТ · Раздел 5</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="it-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-info.html">1. Информация</a>
+  <a href="02-word-basics.html">2. Word</a>
+  <a href="03-word-advanced.html">3. Word+</a>
+  <a href="04-word-graphics.html">4. Word 🖼</a>
+  <a href="05-excel-basics.html" class="current">5. Excel</a>
+  <a href="06-excel-functions.html">6. Excel+</a>
+  <a href="07-presentations.html">7. Презентации</a>
+  <a href="08-graphics.html">8. Графика</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">5</span>Табличный процессор — основы</h2>
+
+    <p>Табличный процессор — программа для работы с таблицами, расчётов, анализа данных. Основные: MS Excel, Google Sheets, LibreOffice Calc.</p>
+
+    <h3>5.1. Структура электронной таблицы</h3>
+    <ul>
+      <li><b>Ячейка</b> — пересечение строки и столбца. Адрес: <code>A1</code>, <code>C5</code>, <code>Z100</code>.</li>
+      <li><b>Диапазон</b> — прямоугольная область: <code>A1:C5</code> (6 столбцов × 5 строк).</li>
+      <li><b>Лист</b> — одна таблица. <b>Книга</b> — набор листов (файл <code>.xlsx</code>).</li>
+      <li><b>Строка формул</b> — место, где видно/редактируется содержимое активной ячейки.</li>
+    </ul>
+
+    <div class="viz">
+      <svg viewBox="0 0 480 200" width="480">
+        <!-- Заголовки столбцов -->
+        <g font-size="11" fill="#1c2331">
+          <rect x="40"  y="20" width="60" height="22" fill="#eef0ff" stroke="#4f46e5"/><text x="70"  y="35" text-anchor="middle">A</text>
+          <rect x="100" y="20" width="60" height="22" fill="#eef0ff" stroke="#4f46e5"/><text x="130" y="35" text-anchor="middle">B</text>
+          <rect x="160" y="20" width="60" height="22" fill="#eef0ff" stroke="#4f46e5"/><text x="190" y="35" text-anchor="middle">C</text>
+          <rect x="220" y="20" width="60" height="22" fill="#eef0ff" stroke="#4f46e5"/><text x="250" y="35" text-anchor="middle">D</text>
+        </g>
+        <!-- Заголовки строк -->
+        <g font-size="11" fill="#1c2331">
+          <rect x="10" y="42" width="30" height="30" fill="#eef0ff" stroke="#4f46e5"/><text x="25" y="60" text-anchor="middle">1</text>
+          <rect x="10" y="72" width="30" height="30" fill="#eef0ff" stroke="#4f46e5"/><text x="25" y="90" text-anchor="middle">2</text>
+          <rect x="10" y="102" width="30" height="30" fill="#eef0ff" stroke="#4f46e5"/><text x="25" y="120" text-anchor="middle">3</text>
+          <rect x="10" y="132" width="30" height="30" fill="#eef0ff" stroke="#4f46e5"/><text x="25" y="150" text-anchor="middle">4</text>
+        </g>
+        <!-- Ячейки -->
+        <g stroke="#cbd5e1" fill="none">
+          <rect x="40"  y="42" width="60" height="30"/>
+          <rect x="100" y="42" width="60" height="30"/>
+          <rect x="160" y="42" width="60" height="30"/>
+          <rect x="220" y="42" width="60" height="30"/>
+          <rect x="40"  y="72" width="60" height="30"/>
+          <rect x="100" y="72" width="60" height="30"/>
+          <rect x="160" y="72" width="60" height="30"/>
+          <rect x="220" y="72" width="60" height="30"/>
+          <rect x="40"  y="102" width="60" height="30"/>
+          <rect x="100" y="102" width="60" height="30"/>
+          <rect x="160" y="102" width="60" height="30" fill="#fff9e6" stroke="#d97706" stroke-width="2"/>
+          <rect x="220" y="102" width="60" height="30"/>
+          <rect x="40"  y="132" width="60" height="30"/>
+          <rect x="100" y="132" width="60" height="30"/>
+          <rect x="160" y="132" width="60" height="30"/>
+          <rect x="220" y="132" width="60" height="30"/>
+        </g>
+        <!-- Активная ячейка C3 -->
+        <text x="190" y="122" text-anchor="middle" font-size="12" fill="#d97706" font-weight="600">=A1+B2</text>
+
+        <!-- Строка формул -->
+        <text x="10" y="185" font-size="12" fill="#1c2331" font-weight="600">Строка формул:</text>
+        <rect x="120" y="170" width="330" height="24" fill="#f8fafc" stroke="#cbd5e1"/>
+        <text x="130" y="187" font-size="12" font-family="monospace">=A1+B2</text>
+      </svg>
+      <div class="cap">Активная ячейка C3, в строке формул видно её содержимое.</div>
+    </div>
+
+    <h3>5.2. Ввод данных</h3>
+    <table>
+      <tr><th>Что вводите</th><th>Как Excel понимает</th></tr>
+      <tr><td>Число: <code>42</code>, <code>3.14</code></td><td>Число (можно считать)</td></tr>
+      <tr><td>Дата: <code>01.10.2026</code></td><td>Дата (можно вычитать)</td></tr>
+      <tr><td>Текст: <code>Итого</code></td><td>Текст (не считается)</td></tr>
+      <tr><td>Формула: начинается с <code>=</code></td><td>Вычисляемое значение</td></tr>
+    </table>
+
+    <div class="box note">
+      <div class="label">Правило</div>
+      Если Excel автоматически превращает «01.05» в дату, а вы этого не хотите — вводите как текст: поставьте апостроф в начале: <code>'01.05</code>. Или задайте ячейке текстовый формат.
+    </div>
+
+    <h3>5.3. Основные действия</h3>
+    <table>
+      <tr><th>Действие</th><th>Как</th></tr>
+      <tr><td>Редактировать ячейку</td><td>Двойной клик или <kbd>F2</kbd></td></tr>
+      <tr><td>Ввод и переход вниз</td><td><kbd>Enter</kbd></td></tr>
+      <tr><td>Ввод и переход вправо</td><td><kbd>Tab</kbd></td></tr>
+      <tr><td>Отмена</td><td><kbd>Esc</kbd> (во время ввода), <kbd>Ctrl</kbd>+<kbd>Z</kbd> (после)</td></tr>
+      <tr><td>Автозаполнение</td><td>Потянуть за правый нижний угол ячейки (маркер)</td></tr>
+      <tr><td>Копировать формулу</td><td><kbd>Ctrl</kbd>+<kbd>C</kbd> → выделить → <kbd>Ctrl</kbd>+<kbd>V</kbd></td></tr>
+      <tr><td>Абсолютная ссылка</td><td><kbd>F4</kbd> при редактировании — превращает <code>A1</code> в <code>$A$1</code></td></tr>
+      <tr><td>Вставить сегодняшнюю дату</td><td><kbd>Ctrl</kbd>+<kbd>;</kbd></td></tr>
+      <tr><td>Автосумма</td><td><kbd>Alt</kbd>+<kbd>=</kbd></td></tr>
+    </table>
+
+    <h3>5.4. Формулы</h3>
+    <p>Начинаются с <code>=</code>. Могут содержать:</p>
+    <ul>
+      <li><b>Числа:</b> <code>=2+3*4</code></li>
+      <li><b>Ссылки:</b> <code>=A1+B1</code></li>
+      <li><b>Функции:</b> <code>=SUM(A1:A10)</code></li>
+      <li><b>Смешанное:</b> <code>=A1*0.2+B1</code></li>
+    </ul>
+
+    <p><b>Арифметические операторы:</b></p>
+    <table>
+      <tr><th>Оператор</th><th>Смысл</th></tr>
+      <tr><td>+</td><td>Сложение</td></tr>
+      <tr><td>-</td><td>Вычитание</td></tr>
+      <tr><td>*</td><td>Умножение</td></tr>
+      <tr><td>/</td><td>Деление</td></tr>
+      <tr><td>^</td><td>Степень</td></tr>
+      <tr><td>%</td><td>Процент</td></tr>
+    </table>
+
+    <h3>5.5. Типы ссылок</h3>
+    <table>
+      <tr><th>Тип</th><th>Пример</th><th>Поведение при копировании</th></tr>
+      <tr><td>Относительная</td><td><code>A1</code></td><td>Меняется относительно позиции</td></tr>
+      <tr><td>Абсолютная</td><td><code>$A$1</code></td><td>Не меняется</td></tr>
+      <tr><td>Смешанная (столбец)</td><td><code>$A1</code></td><td>Столбец фиксирован, строка меняется</td></tr>
+      <tr><td>Смешанная (строка)</td><td><code>A$1</code></td><td>Строка фиксирована, столбец меняется</td></tr>
+    </table>
+
+    <div class="box example">
+      <div class="label">Пример использования абсолютной ссылки</div>
+      Есть таблица «Товар | Цена | Курс USD | Цена в рублях».<br>
+      Курс лежит в ячейке <code>E1</code>. Формула для рублёвой цены: <code>=B2*$E$1</code>.<br>
+      Копируем вниз — B2 меняется на B3, B4, но <code>$E$1</code> остаётся. Все цены умножаются на курс из E1.
+    </div>
+
+    <h3>5.6. Сортировка и фильтры</h3>
+    <ul>
+      <li><b>Сортировка</b>: <code>Данные → Сортировка</code>. По возрастанию, убыванию, по нескольким столбцам.</li>
+      <li><b>Фильтр</b>: <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd> — включает стрелочки в заголовках. Можно фильтровать по значениям и по цвету.</li>
+    </ul>
+
+    <h3>Практические работы №10-12</h3>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №10 · Создание и форматирование таблицы <span class="badge">40 мин</span></div>
+      <div class="goal"><b>Задача:</b> создать таблицу «Список студентов группы».</div>
+      <ol>
+        <li>Откройте Excel. В <code>A1</code> напишите «№», <code>B1</code> — «ФИО», <code>C1</code> — «Группа», <code>D1</code> — «Год рождения», <code>E1</code> — «Балл ЕГЭ».</li>
+        <li>Заполните 10 строк вымышленными данными.</li>
+        <li>Выделите шапку → сделайте жирной, залейте цветом.</li>
+        <li>Установите ширину столбцов: двойной клик по границе заголовка столбца — Excel подберёт ширину автоматически.</li>
+        <li>Добавьте границы таблицы: <code>Главная → Границы → Все границы</code>.</li>
+        <li>Сохраните файл <code>practice-excel-basics.xlsx</code>.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №11 · Формулы и вычисления <span class="badge">40 мин</span></div>
+      <div class="goal"><b>Задача:</b> научиться считать в таблице.</div>
+      <ol>
+        <li>В таблице из ПР №10 добавьте столбец <code>F</code> «Стипендия».</li>
+        <li>Формула: если балл ЕГЭ ≥ 80 — стипендия 5000, если ≥ 60 — 3000, иначе 0. Пока через <code>IF</code>: <code>=IF(E2&gt;=80; 5000; IF(E2&gt;=60; 3000; 0))</code>.</li>
+        <li>Скопируйте формулу вниз.</li>
+        <li>В строке 12 посчитайте итоги: сумма всех стипендий, средний балл.</li>
+        <li>Добавьте столбец «Год рождения» → «Возраст» с формулой <code>=2026-D2</code>.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №12 · Автозаполнение и сортировка <span class="badge">30 мин</span></div>
+      <div class="goal"><b>Задача:</b> освоить автозаполнение, копирование формул, сортировку.</div>
+      <ol>
+        <li>Создайте новый лист.</li>
+        <li>В <code>A1</code> введите <code>1</code>, в <code>A2</code> — <code>2</code>. Выделите обе и протяните вниз до <code>A20</code> — получится последовательность 1..20.</li>
+        <li>В <code>B1</code> — дата <code>01.10.2026</code>. Протяните вниз — даты пойдут по дням.</li>
+        <li>В <code>C1</code> — формула <code>=A1*10</code>. Скопируйте её вниз на все 20 строк.</li>
+        <li>Отсортируйте столбец C по убыванию.</li>
+        <li>Включите фильтр: <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd>. Отфильтруйте значения &gt; 100.</li>
+      </ol>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Задача 1. Что произойдёт, если скопировать формулу <code>=A1+B1</code> из C1 в C5?</summary>
+      <div class="answer">
+        Формула автоматически сдвинется: станет <code>=A5+B5</code>.<br><br>
+        Причина — <b>относительные ссылки</b>: при копировании ссылки меняются относительно новой позиции. Если хотите, чтобы A1 и B1 не менялись — используйте <code>=$A$1+$B$1</code>.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Задача 2. В чём разница между сортировкой и фильтром?</summary>
+      <div class="answer">
+        <b>Сортировка</b> — меняет порядок строк во всей таблице.<br><br>
+        <b>Фильтр</b> — не удаляет строки, а скрывает их. Оригинальные данные остаются на месте.<br><br>
+        Можно комбинировать: сначала отфильтровать, потом отсортировать только видимые строки.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Задача 3. Что покажет формула <code>=СУММ(A1:A10)</code>, если в ячейке A5 написано «нет данных»?</summary>
+      <div class="answer">
+        Excel пропустит текст и сложит только числовые значения. Если числовых данных нет — вернёт <code>0</code>.<br><br>
+        Если нужно, чтобы текст вызывал ошибку — используйте <code>SUM</code> с явным приведением или <code>SUMPRODUCT</code>.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Задача 4. Как посчитать, сколько студентов получат стипендию?</summary>
+      <div class="answer">
+        Через <code>COUNTIF</code>: <code>=COUNTIF(F2:F11; "&gt;0")</code>.<br><br>
+        Формула посчитает, в скольких ячейках столбца F значение больше 0 — это и есть число стипендиатов.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание по разделу</div>
+      Сдать файл <code>practice-excel-basics.xlsx</code>:
+      <ol>
+        <li>Лист «Студенты» — таблица из 15 студентов (№, ФИО, группа, год рождения, балл ЕГЭ, стипендия)</li>
+        <li>Столбец «Возраст» — вычисляется формулой</li>
+        <li>Столбец «Стипендия» — через <code>IF</code></li>
+        <li>Внизу итоговая строка: общее число студентов, средний балл, сумма стипендий</li>
+        <li>Оформление: жирная шапка, границы, выравнивание</li>
+        <li>Фильтр включён, отсортировано по ФИО</li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="04-word-graphics.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">4. Word — графика и формулы</span>
+  </a>
+  <a href="06-excel-functions.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">6. Функции, диаграммы, сводные таблицы</span>
+  </a>
+</div>
+
+<footer>
+  ОП.03 Информационные технологии · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

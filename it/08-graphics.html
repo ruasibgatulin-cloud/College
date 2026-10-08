@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ИТ · 8. Компьютерная графика · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ОП.03 ИТ · Раздел 8</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="it-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-info.html">1. Информация</a>
+  <a href="02-word-basics.html">2. Word</a>
+  <a href="03-word-advanced.html">3. Word+</a>
+  <a href="04-word-graphics.html">4. Word 🖼</a>
+  <a href="05-excel-basics.html">5. Excel</a>
+  <a href="06-excel-functions.html">6. Excel+</a>
+  <a href="07-presentations.html">7. Презентации</a>
+  <a href="08-graphics.html" class="current">8. Графика</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">8</span>Компьютерная графика</h2>
+
+    <p><b>Компьютерная графика</b> — область информатики, занимающаяся созданием и обработкой изображений с помощью компьютера.</p>
+
+    <h3>8.1. Виды компьютерной графики</h3>
+
+    <table>
+      <tr><th>Вид</th><th>Принцип</th><th>Форматы</th><th>Где применять</th></tr>
+      <tr><td><b>Растровая</b></td><td>Сетка пикселей (точек)</td><td>JPG, PNG, GIF, WEBP, BMP, TIFF</td><td>Фото, соцсети, веб</td></tr>
+      <tr><td><b>Векторная</b></td><td>Математические кривые и фигуры</td><td>SVG, AI, EPS, PDF</td><td>Логотипы, иконки, печать, чертежи</td></tr>
+      <tr><td><b>3D</b></td><td>Полигоны в 3D-пространстве</td><td>OBJ, FBX, GLTF, STL</td><td>Игры, фильмы, визуализация</td></tr>
+      <tr><td><b>Фрактальная</b></td><td>Самоподобные структуры по формуле</td><td>Специальные</td><td>Генеративное искусство, ландшафты</td></tr>
+    </table>
+
+    <h3>8.2. Растровая vs векторная</h3>
+
+    <div class="viz">
+      <svg viewBox="0 0 480 200" width="480">
+        <!-- Растровая -->
+        <g>
+          <text x="100" y="20" text-anchor="middle" font-size="12" fill="#e11d48" font-weight="600">Растровая (увеличение)</text>
+          <!-- Сетка пикселей 6x6, увеличенная -->
+          <g>
+            <rect x="40" y="30" width="30" height="30" fill="#4f46e5"/>
+            <rect x="70" y="30" width="30" height="30" fill="#4f46e5"/>
+            <rect x="100" y="30" width="30" height="30" fill="#a5b0ff"/>
+            <rect x="130" y="30" width="30" height="30" fill="#7d8aff"/>
+            <rect x="40" y="60" width="30" height="30" fill="#a5b0ff"/>
+            <rect x="70" y="60" width="30" height="30" fill="#7d8aff"/>
+            <rect x="100" y="60" width="30" height="30" fill="#4f46e5"/>
+            <rect x="130" y="60" width="30" height="30" fill="#4f46e5"/>
+            <rect x="40" y="90" width="30" height="30" fill="#7d8aff"/>
+            <rect x="70" y="90" width="30" height="30" fill="#a5b0ff"/>
+            <rect x="100" y="90" width="30" height="30" fill="#7d8aff"/>
+            <rect x="130" y="90" width="30" height="30" fill="#a5b0ff"/>
+          </g>
+          <text x="100" y="145" text-anchor="middle" font-size="11" fill="#889">пиксели видны</text>
+        </g>
+        <!-- Векторная -->
+        <g>
+          <text x="360" y="20" text-anchor="middle" font-size="12" fill="#4f46e5" font-weight="600">Векторная (увеличение)</text>
+          <!-- Кривая -->
+          <path d="M 280 90 Q 340 30 440 90" fill="none" stroke="#4f46e5" stroke-width="3"/>
+          <circle cx="280" cy="90" r="4" fill="#e11d48"/>
+          <circle cx="440" cy="90" r="4" fill="#e11d48"/>
+          <text x="360" y="145" text-anchor="middle" font-size="11" fill="#889">кривая гладкая</text>
+        </g>
+      </svg>
+      <div class="cap">Растровая графика «рассыпается» при увеличении. Векторная остаётся гладкой.</div>
+    </div>
+
+    <table>
+      <tr><th>Свойство</th><th>Растровая</th><th>Векторная</th></tr>
+      <tr><td>Масштабирование</td><td>Теряет качество</td><td>Без потерь</td></tr>
+      <tr><td>Размер файла</td><td>Большой (зависит от разрешения)</td><td>Небольшой</td></tr>
+      <tr><td>Редактирование</td><td>Изменение пикселей</td><td>Изменение линий и кривых</td></tr>
+      <tr><td>Фотореалистичность</td><td>Высокая</td><td>Ограниченная</td></tr>
+      <tr><td>Применение</td><td>Фото, скриншоты</td><td>Логотипы, иконки</td></tr>
+    </table>
+
+    <h3>8.3. Разрешение и размер</h3>
+    <ul>
+      <li><b>Разрешение</b> — количество пикселей по горизонтали × по вертикали: 1920×1080, 3840×2160 (4K).</li>
+      <li><b>PPI</b> (pixels per inch) — плотность пикселей. Для экранов достаточно 72-96 PPI, для печати — 300 PPI.</li>
+      <li><b>DPI</b> (dots per inch) — плотность точек печати.</li>
+    </ul>
+
+    <div class="box example">
+      <div class="label">Пример расчёта</div>
+      Хотите напечатать фото 10×15 см при 300 PPI.<br>
+      10 см = 3,94 дюйма → 3,94 × 300 = <b>1181 пиксель по ширине</b><br>
+      15 см = 5,91 дюйма → 5,91 × 300 = <b>1772 пикселя по высоте</b><br>
+      Итог: изображение не менее <b>1181 × 1772</b>.
+    </div>
+
+    <h3>8.4. Цветовые модели</h3>
+    <table>
+      <tr><th>Модель</th><th>Применение</th><th>Особенности</th></tr>
+      <tr><td><b>RGB</b></td><td>Экраны (мониторы, телефоны)</td><td>Красный + Зелёный + Синий. 0-255 по каждому каналу</td></tr>
+      <tr><td><b>CMYK</b></td><td>Печать</td><td>Голубой + Пурпурный + Жёлтый + Чёрный. 0-100%</td></tr>
+      <tr><td><b>HSB / HSV</b></td><td>Дизайн, подбор цвета</td><td>Оттенок + Насыщенность + Яркость</td></tr>
+      <tr><td><b>Lab</b></td><td>Профессиональная коррекция</td><td>Независима от устройства</td></tr>
+      <tr><td><b>Grayscale</b></td><td>Ч/б изображения</td><td>Оттенки серого</td></tr>
+    </table>
+
+    <div class="viz">
+      <svg viewBox="0 0 420 140" width="420">
+        <g font-size="11" text-anchor="middle" fill="#1c2331">
+          <rect x="30" y="30" width="80" height="60" fill="#e11d48"/>
+          <text x="70" y="115" fill="#e11d48" font-weight="600">RGB</text>
+          <text x="70" y="130" font-size="10" fill="#889">для экрана</text>
+
+          <rect x="170" y="30" width="80" height="60" fill="#0891b2"/>
+          <text x="210" y="115" fill="#0891b2" font-weight="600">CMYK</text>
+          <text x="210" y="130" font-size="10" fill="#889">для печати</text>
+
+          <rect x="310" y="30" width="80" height="60" fill="#16a34a"/>
+          <text x="350" y="115" fill="#16a34a" font-weight="600">HSB</text>
+          <text x="350" y="130" font-size="10" fill="#889">для дизайна</text>
+        </g>
+      </svg>
+      <div class="cap">Основные цветовые модели и их применение.</div>
+    </div>
+
+    <h3>8.5. Форматы изображений</h3>
+    <table>
+      <tr><th>Формат</th><th>Сжатие</th><th>Прозрачность</th><th>Когда использовать</th></tr>
+      <tr><td>JPG / JPEG</td><td>С потерями</td><td>Нет</td><td>Фото, большие картинки для веба</td></tr>
+      <tr><td>PNG</td><td>Без потерь</td><td>Да (8-bit alpha)</td><td>Логотипы, скриншоты, графика с прозрачностью</td></tr>
+      <tr><td>GIF</td><td>Без потерь (256 цветов)</td><td>Да (1-bit)</td><td>Простые анимации</td></tr>
+      <tr><td>WEBP</td><td>С потерями и без</td><td>Да</td><td>Современный веб — лучший выбор</td></tr>
+      <tr><td>SVG</td><td>Векторный</td><td>Да</td><td>Иконки, логотипы на сайте</td></tr>
+      <tr><td>TIFF</td><td>Без потерь</td><td>Да</td><td>Профессиональная печать</td></tr>
+      <tr><td>BMP</td><td>Без сжатия</td><td>Нет</td><td>Устаревший, не использовать</td></tr>
+    </table>
+
+    <h3>8.6. Бесплатные редакторы</h3>
+    <table>
+      <tr><th>Программа</th><th>Тип</th><th>Аналог</th></tr>
+      <tr><td>GIMP</td><td>Растровый</td><td>Photoshop</td></tr>
+      <tr><td>Krita</td><td>Растровый (для рисования)</td><td>Photoshop + Painter</td></tr>
+      <tr><td>Inkscape</td><td>Векторный</td><td>Illustrator</td></tr>
+      <tr><td>Figma</td><td>Векторный + прототипы (веб)</td><td>Sketch, Adobe XD</td></tr>
+      <tr><td>Blender</td><td>3D</td><td>Maya, 3ds Max</td></tr>
+      <tr><td>Photopea</td><td>Растровый (веб)</td><td>Photoshop (в браузере)</td></tr>
+    </table>
+
+    <h3>Практические работы №18-19</h3>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №18 · Работа в графическом редакторе <span class="badge">50 мин</span></div>
+      <div class="goal"><b>Задача:</b> освоить базовые операции в GIMP или Photopea.</div>
+
+      <h4>Часть 1. Открытие и основы</h4>
+      <ol>
+        <li>Откройте Photopea (<a href="https://photopea.com" target="_blank">photopea.com</a>) — работает в браузере бесплатно, без установки.</li>
+        <li>Загрузите любое фото через <code>File → Open</code>.</li>
+        <li>Изучите интерфейс: панель инструментов слева, панель слоёв справа, меню сверху.</li>
+        <li>Попробуйте инструменты: <b>Move</b> (перемещение), <b>Crop</b> (обрезка), <b>Brush</b> (кисть), <b>Eraser</b> (ластик).</li>
+      </ol>
+
+      <h4>Часть 2. Обрезка и масштаб</h4>
+      <ol>
+        <li>Обрежьте фото до квадрата инструментом <b>Crop</b>.</li>
+        <li>Измените размер: <code>Image → Image Size</code>, установите 800×800 px.</li>
+        <li>Сохраните результат: <code>File → Export As → JPG</code>, качество 80%.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №19 · Создание простого постера <span class="badge">60 мин</span></div>
+      <div class="goal"><b>Задача:</b> создать постер 1080×1080 px «Я учусь в Академии ТОП».</div>
+      <ol>
+        <li>Создайте новый документ: <code>File → New</code>, размер 1080×1080 px, RGB, 72 PPI.</li>
+        <li>Залейте фон градиентом или однотонным цветом.</li>
+        <li>Добавьте текстовый блок с заголовком (крупный шрифт, контрастный цвет).</li>
+        <li>Добавьте подзаголовок с ФИО или группой.</li>
+        <li>Вставьте логотип или иконку (из библиотеки или нарисуйте сами).</li>
+        <li>Экспортируйте в 2 форматах: <code>poster.jpg</code> и <code>poster.png</code>.</li>
+        <li>Сравните размеры файлов. Какой меньше? Почему?</li>
+      </ol>
+
+      <div class="goal"><b>Результат:</b> 2 файла постера, ответ на вопрос про размеры.</div>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Задача 1. Логотип компании нужно напечатать на футболках и баннерах. Какой формат использовать?</summary>
+      <div class="answer">
+        <b>Векторный (SVG, AI, EPS, PDF).</b> Причины:
+        <ul>
+          <li>Логотип масштабируется без потери качества — от визитки до билборда.</li>
+          <li>Печать требует высокого разрешения; вектор даёт максимальное.</li>
+          <li>Можно легко менять цвета, размеры, шрифты.</li>
+        </ul>
+        Растровый (PNG, JPG) подойдёт только для мелких форматов или если логотип не будет увеличиваться.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Задача 2. Фото весит 8 МБ. Как уменьшить размер файла для сайта?</summary>
+      <div class="answer">
+        Способы:
+        <ol>
+          <li><b>Изменить размер</b> — 4000×3000 px не нужен для веба. Уменьшить до 1200×900 px.</li>
+          <li><b>Сжать</b> — сохранить в JPG с качеством 70-80% (Photoshop: «Сохранить для Web»).</li>
+          <li><b>Сменить формат</b> — на WEBP: часто меньше на 30-50% при том же качестве.</li>
+          <li><b>Убрать метаданные</b> (EXIF с координатами, моделью камеры) — иногда экономит десятки КБ.</li>
+        </ol>
+        Итого: из 8 МБ легко сделать 150-300 КБ без видимой потери качества.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Задача 3. Чем PNG отличается от JPG?</summary>
+      <div class="answer">
+        <b>JPG</b>:
+        <ul>
+          <li>Сжатие с потерями — при сильном сжатии появляются «артефакты».</li>
+          <li>Нет прозрачности.</li>
+          <li>Хорош для фотографий.</li>
+          <li>Маленький размер файла.</li>
+        </ul>
+        <b>PNG</b>:
+        <ul>
+          <li>Сжатие без потерь — качество идеальное.</li>
+          <li>Поддерживает прозрачность (alpha-канал).</li>
+          <li>Хорош для логотипов, скриншотов, графики с текстом.</li>
+          <li>Размер больше, чем JPG.</li>
+        </ul>
+        <b>Правило:</b> фото — JPG, логотип с прозрачностью — PNG, современный веб — WEBP.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Задача 4. В чём разница между RGB и CMYK?</summary>
+      <div class="answer">
+        <b>RGB</b> — аддитивная модель: смешение света. Красный + зелёный + синий = белый. Используется на экранах.<br><br>
+        <b>CMYK</b> — субтрактивная модель: смешение красок. Голубой + пурпурный + жёлтый + чёрный. Используется в печати.<br><br>
+        <b>Почему важно:</b> цвета, которые ярко смотрятся на экране (например, насыщенный синий), при печати могут оказаться тусклыми. Профессиональный подход — работать в RGB, но перед печатью конвертировать в CMYK и проверять цвета.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание по разделу</div>
+      Сдать:
+      <ol>
+        <li><b>Файл-исследование</b> <code>graphics-research.docx</code>: сравнительная таблица форматов (JPG, PNG, WEBP, SVG) — что за формат, где применяется, плюсы и минусы.</li>
+        <li><b>Постер</b> <code>poster.jpg</code> и <code>poster.png</code> — 1080×1080, с текстом, изображением и единым стилем.</li>
+        <li><b>Ответы</b> на 4 вопроса самопроверки (письменно).</li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="07-presentations.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">7. Программа подготовки презентаций</span>
+  </a>
+  <a href="it-index.html" class="next">
+    <span class="dir">К оглавлению →</span>
+    <span class="title">Все темы курса</span>
+  </a>
+</div>
+
+<footer>
+  ОП.03 Информационные технологии · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

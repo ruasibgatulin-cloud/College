@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ИТ · 4. Word — графика · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ОП.03 ИТ · Раздел 4</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="it-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-info.html">1. Информация</a>
+  <a href="02-word-basics.html">2. Word</a>
+  <a href="03-word-advanced.html">3. Word+</a>
+  <a href="04-word-graphics.html" class="current">4. Word 🖼</a>
+  <a href="05-excel-basics.html">5. Excel</a>
+  <a href="06-excel-functions.html">6. Excel+</a>
+  <a href="07-presentations.html">7. Презентации</a>
+  <a href="08-graphics.html">8. Графика</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">4</span>Графика и формулы в документе</h2>
+
+    <h3>4.1. Вставка рисунков</h3>
+    <p>Меню: <code>Вставка → Рисунки</code>. Источники:</p>
+    <ul>
+      <li><b>Это устройство</b> — файл с компьютера (JPG, PNG, SVG, GIF)</li>
+      <li><b>Стоковые изображения</b> — библиотека Microsoft</li>
+      <li><b>Онлайн-изображения</b> — поиск в интернете прямо из Word</li>
+      <li><b>Иконки</b> — векторные пиктограммы</li>
+      <li><b>Screenshot / Screenshot</b> — снимок экрана</li>
+    </ul>
+
+    <h3>4.2. Обтекание текстом</h3>
+    <p><b>Обтекание</b> — как текст располагается относительно рисунка.</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 500 220" width="500">
+        <!-- В тексте -->
+        <g transform="translate(10,20)">
+          <text x="0" y="12" font-size="11" fill="#4f46e5" font-weight="600">В тексте</text>
+          <rect x="0" y="20" width="130" height="60" fill="#eef0ff" stroke="#4f46e5"/>
+          <line x1="0" y1="90" x2="130" y2="90" stroke="#889" stroke-width="2"/>
+          <line x1="0" y1="100" x2="130" y2="100" stroke="#889" stroke-width="2"/>
+          <line x1="0" y1="110" x2="130" y2="110" stroke="#889" stroke-width="2"/>
+        </g>
+        <!-- Вокруг -->
+        <g transform="translate(180,20)">
+          <text x="0" y="12" font-size="11" fill="#4f46e5" font-weight="600">Вокруг рамки</text>
+          <rect x="30" y="20" width="70" height="60" fill="#eef0ff" stroke="#4f46e5"/>
+          <g stroke="#889" stroke-width="2">
+            <line x1="0" y1="30" x2="25" y2="30"/>
+            <line x1="0" y1="42" x2="25" y2="42"/>
+            <line x1="0" y1="54" x2="25" y2="54"/>
+            <line x1="0" y1="66" x2="25" y2="66"/>
+            <line x1="105" y1="30" x2="130" y2="30"/>
+            <line x1="105" y1="42" x2="130" y2="42"/>
+            <line x1="105" y1="54" x2="130" y2="54"/>
+            <line x1="105" y1="66" x2="130" y2="66"/>
+            <line x1="0" y1="90" x2="130" y2="90"/>
+            <line x1="0" y1="100" x2="130" y2="100"/>
+          </g>
+        </g>
+        <!-- За текстом -->
+        <g transform="translate(350,20)">
+          <text x="0" y="12" font-size="11" fill="#4f46e5" font-weight="600">За текстом</text>
+          <rect x="0" y="30" width="130" height="50" fill="#eef0ff" stroke="#4f46e5" opacity=".5"/>
+          <g stroke="#889" stroke-width="2">
+            <line x1="0" y1="40" x2="130" y2="40"/>
+            <line x1="0" y1="50" x2="130" y2="50"/>
+            <line x1="0" y1="60" x2="130" y2="60"/>
+            <line x1="0" y1="70" x2="130" y2="70"/>
+          </g>
+        </g>
+      </svg>
+      <div class="cap">Три основных типа обтекания: текст над/под рисунком; текст вокруг рисунка; рисунок за текстом.</div>
+    </div>
+
+    <table>
+      <tr><th>Режим</th><th>Что делает</th><th>Когда использовать</th></tr>
+      <tr><td>В тексте</td><td>Рисунок как буква, текст не обтекает</td><td>Маленькие иконки в тексте</td></tr>
+      <tr><td>Вокруг рамки</td><td>Текст обходит прямоугольник</td><td>Иллюстрации, таблицы</td></tr>
+      <tr><td>По контуру</td><td>Текст повторяет форму объекта</td><td>Фигуры сложной формы</td></tr>
+      <tr><td>Сквозное</td><td>Текст поверх рисунка</td><td>Фон, логотип</td></tr>
+      <tr><td>За текстом</td><td>Рисунок под текстом</td><td>Подложка, водяной знак</td></tr>
+      <tr><td>Перед текстом</td><td>Рисунок поверх текста</td><td>Акцент, стикер</td></tr>
+    </table>
+
+    <h3>4.3. Блок-схемы</h3>
+    <p>Word умеет рисовать блок-схемы через <code>Вставка → Фигуры</code>. Основные блоки:</p>
+    <table>
+      <tr><th>Фигура</th><th>Смысл</th></tr>
+      <tr><td>Прямоугольник</td><td>Действие / процесс</td></tr>
+      <tr><td>Ромб</td><td>Условие / ветвление</td></tr>
+      <tr><td>Параллелограмм</td><td>Ввод / вывод данных</td></tr>
+      <tr><td>Овал</td><td>Начало / конец</td></tr>
+      <tr><td>Стрелка</td><td>Направление потока</td></tr>
+    </table>
+
+    <div class="viz">
+      <svg viewBox="0 0 400 260" width="400">
+        <!-- Начало -->
+        <ellipse cx="200" cy="30" rx="60" ry="18" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5"/>
+        <text x="200" y="35" text-anchor="middle" font-size="12">Начало</text>
+        <!-- Ввод -->
+        <polygon points="140,70 280,70 260,105 120,105" fill="#e6f7fb" stroke="#0891b2" stroke-width="1.5"/>
+        <text x="200" y="92" text-anchor="middle" font-size="12">Ввести a, b</text>
+        <!-- Условие -->
+        <polygon points="200,125 260,160 200,195 140,160" fill="#fff9e6" stroke="#d97706" stroke-width="1.5"/>
+        <text x="200" y="164" text-anchor="middle" font-size="12">a &gt; b ?</text>
+        <!-- Действие yes -->
+        <rect x="30" y="200" width="100" height="30" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.5" rx="4"/>
+        <text x="80" y="220" text-anchor="middle" font-size="12">max = a</text>
+        <!-- Действие no -->
+        <rect x="270" y="200" width="100" height="30" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.5" rx="4"/>
+        <text x="320" y="220" text-anchor="middle" font-size="12">max = b</text>
+        <!-- Стрелки -->
+        <g stroke="#8891a6" stroke-width="1.4" marker-end="url(#arw)">
+          <defs><marker id="arw" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8891a6"/></marker></defs>
+          <line x1="200" y1="48" x2="200" y2="68"/>
+          <line x1="200" y1="105" x2="200" y2="123"/>
+          <line x1="140" y1="160" x2="80" y2="198"/>
+          <line x1="260" y1="160" x2="320" y2="198"/>
+        </g>
+        <text x="105" y="180" font-size="11" fill="#16a34a">да</text>
+        <text x="285" y="180" font-size="11" fill="#e11d48">нет</text>
+      </svg>
+      <div class="cap">Пример блок-схемы: поиск максимума из двух чисел.</div>
+    </div>
+
+    <h3>4.4. Научные формулы</h3>
+    <p>Для формул в Word используется <b>редактор уравнений</b>:</p>
+    <ul>
+      <li><b>Горячая клавиша:</b> <kbd>Alt</kbd>+<kbd>=</kbd> — открыть редактор формул</li>
+      <li><b>Меню:</b> <code>Вставка → Уравнение</code></li>
+      <li><b>Символы</b>: дроби, интегралы, суммы, матрицы, индексы</li>
+    </ul>
+
+    <div class="box example">
+      <div class="label">Как набрать формулу</div>
+      Открыть редактор (<kbd>Alt</kbd>+<kbd>=</kbd>) → ввести: <code>x = (-b ± √(b^2 - 4ac)) / (2a)</code> → Word сам преобразует в красивую формулу:
+      $$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+      Пробел отделяет части формулы. Коды:
+      <ul>
+        <li><code>^</code> — верхний индекс (степень)</li>
+        <li><code>_</code> — нижний индекс</li>
+        <li><code>/</code> — дробь</li>
+        <li><code>\sqrt</code> — корень</li>
+        <li><code>\int</code> — интеграл</li>
+        <li><code>\sum</code> — сумма</li>
+      </ul>
+    </div>
+
+    <h3>4.5. Слои и порядок</h3>
+    <p>Если несколько объектов пересекаются — важен <b>порядок слоёв</b>:</p>
+    <ul>
+      <li>Правый клик на объекте → <code>На задний план / На передний план</code></li>
+      <li>Или <code>Формат → Упорядочить</code></li>
+    </ul>
+
+    <h3>4.6. Подложка</h3>
+    <p><b>Подложка</b> — картинка или текст за основным содержимым (например, логотип или слово «ЧЕРНОВИК»).</p>
+    <ul>
+      <li>Меню: <code>Дизайн → Подложка</code></li>
+      <li>Готовые варианты или своя картинка</li>
+      <li>Настройка прозрачности и расположения</li>
+    </ul>
+
+    <h3>Практическая работа №9</h3>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №9 · Рисунки, блок-схема, формула <span class="badge">60 мин</span></div>
+      <div class="goal"><b>Задача:</b> научиться вставлять рисунки с разным обтеканием, строить блок-схему и набирать формулы.</div>
+
+      <h4>Часть 1. Рисунки и обтекание</h4>
+      <ol>
+        <li>Создайте новый документ.</li>
+        <li>Наберите 3 абзаца произвольного текста.</li>
+        <li>Вставьте любое изображение с компьютера: <code>Вставка → Рисунки → Это устройство</code>.</li>
+        <li>Установите обтекание «Вокруг рамки».</li>
+        <li>Перетащите картинку вправо — текст должен обтекать её слева.</li>
+        <li>Поменяйте обтекание на «За текстом» и добавьте полупрозрачность — получилась подложка.</li>
+      </ol>
+
+      <h4>Часть 2. Блок-схема</h4>
+      <ol>
+        <li>На новой странице постройте блок-схему алгоритма «Большее из двух чисел»:
+          <ul>
+            <li>Овал «Начало»</li>
+            <li>Параллелограмм «Ввести a, b»</li>
+            <li>Ромб «a &gt; b ?»</li>
+            <li>Два прямоугольника «max = a» и «max = b»</li>
+            <li>Овал «Конец»</li>
+          </ul>
+        </li>
+        <li>Соедините стрелками. Условие «да» идёт к «max = a», «нет» — к «max = b».</li>
+        <li>Сгруппируйте всю схему в один объект: выделите все элементы → правый клик → «Группировать».</li>
+      </ol>
+
+      <h4>Часть 3. Формулы</h4>
+      <ol>
+        <li>На новой странице заголовок «Формулы» (стиль «Заголовок 1»).</li>
+        <li>Наберите 3 формулы через <kbd>Alt</kbd>+<kbd>=</kbd>:
+          <ul>
+            <li>Квадратное уравнение: $x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$</li>
+            <li>Площадь круга: $S = \pi R^2$</li>
+            <li>Сумма ряда: $\sum_{i=1}^{n} \frac{1}{i^2}$</li>
+          </ul>
+        </li>
+        <li>Пронумеруйте формулы справа от каждой (обычным текстом: (1), (2), (3)).</li>
+      </ol>
+
+      <div class="goal"><b>Результат:</b> документ <code>practice-word-graphics.docx</code> с 3 частями. Сохранить в PDF.</div>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Задача 1. Рисунок перекрывает текст. Как это исправить?</summary>
+      <div class="answer">
+        Правый клик на рисунке → <code>Обтекание текстом</code> → выбрать «Вокруг рамки» или «В тексте».<br><br>
+        Если нужно оставить рисунок поверх текста, но текст должен быть виден — уменьшите прозрачность картинки: <code>Формат рисунка → Прозрачность</code>.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Задача 2. Как вставить формулу площади круга с красивой записью?</summary>
+      <div class="answer">
+        <kbd>Alt</kbd>+<kbd>=</kbd> → набрать: <code>S = \pi R^2</code> → Enter. Word сам отрисует:<br>
+        $$S = \pi R^2$$
+        Символ π (греческая пи) можно вставить из панели «Символы» в редакторе формул или набрать <code>\pi</code>.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Задача 3. Как сгруппировать несколько фигур в блок-схеме, чтобы двигать их вместе?</summary>
+      <div class="answer">
+        <ol>
+          <li>Выделите все фигуры — зажмите <kbd>Ctrl</kbd> и кликайте по каждой.</li>
+          <li>Правый клик на любой из них → <code>Группировать → Группировать</code>.</li>
+        </ol>
+        Теперь вся схема — один объект. Чтобы разгруппировать: правый клик → <code>Группировать → Разгруппировать</code>.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание</div>
+      Сдать документ <code>practice-word-graphics.docx</code>:
+      <ol>
+        <li>Титульный лист (стиль из ПР №8)</li>
+        <li>Раздел «Иллюстрации» — 2 рисунка с разным обтеканием</li>
+        <li>Раздел «Блок-схема» — схема «Большее из двух чисел», сгруппированная</li>
+        <li>Раздел «Формулы» — 3 формулы с нумерацией</li>
+      </ol>
+      Оглавление автособираемое. Экспорт в PDF.
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="03-word-advanced.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">3. Word — продвинутый</span>
+  </a>
+  <a href="05-excel-basics.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">5. Excel — основы</span>
+  </a>
+</div>
+
+<footer>
+  ОП.03 Информационные технологии · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>
