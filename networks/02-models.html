@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сети · 2. Модели OSI и TCP/IP · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ОП.11 Сети · Тема 2</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="networks-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-basics.html">1. Основы</a>
+  <a href="02-models.html" class="current">2. OSI/TCP-IP</a>
+  <a href="03-hardware.html">3. Аппаратура</a>
+  <a href="04-cables.html">4. Кабели</a>
+  <a href="05-transmission.html">5. Передача</a>
+  <a href="06-ip-addressing.html">6. IP</a>
+  <a href="07-dns-routing.html">7. DNS</a>
+  <a href="08-architectures.html">8. Архитектуры</a>
+  <a href="09-miminet-practice.html">🎯 Практика</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">2</span>Сетевые модели: OSI и TCP/IP</h2>
+
+    <p><b>Сетевая модель</b> — способ описать, как данные передаются по сети. Разбивая процесс на уровни, проще разрабатывать протоколы, искать проблемы и учить специалистов.</p>
+
+    <h3>2.1. Модель OSI — 7 уровней</h3>
+
+    <p><b>OSI</b> (Open Systems Interconnection) — эталонная модель ISO. 7 уровней, каждый решает свою задачу.</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 700 400" width="700">
+        <!-- OSI слева -->
+        <g font-size="12" font-weight="600">
+          <rect x="30" y="30"  width="280" height="42" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.4"/>
+          <text x="50" y="56" fill="#4f46e5">7. Прикладной</text>
+          <text x="300" y="56" fill="#889" font-size="11" font-weight="400" text-anchor="end">HTTP, FTP, SMTP, DNS</text>
+
+          <rect x="30" y="74"  width="280" height="42" fill="#e6f7fb" stroke="#0891b2" stroke-width="1.4"/>
+          <text x="50" y="100" fill="#0891b2">6. Представления</text>
+          <text x="300" y="100" fill="#889" font-size="11" font-weight="400" text-anchor="end">TLS/SSL, JPEG, UTF-8</text>
+
+          <rect x="30" y="118" width="280" height="42" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.4"/>
+          <text x="50" y="144" fill="#4f46e5">5. Сеансовый</text>
+          <text x="300" y="144" fill="#889" font-size="11" font-weight="400" text-anchor="end">RPC, NetBIOS</text>
+
+          <rect x="30" y="162" width="280" height="42" fill="#fff1f4" stroke="#e11d48" stroke-width="1.4"/>
+          <text x="50" y="188" fill="#e11d48">4. Транспортный</text>
+          <text x="300" y="188" fill="#889" font-size="11" font-weight="400" text-anchor="end">TCP, UDP</text>
+
+          <rect x="30" y="206" width="280" height="42" fill="#fff9e6" stroke="#d97706" stroke-width="1.4"/>
+          <text x="50" y="232" fill="#d97706">3. Сетевой</text>
+          <text x="300" y="232" fill="#889" font-size="11" font-weight="400" text-anchor="end">IP, ICMP, ARP</text>
+
+          <rect x="30" y="250" width="280" height="42" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.4"/>
+          <text x="50" y="276" fill="#16a34a">2. Канальный</text>
+          <text x="300" y="276" fill="#889" font-size="11" font-weight="400" text-anchor="end">Ethernet, Wi-Fi, MAC</text>
+
+          <rect x="30" y="294" width="280" height="42" fill="#f1f3f8" stroke="#64748b" stroke-width="1.4"/>
+          <text x="50" y="320" fill="#64748b">1. Физический</text>
+          <text x="300" y="320" fill="#889" font-size="11" font-weight="400" text-anchor="end">Кабели, разъёмы, сигналы</text>
+        </g>
+
+        <!-- TCP/IP справа -->
+        <g font-size="12" font-weight="600">
+          <rect x="390" y="30" width="280" height="130" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.6"/>
+          <text x="530" y="100" text-anchor="middle" fill="#4f46e5" font-size="14">Прикладной</text>
+
+          <rect x="390" y="162" width="280" height="42" fill="#fff1f4" stroke="#e11d48" stroke-width="1.6"/>
+          <text x="530" y="188" text-anchor="middle" fill="#e11d48">Транспортный</text>
+
+          <rect x="390" y="206" width="280" height="42" fill="#fff9e6" stroke="#d97706" stroke-width="1.6"/>
+          <text x="530" y="232" text-anchor="middle" fill="#d97706">Межсетевой</text>
+
+          <rect x="390" y="250" width="280" height="86" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.6"/>
+          <text x="530" y="298" text-anchor="middle" fill="#16a34a" font-size="14">Доступ к сети</text>
+        </g>
+
+        <text x="170" y="15" text-anchor="middle" font-size="13" fill="#1c2331" font-weight="700">Модель OSI (7 уровней)</text>
+        <text x="530" y="15" text-anchor="middle" font-size="13" fill="#1c2331" font-weight="700">Модель TCP/IP (4 уровня)</text>
+      </svg>
+      <div class="cap">Сравнение моделей OSI и TCP/IP. Уровни OSI 5-7 соответствуют одному уровню TCP/IP.</div>
+    </div>
+
+    <h3>2.2. Что делает каждый уровень OSI</h3>
+
+    <table>
+      <tr><th>№</th><th>Уровень</th><th>Задача</th><th>Примеры протоколов</th></tr>
+      <tr><td>7</td><td>Прикладной</td><td>Сервисы для пользователя: почта, веб, файлы</td><td>HTTP, FTP, SMTP, DNS, SSH</td></tr>
+      <tr><td>6</td><td>Представления</td><td>Формат данных: шифрование, сжатие, кодировка</td><td>TLS/SSL, JPEG, UTF-8</td></tr>
+      <tr><td>5</td><td>Сеансовый</td><td>Управление сессиями: открыть, поддерживать, закрыть</td><td>RPC, NetBIOS</td></tr>
+      <tr><td>4</td><td>Транспортный</td><td>Надёжная доставка: TCP (с подтверждением) / UDP (без)</td><td>TCP, UDP</td></tr>
+      <tr><td>3</td><td>Сетевой</td><td>Маршрутизация: как пакет дойдёт через несколько сетей</td><td>IP, ICMP, ARP</td></tr>
+      <tr><td>2</td><td>Канальный</td><td>Доставка между двумя соседними устройствами в одной сети</td><td>Ethernet, Wi-Fi, MAC</td></tr>
+      <tr><td>1</td><td>Физический</td><td>Передача битов по физической среде: кабель, радио</td><td>Витая пара, оптика</td></tr>
+    </table>
+
+    <h3>2.3. Инкапсуляция данных</h3>
+
+    <p>Когда данные идут по сети, каждый уровень добавляет свой <b>заголовок</b>. Это называется <b>инкапсуляцией</b>.</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 700 300" width="700">
+        <!-- Прикладной -->
+        <rect x="30" y="30" width="640" height="40" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.4"/>
+        <text x="350" y="55" text-anchor="middle" font-size="12" fill="#4f46e5">Данные (например, HTTP-запрос)</text>
+
+        <!-- Транспортный -->
+        <rect x="30" y="90" width="90" height="40" fill="#fff1f4" stroke="#e11d48" stroke-width="1.4"/>
+        <text x="75" y="115" text-anchor="middle" font-size="11" fill="#e11d48">TCP заг.</text>
+        <rect x="120" y="90" width="550" height="40" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.4"/>
+        <text x="395" y="115" text-anchor="middle" font-size="12" fill="#4f46e5">Данные</text>
+
+        <!-- Сетевой -->
+        <rect x="30" y="150" width="90" height="40" fill="#fff9e6" stroke="#d97706" stroke-width="1.4"/>
+        <text x="75" y="175" text-anchor="middle" font-size="11" fill="#d97706">IP заг.</text>
+        <rect x="120" y="150" width="90" height="40" fill="#fff1f4" stroke="#e11d48" stroke-width="1.4"/>
+        <text x="165" y="175" text-anchor="middle" font-size="11" fill="#e11d48">TCP заг.</text>
+        <rect x="210" y="150" width="460" height="40" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.4"/>
+        <text x="440" y="175" text-anchor="middle" font-size="12" fill="#4f46e5">Данные</text>
+
+        <!-- Канальный -->
+        <rect x="30" y="210" width="90" height="40" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.4"/>
+        <text x="75" y="235" text-anchor="middle" font-size="11" fill="#16a34a">Eth. заг.</text>
+        <rect x="120" y="210" width="90" height="40" fill="#fff9e6" stroke="#d97706" stroke-width="1.4"/>
+        <text x="165" y="235" text-anchor="middle" font-size="11" fill="#d97706">IP заг.</text>
+        <rect x="210" y="210" width="90" height="40" fill="#fff1f4" stroke="#e11d48" stroke-width="1.4"/>
+        <text x="255" y="235" text-anchor="middle" font-size="11" fill="#e11d48">TCP заг.</text>
+        <rect x="300" y="210" width="370" height="40" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.4"/>
+        <text x="485" y="235" text-anchor="middle" font-size="12" fill="#4f46e5">Данные</text>
+
+        <!-- Физический -->
+        <rect x="30" y="260" width="640" height="30" fill="#f1f3f8" stroke="#64748b" stroke-width="1.4"/>
+        <text x="350" y="280" text-anchor="middle" font-size="12" fill="#64748b">Биты: 0101010101...</text>
+      </svg>
+      <div class="cap">Инкапсуляция: на каждом уровне данные «оборачиваются» в новый заголовок.</div>
+    </div>
+
+    <p><b>Обратный процесс</b> на принимающей стороне — <b>декапсуляция</b>: снимаем заголовки по одному, пока не получим исходные данные.</p>
+
+    <h3>2.4. PDU — блоки данных протокола</h3>
+
+    <p>Данные на каждом уровне называются по-разному:</p>
+
+    <table>
+      <tr><th>Уровень</th><th>Название блока</th><th>Пример</th></tr>
+      <tr><td>Прикладной</td><td>Data (данные)</td><td>HTTP-запрос</td></tr>
+      <tr><td>Транспортный</td><td>Segment (TCP) / Datagram (UDP)</td><td>TCP-сегмент</td></tr>
+      <tr><td>Сетевой</td><td>Packet (пакет)</td><td>IP-пакет</td></tr>
+      <tr><td>Канальный</td><td>Frame (кадр)</td><td>Ethernet-кадр</td></tr>
+      <tr><td>Физический</td><td>Bits (биты)</td><td>Электрические сигналы</td></tr>
+    </table>
+
+    <h3>2.5. Протоколы и их порты</h3>
+
+    <p><b>Порт</b> — числовой идентификатор приложения на устройстве. Позволяет одному серверу обслуживать разные сервисы одновременно.</p>
+
+    <table>
+      <tr><th>Протокол</th><th>Порт</th><th>Назначение</th></tr>
+      <tr><td>FTP</td><td>20, 21</td><td>Передача файлов</td></tr>
+      <tr><td>SSH</td><td>22</td><td>Защищённый удалённый доступ</td></tr>
+      <tr><td>Telnet</td><td>23</td><td>Устаревший удалённый доступ</td></tr>
+      <tr><td>SMTP</td><td>25, 587</td><td>Отправка почты</td></tr>
+      <tr><td>DNS</td><td>53</td><td>Преобразование имён в IP</td></tr>
+      <tr><td>DHCP</td><td>67, 68</td><td>Автонастройка IP</td></tr>
+      <tr><td>HTTP</td><td>80</td><td>Веб (незащищённый)</td></tr>
+      <tr><td>POP3</td><td>110</td><td>Получение почты</td></tr>
+      <tr><td>IMAP</td><td>143</td><td>Почта с синхронизацией</td></tr>
+      <tr><td>HTTPS</td><td>443</td><td>Веб (TLS)</td></tr>
+      <tr><td>RDP</td><td>3389</td><td>Удалённый рабочий стол Windows</td></tr>
+    </table>
+
+    <div class="box note">
+      <div class="label">Порты 0-1023</div>
+      Называются <b>привилегированными</b>. Только root/администратор может слушать их. Порты 1024-49151 — обычные, 49152+ — динамические (для временных соединений).
+    </div>
+
+    <h3>2.6. TCP vs UDP</h3>
+
+    <table>
+      <tr><th>Свойство</th><th>TCP</th><th>UDP</th></tr>
+      <tr><td>Соединение</td><td>Устанавливается (3-way handshake)</td><td>Нет</td></tr>
+      <tr><td>Надёжность</td><td>Подтверждения, повторная отправка</td><td>Без гарантий</td></tr>
+      <tr><td>Порядок</td><td>Сохраняется</td><td>Не гарантируется</td></tr>
+      <tr><td>Скорость</td><td>Медленнее</td><td>Быстрее</td></tr>
+      <tr><td>Размер</td><td>Заголовок 20 байт</td><td>Заголовок 8 байт</td></tr>
+      <tr><td>Применение</td><td>HTTP, FTP, SSH, Email</td><td>DNS, VoIP, игры, видео</td></tr>
+    </table>
+
+    <h4>Трёхстороннее рукопожатие TCP</h4>
+
+    <div class="viz">
+      <svg viewBox="0 0 500 200" width="500">
+        <text x="80" y="20" text-anchor="middle" font-size="13" font-weight="600" fill="#4f46e5">Клиент</text>
+        <text x="420" y="20" text-anchor="middle" font-size="13" font-weight="600" fill="#16a34a">Сервер</text>
+
+        <line x1="80" y1="30" x2="80" y2="180" stroke="#4f46e5" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <line x1="420" y1="30" x2="420" y2="180" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+        <defs><marker id="ar-tcp" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8891a6"/></marker></defs>
+
+        <line x1="80" y1="60" x2="420" y2="60" stroke="#8891a6" stroke-width="1.5" marker-end="url(#ar-tcp)"/>
+        <text x="250" y="55" text-anchor="middle" font-size="11" fill="#1c2331">1. SYN (хочу соединиться)</text>
+
+        <line x1="420" y1="100" x2="80" y2="100" stroke="#8891a6" stroke-width="1.5" marker-end="url(#ar-tcp)"/>
+        <text x="250" y="95" text-anchor="middle" font-size="11" fill="#1c2331">2. SYN-ACK (согласен, тоже хочу)</text>
+
+        <line x1="80" y1="140" x2="420" y2="140" stroke="#8891a6" stroke-width="1.5" marker-end="url(#ar-tcp)"/>
+        <text x="250" y="135" text-anchor="middle" font-size="11" fill="#1c2331">3. ACK (подтверждаю)</text>
+
+        <text x="250" y="175" text-anchor="middle" font-size="11" fill="#16a34a" font-weight="600">Соединение установлено — можно передавать данные</text>
+      </svg>
+      <div class="cap">Трёхстороннее рукопожатие TCP: SYN → SYN-ACK → ACK.</div>
+    </div>
+
+    <h3>2.7. Где это применяется</h3>
+
+    <table>
+      <tr><th>Область</th><th>Пример</th></tr>
+      <tr><td><b>Диагностика проблем</b></td><td>Администратор проверяет уровень, где сломалось: кабель (1), MAC (2), IP (3), порт (4), приложение (7)</td></tr>
+      <tr><td><b>Разработка протоколов</b></td><td>Каждый новый протокол проектируется под конкретный уровень OSI</td></tr>
+      <tr><td><b>Firewall и фильтрация</b></td><td>Правила работают на разных уровнях: блокировка IP (3), портов (4), URL (7)</td></tr>
+      <tr><td><b>Анализ трафика</b></td><td>Wireshark показывает пакеты по уровням — видно, где что происходит</td></tr>
+      <tr><td><b>Обучение</b></td><td>OSI — универсальный язык для описания сетевых взаимодействий</td></tr>
+    </table>
+
+    <h3>Практические команды</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="ping 8.8.8.8           # проверка доступности (уровень 3)
+tracert 8.8.8.8        # Windows: маршрут (уровень 3)
+traceroute 8.8.8.8     # Linux/Mac: маршрут (уровень 3)
+nslookup google.com    # DNS-резолвинг (уровень 7)
+netstat -an            # Windows: активные соединения (уровень 4)
+ss -tuln               # Linux: слушающие порты (уровень 4)
+curl -I https://ya.ru  # HTTP-заголовки (уровень 7)">📋 Копировать</button>
+      <pre><span class="prompt">$</span> ping 8.8.8.8           <span class="cmt"># проверка доступности (уровень 3)</span>
+<span class="prompt">$</span> tracert 8.8.8.8        <span class="cmt"># Windows: маршрут (уровень 3)</span>
+<span class="prompt">$</span> traceroute 8.8.8.8     <span class="cmt"># Linux/Mac: маршрут (уровень 3)</span>
+<span class="prompt">$</span> nslookup google.com    <span class="cmt"># DNS-резолвинг (уровень 7)</span>
+<span class="prompt">$</span> netstat -an            <span class="cmt"># Windows: активные соединения (уровень 4)</span>
+<span class="prompt">$</span> ss -tuln               <span class="cmt"># Linux: слушающие порты (уровень 4)</span>
+<span class="prompt">$</span> curl -I https://ya.ru  <span class="cmt"># HTTP-заголовки (уровень 7)</span></pre>
+      <div class="desc">Проверка разных уровней модели OSI через утилиты командной строки.</div>
+    </div>
+
+    <h3>Практическое задание</h3>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №2 · Wireshark и уровни OSI <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> увидеть реальный трафик и его уровни через Wireshark.</div>
+      <ol>
+        <li>Установите <b>Wireshark</b> (<a href="https://wireshark.org" target="_blank">wireshark.org</a>) — бесплатный анализатор трафика.</li>
+        <li>Запустите Wireshark, выберите активный интерфейс (Wi-Fi или Ethernet).</li>
+        <li>Начните захват, откройте в браузере любой сайт. Остановите захват.</li>
+        <li>Найдите пакет с HTTP-запросом:
+          <ul>
+            <li>В фильтре введите <code>http</code></li>
+            <li>Кликните на любой пакет</li>
+            <li>В нижней панели разверните уровни: Frame, Ethernet, IP, TCP, HTTP</li>
+          </ul>
+        </li>
+        <li>Запишите:
+          <ul>
+            <li>MAC-адреса отправителя и получателя (уровень 2)</li>
+            <li>IP-адреса (уровень 3)</li>
+            <li>Номера портов (уровень 4)</li>
+            <li>HTTP-метод и URL (уровень 7)</li>
+          </ul>
+        </li>
+        <li>Сохраните захваченный трафик в файл <code>capture.pcapng</code>.</li>
+      </ol>
+      <div class="goal"><b>Результат:</b> скриншот развёрнутого пакета + файл pcapng + письменный отчёт.</div>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Почему OSI 7 уровней, а TCP/IP — 4?</summary>
+      <div class="answer">
+        OSI — <b>теоретическая</b> модель, созданная ISO как эталон. Она детально описывает все возможные функции, разбивая их на 7 уровней.<br><br>
+        TCP/IP — <b>практическая</b> модель, выросшая из реального стека протоколов ARPANET. Три верхних уровня OSI (5, 6, 7) на практике реализуются одним приложением, поэтому их объединили в один «Прикладной».<br><br>
+        В реальности используется TCP/IP, но при обучении и диагностике ссылаются на OSI — она удобнее для понимания.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Что такое инкапсуляция?</summary>
+      <div class="answer">
+        <b>Инкапсуляция</b> — процесс добавления заголовков при движении данных вниз по стеку.<br><br>
+        Пример: HTTP-запрос<br>
+        1. <b>Транспортный уровень</b> добавляет TCP-заголовок (порт источника, порт назначения, номера последовательности).<br>
+        2. <b>Сетевой уровень</b> добавляет IP-заголовок (IP-источник, IP-назначение, TTL).<br>
+        3. <b>Канальный уровень</b> добавляет Ethernet-заголовок (MAC-источник, MAC-назначение).<br>
+        4. <b>Физический уровень</b> преобразует всё в биты и отправляет по кабелю.<br><br>
+        На приёмной стороне происходит обратный процесс — <b>декапсуляция</b>.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Почему DNS работает через UDP, а не TCP?</summary>
+      <div class="answer">
+        <b>Скорость и объём.</b> DNS-запросы маленькие (обычно < 512 байт) и их очень много. UDP-заголовок 8 байт vs TCP 20+ байт — экономия трафика.<br><br>
+        <b>Нет состояния.</b> DNS не нужен трёхсторонний handshake — один запрос, один ответ.<br><br>
+        <b>Повторная отправка.</b> Если потерялся — клиент просто отправит снова через таймаут.<br><br>
+        <b>Исключение:</b> для больших DNS-ответов (например, DNSSEC или зон > 512 байт) используется TCP или расширение EDNS0. Также при передаче зон между серверами.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 4. На каком уровне работает пинг?</summary>
+      <div class="answer">
+        <b>Пинг использует ICMP</b> — протокол сетевого уровня (3). ICMP — вспомогательный протокол для служебных сообщений: «хост недоступен», «время жизни истекло», «эхо-запрос» (ping), «эхо-ответ».<br><br>
+        ICMP не использует порты — он не транспортный. Работает поверх IP напрямую.<br><br>
+        Firewall часто блокируют ICMP — тогда ping не работает, но сайт доступен. Это нормально и часто делается в целях безопасности.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание по теме</div>
+      Сдать файл <code>practice-models.docx</code>:
+      <ol>
+        <li>Таблица соответствия OSI и TCP/IP</li>
+        <li>Схема инкапсуляции для HTTP-запроса</li>
+        <li>Скриншот Wireshark с развёрнутым HTTP-пакетом</li>
+        <li>Файл <code>capture.pcapng</code> с захватом</li>
+        <li>Ответы на 4 вопроса самопроверки</li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="01-basics.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">1. Основы сетей</span>
+  </a>
+  <a href="03-hardware.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">3. Аппаратные компоненты</span>
+  </a>
+</div>
+
+<footer>
+  ОП.11 Компьютерные сети · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сети · 7. DNS и маршрутизация · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ОП.11 Сети · Тема 7</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="networks-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-basics.html">1. Основы</a>
+  <a href="02-models.html">2. OSI/TCP-IP</a>
+  <a href="03-hardware.html">3. Аппаратура</a>
+  <a href="04-cables.html">4. Кабели</a>
+  <a href="05-transmission.html">5. Передача</a>
+  <a href="06-ip-addressing.html">6. IP</a>
+  <a href="07-dns-routing.html" class="current">7. DNS</a>
+  <a href="08-architectures.html">8. Архитектуры</a>
+  <a href="09-miminet-practice.html">🎯 Практика</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">7</span>DNS, маршрутизация и NAT</h2>
+
+    <p>IP-адреса неудобны для людей — никто не запомнит <code>142.250.150.100</code>. Поэтому существует <b>DNS</b>. А чтобы пакеты находили путь через десятки сетей, работает <b>маршрутизация</b>. Чтобы сэкономить IPv4-адреса — <b>NAT</b>.</p>
+
+    <h3>7.1. DNS — система доменных имён</h3>
+
+    <p><b>DNS</b> (Domain Name System) — «телефонная книга» интернета. Преобразует <b>доменные имена</b> в <b>IP-адреса</b>.</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 620 100" width="620">
+        <rect x="20" y="20" width="180" height="60" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5" rx="6"/>
+        <text x="110" y="48" text-anchor="middle" font-size="12" fill="#4f46e5" font-weight="600">google.com</text>
+        <text x="110" y="68" text-anchor="middle" font-size="10" fill="#889">что человек помнит</text>
+
+        <defs><marker id="ar-dns" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8891a6"/></marker></defs>
+        <line x1="210" y1="50" x2="400" y2="50" stroke="#8891a6" stroke-width="2" marker-end="url(#ar-dns)"/>
+        <text x="305" y="40" text-anchor="middle" font-size="11" fill="#8891a6" font-weight="600">DNS-запрос</text>
+        <text x="305" y="65" text-anchor="middle" font-size="10" fill="#8891a6">за 10-50 мс</text>
+
+        <rect x="410" y="20" width="180" height="60" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.5" rx="6"/>
+        <text x="500" y="48" text-anchor="middle" font-size="12" fill="#16a34a" font-weight="600">142.250.150.100</text>
+        <text x="500" y="68" text-anchor="middle" font-size="10" fill="#889">что понимает сеть</text>
+      </svg>
+      <div class="cap">DNS превращает человекочитаемое имя в машинный IP-адрес.</div>
+    </div>
+
+    <h4>Иерархия доменов</h4>
+
+    <div class="viz">
+      <svg viewBox="0 0 620 260" width="620">
+        <!-- Root -->
+        <rect x="270" y="10" width="80" height="35" fill="#fff1f4" stroke="#e11d48" stroke-width="1.5" rx="6"/>
+        <text x="310" y="33" text-anchor="middle" font-size="12" fill="#e11d48" font-weight="600">. (root)</text>
+
+        <!-- TLD -->
+        <g>
+          <rect x="50" y="80" width="80" height="35" fill="#fff9e6" stroke="#d97706" stroke-width="1.5" rx="6"/>
+          <text x="90" y="103" text-anchor="middle" font-size="12" fill="#d97706">.ru</text>
+
+          <rect x="200" y="80" width="80" height="35" fill="#fff9e6" stroke="#d97706" stroke-width="1.5" rx="6"/>
+          <text x="240" y="103" text-anchor="middle" font-size="12" fill="#d97706">.com</text>
+
+          <rect x="350" y="80" width="80" height="35" fill="#fff9e6" stroke="#d97706" stroke-width="1.5" rx="6"/>
+          <text x="390" y="103" text-anchor="middle" font-size="12" fill="#d97706">.org</text>
+
+          <rect x="500" y="80" width="80" height="35" fill="#fff9e6" stroke="#d97706" stroke-width="1.5" rx="6"/>
+          <text x="540" y="103" text-anchor="middle" font-size="12" fill="#d97706">.net</text>
+        </g>
+
+        <!-- Домены второго уровня -->
+        <g>
+          <rect x="20" y="150" width="120" height="35" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5" rx="6"/>
+          <text x="80" y="173" text-anchor="middle" font-size="11" fill="#4f46e5">yandex.ru</text>
+
+          <rect x="150" y="150" width="120" height="35" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5" rx="6"/>
+          <text x="210" y="173" text-anchor="middle" font-size="11" fill="#4f46e5">google.com</text>
+
+          <rect x="280" y="150" width="120" height="35" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5" rx="6"/>
+          <text x="340" y="173" text-anchor="middle" font-size="11" fill="#4f46e5">wikipedia.org</text>
+        </g>
+
+        <!-- Поддомены -->
+        <g>
+          <rect x="20" y="215" width="120" height="30" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.5" rx="6"/>
+          <text x="80" y="235" text-anchor="middle" font-size="10" fill="#16a34a">mail.yandex.ru</text>
+
+          <rect x="150" y="215" width="120" height="30" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.5" rx="6"/>
+          <text x="210" y="235" text-anchor="middle" font-size="10" fill="#16a34a">www.google.com</text>
+        </g>
+
+        <!-- Связи -->
+        <g stroke="#cbd5e1" stroke-width="1.2">
+          <line x1="310" y1="45" x2="90" y2="80"/>
+          <line x1="310" y1="45" x2="240" y2="80"/>
+          <line x1="310" y1="45" x2="390" y2="80"/>
+          <line x1="310" y1="45" x2="540" y2="80"/>
+
+          <line x1="90" y1="115" x2="80" y2="150"/>
+          <line x1="240" y1="115" x2="210" y2="150"/>
+          <line x1="390" y1="115" x2="340" y2="150"/>
+
+          <line x1="80" y1="185" x2="80" y2="215"/>
+          <line x1="210" y1="185" x2="210" y2="215"/>
+        </g>
+      </svg>
+      <div class="cap">DNS — иерархическая система. Корневые серверы → домены верхнего уровня → домены второго уровня и т.д.</div>
+    </div>
+
+    <h4>Как работает DNS-запрос</h4>
+
+    <ol>
+      <li><b>Кэш браузера/ОС.</b> Проверяется, был ли недавно этот домен.</li>
+      <li><b>Локальный DNS-сервер</b> (обычно роутер или провайдер).</li>
+      <li><b>Корневой DNS</b> — «не знаю, но .com обслуживает вот эти серверы».</li>
+      <li><b>DNS .com</b> — «google.com обслуживает вот тот сервер».</li>
+      <li><b>DNS google.com</b> — «google.com → 142.250.150.100».</li>
+    </ol>
+
+    <p><b>Ответ кэшируется</b> на каждом уровне — на время <b>TTL</b> (Time To Live).</p>
+
+    <h4>Типы DNS-записей</h4>
+
+    <table>
+      <tr><th>Тип</th><th>Что делает</th><th>Пример</th></tr>
+      <tr><td><b>A</b></td><td>Домен → IPv4</td><td>google.com → 142.250.150.100</td></tr>
+      <tr><td><b>AAAA</b></td><td>Домен → IPv6</td><td>google.com → 2a00:1450:4010::64</td></tr>
+      <tr><td><b>CNAME</b></td><td>Псевдоним домена</td><td>www.example.com → example.com</td></tr>
+      <tr><td><b>MX</b></td><td>Почтовый сервер</td><td>example.com → mail.example.com</td></tr>
+      <tr><td><b>NS</b></td><td>DNS-серверы домена</td><td>example.com → ns1.example.com</td></tr>
+      <tr><td><b>TXT</b></td><td>Текстовые данные (SPF, DKIM)</td><td>v=spf1 include:_spf.google.com</td></tr>
+    </table>
+
+    <h4>Команды DNS</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="# Простой запрос
+nslookup google.com
+nslookup google.com 8.8.8.8   # через конкретный DNS
+
+# Linux/Mac
+dig google.com
+dig google.com +short
+dig google.com A
+dig google.com MX
+
+# Windows
+nslookup -type=mx google.com
+
+# Кэш DNS
+ipconfig /displaydns    # Windows
+ipconfig /flushdns      # очистить
+
+# Linux
+resolvectl statistics   # система с systemd">📋 Копировать</button>
+      <pre><span class="cmt"># Простой запрос</span>
+nslookup google.com
+nslookup google.com 8.8.8.8   <span class="cmt"># через конкретный DNS</span>
+
+<span class="cmt"># Linux/Mac</span>
+dig google.com
+dig google.com +short
+dig google.com A
+dig google.com MX
+
+<span class="cmt"># Windows</span>
+nslookup -type=mx google.com
+
+<span class="cmt"># Кэш DNS</span>
+ipconfig /displaydns    <span class="cmt"># Windows</span>
+ipconfig /flushdns      <span class="cmt"># очистить</span>
+
+<span class="cmt"># Linux</span>
+resolvectl statistics   <span class="cmt"># система с systemd</span></pre>
+    </div>
+
+    <h3>7.2. Маршрутизация</h3>
+
+    <p><b>Маршрутизация</b> — процесс выбора пути для пакета от отправителя к получателю через промежуточные сети.</p>
+
+    <h4>Таблица маршрутизации</h4>
+
+    <p>У каждого маршрутизатора есть таблица: «для сети X отправляй через интерфейс Y на адрес Z».</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="# Windows
+route print
+
+# Linux
+ip route show
+
+# Пример вывода Linux:
+# default via 192.168.1.1 dev eth0
+# 192.168.1.0/24 dev eth0 proto kernel scope link
+# 10.0.0.0/24 via 192.168.1.10 dev eth0">📋 Копировать</button>
+      <pre><span class="cmt"># Windows</span>
+route print
+
+<span class="cmt"># Linux</span>
+ip route show
+
+<span class="cmt"># Пример вывода Linux:</span>
+<span class="cmt"># default via 192.168.1.1 dev eth0</span>
+<span class="cmt"># 192.168.1.0/24 dev eth0 proto kernel scope link</span>
+<span class="cmt"># 10.0.0.0/24 via 192.168.1.10 dev eth0</span></pre>
+      <div class="desc">Таблица маршрутизации — «карта дорог» для пакетов.</div>
+    </div>
+
+    <h4>Статическая маршрутизация</h4>
+
+    <p>Маршруты прописаны <b>вручную</b> администратором. Используется в небольших сетях.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="# Linux
+ip route add 10.0.0.0/24 via 192.168.1.10
+ip route del 10.0.0.0/24
+
+# Windows (от админа)
+route add 10.0.0.0 mask 255.255.255.0 192.168.1.10
+route delete 10.0.0.0
+route print">📋 Копировать</button>
+      <pre><span class="cmt"># Linux</span>
+ip route add 10.0.0.0/24 via 192.168.1.10
+ip route del 10.0.0.0/24
+
+<span class="cmt"># Windows (от админа)</span>
+route add 10.0.0.0 mask 255.255.255.0 192.168.1.10
+route delete 10.0.0.0
+route print</pre>
+      <div class="desc">Пример: «чтобы попасть в сеть 10.0.0.0/24, иди через 192.168.1.10».</div>
+    </div>
+
+    <h4>Динамическая маршрутизация</h4>
+
+    <p>Маршрутизаторы <b>сами обмениваются</b> информацией о путях и строят таблицу. Работает в больших сетях.</p>
+
+    <table>
+      <tr><th>Протокол</th><th>Тип</th><th>Применение</th><th>Особенности</th></tr>
+      <tr><td><b>RIP</b></td><td>Distance-vector</td><td>Малые сети</td><td>Простой, но медленный (макс 15 хопов)</td></tr>
+      <tr><td><b>OSPF</b></td><td>Link-state</td><td>Крупные сети, офисы</td><td>Быстрый, гибкий, открытый стандарт</td></tr>
+      <tr><td><b>EIGRP</b></td><td>Гибридный</td><td>Только Cisco</td><td>Быстрый, но проприетарный</td></tr>
+      <tr><td><b>BGP</b></td><td>Path-vector</td><td>Интернет, между AS</td><td>Основа маршрутизации в интернете</td></tr>
+    </table>
+
+    <div class="box note">
+      <div class="label">Автономная система (AS)</div>
+      <b>AS</b> — группа сетей под единым управлением (например, сеть крупного провайдера). Внутри AS работает OSPF, между AS — BGP. Интернет состоит из ~75 000 автономных систем.
+    </div>
+
+    <h3>7.3. NAT — преобразование адресов</h3>
+
+    <p><b>NAT</b> (Network Address Translation) — механизм, который подменяет приватные IP-адреса на публичные при выходе в интернет.</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 620 240" width="620">
+        <!-- Внутренняя сеть -->
+        <rect x="20" y="30" width="220" height="180" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5" stroke-dasharray="6 3" rx="8"/>
+        <text x="130" y="55" text-anchor="middle" font-size="12" fill="#4f46e5" font-weight="600">Внутренняя сеть (LAN)</text>
+
+        <g font-size="11" text-anchor="middle" fill="#1c2331">
+          <rect x="40" y="80" width="80" height="30" fill="#fff" stroke="#4f46e5" rx="4"/>
+          <text x="80" y="100">192.168.1.10</text>
+
+          <rect x="140" y="80" width="80" height="30" fill="#fff" stroke="#4f46e5" rx="4"/>
+          <text x="180" y="100">192.168.1.11</text>
+
+          <rect x="90" y="140" width="80" height="30" fill="#fff" stroke="#4f46e5" rx="4"/>
+          <text x="130" y="160">192.168.1.12</text>
+        </g>
+
+        <!-- Роутер с NAT -->
+        <rect x="270" y="90" width="80" height="60" fill="#fff9e6" stroke="#d97706" stroke-width="2" rx="8"/>
+        <text x="310" y="115" text-anchor="middle" font-size="12" fill="#d97706" font-weight="600">NAT</text>
+        <text x="310" y="135" text-anchor="middle" font-size="10" fill="#889">роутер</text>
+
+        <!-- Внешняя сеть -->
+        <rect x="380" y="30" width="220" height="180" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="6 3" rx="8"/>
+        <text x="490" y="55" text-anchor="middle" font-size="12" fill="#16a34a" font-weight="600">Интернет</text>
+
+        <rect x="440" y="130" width="120" height="40" fill="#fff" stroke="#16a34a" stroke-width="1.5" rx="4"/>
+        <text x="500" y="155" text-anchor="middle" font-size="11" fill="#16a34a">Публичный IP</text>
+        <text x="500" y="168" text-anchor="middle" font-size="10" fill="#889">203.0.113.5</text>
+
+        <!-- Стрелки -->
+        <defs><marker id="ar-nat" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8891a6"/></marker></defs>
+        <line x1="240" y1="120" x2="270" y2="120" stroke="#8891a6" stroke-width="1.5" marker-end="url(#ar-nat)"/>
+        <line x1="350" y1="120" x2="440" y2="140" stroke="#8891a6" stroke-width="1.5" marker-end="url(#ar-nat)"/>
+
+        <text x="310" y="200" text-anchor="middle" font-size="10" fill="#889">Источник: 192.168.1.10 → 203.0.113.5</text>
+      </svg>
+      <div class="cap">NAT подменяет приватный адрес на публичный при выходе в интернет.</div>
+    </div>
+
+    <h4>Виды NAT</h4>
+
+    <table>
+      <tr><th>Тип</th><th>Как работает</th></tr>
+      <tr><td><b>Static NAT</b></td><td>Постоянная связь: один приватный ↔ один публичный</td></tr>
+      <tr><td><b>Dynamic NAT</b></td><td>Из пула публичных адресов — по мере необходимости</td></tr>
+      <tr><td><b>PAT (Port Address Translation)</b></td><td>Все внутренние адреса используют один публичный, различия по портам (используется дома)</td></tr>
+    </table>
+
+    <h4>Как работает PAT</h4>
+
+    <p>Роутер ведёт таблицу: «какой внутренний IP:порт соответствует какому внешнему порту».</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="# Таблица NAT/PAT на роутере (Linux iptables)
+iptables -t nat -L -n -v
+
+# Пример записей:
+# 192.168.1.10:5000  →  203.0.113.5:30001
+# 192.168.1.11:5000  →  203.0.113.5:30002
+# 192.168.1.12:5000  →  203.0.113.5:30003">📋 Копировать</button>
+      <pre><span class="cmt"># Таблица NAT/PAT на роутере (Linux iptables)</span>
+iptables -t nat -L -n -v
+
+<span class="cmt"># Пример записей:</span>
+<span class="cmt"># 192.168.1.10:5000  →  203.0.113.5:30001</span>
+<span class="cmt"># 192.168.1.11:5000  →  203.0.113.5:30002</span>
+<span class="cmt"># 192.168.1.12:5000  →  203.0.113.5:30003</span></pre>
+      <div class="desc">Один публичный IP обслуживает сотни устройств, различая их по портам.</div>
+    </div>
+
+    <h3>7.4. Где это применяется</h3>
+
+    <table>
+      <tr><th>Область</th><th>Пример</th></tr>
+      <tr><td><b>Веб-сёрфинг</b></td><td>Каждый ввод URL вызывает 20-100 DNS-запросов — большинство закэшировано</td></tr>
+      <tr><td><b>Домашний интернет</b></td><td>Все устройства (телефон, ПК, ТВ) выходят в интернет через один публичный IP благодаря NAT</td></tr>
+      <tr><td><b>Корпоративные сети</b></td><td>OSPF внутри сети, BGP — с провайдерами</td></tr>
+      <tr><td><b>Облака</b></td><td>AWS/Azure используют BGP для управления маршрутами между регионами</td></tr>
+      <tr><td><b>Балансировщики</b></td><td>L4/L7 балансировка через NAT для распределения нагрузки</td></tr>
+    </table>
+
+    <h3>Практические задания</h3>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №9 · DNS-диагностика <span class="badge">40 мин</span></div>
+      <div class="goal"><b>Задача:</b> изучить работу DNS через командную строку.</div>
+      <ol>
+        <li>Выполните <code>nslookup google.com</code> — запишите IP.</li>
+        <li>Выполните <code>nslookup google.com 8.8.8.8</code> — через Google DNS.</li>
+        <li>Через <code>dig</code> (Linux) или <code>nslookup -type=mx</code> (Windows) найдите MX-запись для <code>yandex.ru</code>.</li>
+        <li>Найдите NS-записи для <code>wikipedia.org</code>.</li>
+        <li>Ответьте:
+          <ul>
+            <li>Сколько DNS-серверов у google.com?</li>
+            <li>Какое доменное имя для почты у yandex.ru?</li>
+            <li>Что такое TTL и зачем он нужен?</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №10 · Маршрутизация в miminet <span class="badge">60 мин</span></div>
+      <div class="goal"><b>Задача:</b> настроить статическую маршрутизацию между двумя сетями через 2 маршрутизатора.</div>
+      <ol>
+        <li>Откройте miminet, создайте проект.</li>
+        <li>Схема: LAN-A — R1 — (транзит) — R2 — LAN-B.</li>
+        <li>Адресация:
+          <ul>
+            <li>LAN-A: <code>192.168.1.0/24</code></li>
+            <li>LAN-B: <code>192.168.2.0/24</code></li>
+            <li>Транзитный линк R1-R2: <code>192.168.100.0/30</code> (R1 = .1, R2 = .2)</li>
+          </ul>
+        </li>
+        <li>На R1 добавьте маршрут к сети 192.168.2.0/24 через 192.168.100.2.</li>
+        <li>На R2 добавьте обратный маршрут через 192.168.100.1.</li>
+        <li>Проверьте пинг между хостами разных сетей.</li>
+        <li>Запустите <code>traceroute</code> — увидите путь через оба роутера.</li>
+      </ol>
+      <div class="goal"><b>Результат:</b> успешный ping + traceroute + JSON проекта.</div>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №11 · NAT и выход в «интернет» <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> настроить NAT и проверить доступ из LAN к внешнему серверу.</div>
+      <ol>
+        <li>Схема: LAN (192.168.1.0/24) — R (NAT) — внешний сервер (8.8.8.8).</li>
+        <li>На R настройте:
+          <ul>
+            <li>Интерфейс LAN: 192.168.1.1</li>
+            <li>Интерфейс WAN: 203.0.113.5</li>
+          </ul>
+        </li>
+        <li>Включите NAT (PAT) на R для исходящих пакетов из LAN.</li>
+        <li>Проверьте: с внутреннего хоста <code>ping 8.8.8.8</code> — работает благодаря NAT.</li>
+        <li>Проверьте внешний IP: зайдите на <code>ifconfig.me</code> или аналог — увидите 203.0.113.5, а не ваш внутренний.</li>
+      </ol>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Что произойдёт, если DNS-серверы упадут?</summary>
+      <div class="answer">
+        <b>Сайты станут недоступны по имени</b>, но будут работать по IP.<br><br>
+        Если у вас в кэше уже есть <code>google.com → 142.250.150.100</code>, браузер ещё некоторое время сможет открыть сайт. Но новые домены не будут резолвиться.<br><br>
+        <b>Что перестанет работать:</b>
+        <ul>
+          <li>Ввод URL в браузере (по домену).</li>
+          <li>Почтовые клиенты (MX-записи).</li>
+          <li>Обновления ОС (обращаются по доменам).</li>
+          <li>API-сервисы.</li>
+        </ul>
+        <b>Примеры реальных сбоев:</b> атаки на Dyn DNS (2016) обрушили Twitter, Netflix, Reddit на несколько часов. Отключение DNS провайдера — распространённая проблема.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Почему BGP — основа интернета?</summary>
+      <div class="answer">
+        <b>BGP</b> (Border Gateway Protocol) — единственный протокол, который связывает <b>автономные системы (AS)</b> между собой.<br><br>
+        Каждый крупный провайдер — это AS со своим номером (например, Ростелеком — AS12389, Google — AS15169). Провайдеры объявляют друг другу: «наши сети такие-то, идите к нам через такой-то маршрут».<br><br>
+        <b>Масштаб:</b> BGP-таблица в интернете содержит ~950 000 маршрутов. Каждый маршрутизатор границы (border router) хранит их все и выбирает лучший путь по метрикам.<br><br>
+        <b>Уязвимость:</b> BGP не проверяет, действительно ли провайдер владеет анонсируемой сетью. Отсюда известные BGP-hijacking атаки — когда злоумышленник «уводит» трафик чужой сети на себя.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Почему NAT не идеален?</summary>
+      <div class="answer">
+        NAT спас интернет от нехватки IPv4, но у него есть проблемы:
+        <ul>
+          <li><b>Ломает end-to-end модель.</b> Устройство за NAT не может принимать входящие соединения без port forwarding.</li>
+          <li><b>Осложняет P2P.</b> Торренты, VoIP, онлайн-игры требуют обходных путей (STUN, TURN, UPnP).</li>
+          <li><b>Проблемы с некоторыми протоколами.</b> FTP, SIP, H.323 встраивают IP в тело пакета — NAT их не понимает без специальных ALG.</li>
+          <li><b>Нагрузка на роутер.</b> Держать таблицу из тысяч соединений — не бесплатно.</li>
+          <li><b>Проблемы для отладки.</b> Не видно реальных IP клиентов в логах сервера.</li>
+        </ul>
+        Именно поэтому все переходят на <b>IPv6</b>, где NAT не нужен — у каждого устройства свой уникальный публичный адрес.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 4. Чем статическая маршрутизация отличается от динамической?</summary>
+      <div class="answer">
+        <table style="margin-top:8px;">
+          <tr><th>Свойство</th><th>Статическая</th><th>Динамическая</th></tr>
+          <tr><td>Кто настраивает</td><td>Администратор вручную</td><td>Протоколы автоматически</td></tr>
+          <tr><td>Реакция на изменения</td><td>Нет — надо править вручную</td><td>Автоматически перестраивается</td></tr>
+          <tr><td>Масштаб</td><td>Малые сети (2-5 маршрутов)</td><td>Крупные сети (сотни маршрутов)</td></tr>
+          <tr><td>Нагрузка на CPU</td><td>Нет</td><td>Есть (обмен служебным трафиком)</td></tr>
+          <tr><td>Применение</td><td>Малые офисы, домашние сети, точки-точка</td><td>Корпоративные сети, интернет</td></tr>
+        </table>
+        <b>Правило:</b> если маршрутов мало и они не меняются — статика. Иначе — динамика.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание по теме</div>
+      Сдать файл <code>practice-dns-routing.docx</code>:
+      <ol>
+        <li>Отчёт по DNS-диагностике (ПР №9): 3 скриншота, ответы на вопросы</li>
+        <li>Скриншот ping через 2 роутера (ПР №10) + JSON проекта</li>
+        <li>Скриншот NAT-проверки (ПР №11) с внешним IP</li>
+        <li>Таблица сравнения RIP / OSPF / BGP</li>
+        <li>Ответы на 4 вопроса самопроверки</li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="06-ip-addressing.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">6. IP-адресация и маски</span>
+  </a>
+  <a href="08-architectures.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">8. Сетевые архитектуры</span>
+  </a>
+</div>
+
+<footer>
+  ОП.11 Компьютерные сети · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сети · 6. IP-адресация · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ОП.11 Сети · Тема 6</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="networks-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-basics.html">1. Основы</a>
+  <a href="02-models.html">2. OSI/TCP-IP</a>
+  <a href="03-hardware.html">3. Аппаратура</a>
+  <a href="04-cables.html">4. Кабели</a>
+  <a href="05-transmission.html">5. Передача</a>
+  <a href="06-ip-addressing.html" class="current">6. IP</a>
+  <a href="07-dns-routing.html">7. DNS</a>
+  <a href="08-architectures.html">8. Архитектуры</a>
+  <a href="09-miminet-practice.html">🎯 Практика</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">6</span>IP-адресация и маски подсетей</h2>
+
+    <p>Каждое устройство в сети имеет <b>IP-адрес</b> — уникальный числовой идентификатор. Это как почтовый адрес: без него пакет не найдёт получателя.</p>
+
+    <h3>6.1. IPv4 — 32 бита</h3>
+
+    <p>IPv4-адрес состоит из <b>32 бит</b>, разбитых на <b>4 октета</b> (по 8 бит). Записывается в десятичном виде через точку: <code>192.168.1.10</code>.</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 620 130" width="620">
+        <text x="310" y="20" text-anchor="middle" font-size="13" fill="#4f46e5" font-weight="600">IPv4: 32 бита = 4 октета по 8 бит</text>
+
+        <!-- Октеты в десятичном виде -->
+        <g font-size="16" font-weight="600" fill="#4f46e5" text-anchor="middle">
+          <rect x="30" y="40" width="140" height="40" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5" rx="6"/>
+          <text x="100" y="67">192</text>
+
+          <rect x="175" y="40" width="140" height="40" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5" rx="6"/>
+          <text x="245" y="67">168</text>
+
+          <rect x="320" y="40" width="140" height="40" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5" rx="6"/>
+          <text x="390" y="67">1</text>
+
+          <rect x="465" y="40" width="130" height="40" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5" rx="6"/>
+          <text x="530" y="67">10</text>
+        </g>
+
+        <!-- Точки -->
+        <g font-size="16" fill="#1c2331" text-anchor="middle">
+          <text x="170" y="67">.</text>
+          <text x="315" y="67">.</text>
+          <text x="460" y="67">.</text>
+        </g>
+
+        <!-- Двоичный вид -->
+        <g font-size="11" font-family="monospace" fill="#889" text-anchor="middle">
+          <text x="100" y="100">11000000</text>
+          <text x="245" y="100">10101000</text>
+          <text x="390" y="100">00000001</text>
+          <text x="530" y="100">00001010</text>
+        </g>
+
+        <text x="310" y="122" text-anchor="middle" font-size="11" fill="#889">Каждый октет — число от 0 до 255</text>
+      </svg>
+      <div class="cap">Один и тот же адрес в десятичном и двоичном виде.</div>
+    </div>
+
+    <p><b>Диапазон каждого октета:</b> 0-255. Полный диапазон IPv4: от <code>0.0.0.0</code> до <code>255.255.255.255</code>.</p>
+
+    <p><b>Всего IPv4-адресов:</b> 2³² ≈ 4,29 миллиарда. Их давно не хватает — отсюда NAT и переход на IPv6.</p>
+
+    <h3>6.2. Классы адресов (историческое деление)</h3>
+
+    <table>
+      <tr><th>Класс</th><th>Первый октет</th><th>Маска по умолчанию</th><th>Число сетей</th><th>Хостов в сети</th></tr>
+      <tr><td><b>A</b></td><td>1 – 126</td><td>/8 (255.0.0.0)</td><td>126</td><td>16 777 214</td></tr>
+      <tr><td><b>B</b></td><td>128 – 191</td><td>/16 (255.255.0.0)</td><td>16 384</td><td>65 534</td></tr>
+      <tr><td><b>C</b></td><td>192 – 223</td><td>/24 (255.255.255.0)</td><td>2 097 152</td><td>254</td></tr>
+      <tr><td><b>D</b></td><td>224 – 239</td><td>—</td><td colspan="2">Multicast (групповая рассылка)</td></tr>
+      <tr><td><b>E</b></td><td>240 – 255</td><td>—</td><td colspan="2">Зарезервировано (эксперименты)</td></tr>
+    </table>
+
+    <div class="box note">
+      <div class="label">Классовая адресация устарела</div>
+      С 1993 года используется <b>CIDR</b> (Classless Inter-Domain Routing) — маску задают явно, без привязки к классам. Классы изучают для понимания истории и старых систем.
+    </div>
+
+    <h3>6.3. Приватные диапазоны (RFC 1918)</h3>
+
+    <p>Эти адреса используются <b>только внутри локальных сетей</b>. В интернет с ними не выйти — нужен NAT.</p>
+
+    <table>
+      <tr><th>Диапазон</th><th>Маска</th><th>Число адресов</th><th>Где используется</th></tr>
+      <tr><td><code>10.0.0.0</code> – <code>10.255.255.255</code></td><td>/8</td><td>16,7 млн</td><td>Крупные корпоративные сети</td></tr>
+      <tr><td><code>172.16.0.0</code> – <code>172.31.255.255</code></td><td>/12</td><td>1 млн</td><td>Средние организации</td></tr>
+      <tr><td><code>192.168.0.0</code> – <code>192.168.255.255</code></td><td>/16</td><td>65 536</td><td>Домашние сети, малые офисы</td></tr>
+    </table>
+
+    <p><b>Особые адреса:</b></p>
+    <ul>
+      <li><code>127.0.0.0/8</code> — loopback. <code>127.0.0.1</code> — «сам компьютер».</li>
+      <li><code>169.254.0.0/16</code> — APIPA, если DHCP не ответил.</li>
+      <li><code>0.0.0.0</code> — «любой адрес» или «адрес не задан».</li>
+      <li><code>255.255.255.255</code> — широковещательный (broadcast) для всей сети.</li>
+    </ul>
+
+    <h3>6.4. Маска подсети</h3>
+
+    <p><b>Маска</b> определяет, какая часть IP-адреса — <b>адрес сети</b>, а какая — <b>адрес устройства</b> (хоста).</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 620 220" width="620">
+        <text x="310" y="20" text-anchor="middle" font-size="13" fill="#4f46e5" font-weight="600">Маска /24: 24 бита на сеть + 8 бит на хостов</text>
+
+        <!-- IP -->
+        <g font-size="11" font-family="monospace" text-anchor="middle">
+          <text x="30" y="55" fill="#1c2331" font-size="12" font-family="-apple-system">IP:</text>
+
+          <rect x="60" y="40" width="80" height="30" fill="#eef0ff" stroke="#4f46e5"/>
+          <text x="100" y="60" fill="#4f46e5">11000000</text>
+
+          <rect x="145" y="40" width="80" height="30" fill="#eef0ff" stroke="#4f46e5"/>
+          <text x="185" y="60" fill="#4f46e5">10101000</text>
+
+          <rect x="230" y="40" width="80" height="30" fill="#eef0ff" stroke="#4f46e5"/>
+          <text x="270" y="60" fill="#4f46e5">00000001</text>
+
+          <rect x="315" y="40" width="80" height="30" fill="#fff1f4" stroke="#e11d48"/>
+          <text x="355" y="60" fill="#e11d48">00001010</text>
+        </g>
+
+        <!-- Маска -->
+        <g font-size="11" font-family="monospace" text-anchor="middle">
+          <text x="30" y="105" fill="#1c2331" font-size="12" font-family="-apple-system">Маска:</text>
+
+          <rect x="60" y="90" width="80" height="30" fill="#ecfdf3" stroke="#16a34a"/>
+          <text x="100" y="110" fill="#16a34a">11111111</text>
+
+          <rect x="145" y="90" width="80" height="30" fill="#ecfdf3" stroke="#16a34a"/>
+          <text x="185" y="110" fill="#16a34a">11111111</text>
+
+          <rect x="230" y="90" width="80" height="30" fill="#ecfdf3" stroke="#16a34a"/>
+          <text x="270" y="110" fill="#16a34a">11111111</text>
+
+          <rect x="315" y="90" width="80" height="30" fill="#f1f3f8" stroke="#94a3b8"/>
+          <text x="355" y="110" fill="#94a3b8">00000000</text>
+        </g>
+
+        <!-- Результат -->
+        <g font-size="11" font-family="monospace" text-anchor="middle">
+          <text x="30" y="155" fill="#1c2331" font-size="12" font-family="-apple-system">Сеть:</text>
+
+          <rect x="60" y="140" width="80" height="30" fill="#eef0ff" stroke="#4f46e5"/>
+          <text x="100" y="160" fill="#4f46e5">11000000</text>
+
+          <rect x="145" y="140" width="80" height="30" fill="#eef0ff" stroke="#4f46e5"/>
+          <text x="185" y="160" fill="#4f46e5">10101000</text>
+
+          <rect x="230" y="140" width="80" height="30" fill="#eef0ff" stroke="#4f46e5"/>
+          <text x="270" y="160" fill="#4f46e5">00000001</text>
+
+          <rect x="315" y="140" width="80" height="30" fill="#f1f3f8" stroke="#94a3b8"/>
+          <text x="355" y="160" fill="#94a3b8">00000000</text>
+        </g>
+
+        <text x="430" y="60" font-size="12" fill="#4f46e5">← часть сети</text>
+        <text x="430" y="160" font-size="12" fill="#4f46e5">← адрес сети</text>
+        <text x="430" y="215" font-size="11" fill="#889">Хост = последний октет (10)</text>
+
+        <!-- Подписи -->
+        <text x="355" y="185" font-size="11" fill="#e11d48" text-anchor="middle">← часть хоста (256 адресов)</text>
+      </svg>
+      <div class="cap">Маска «накладывается» на IP: где 1 — это сеть, где 0 — хост.</div>
+    </div>
+
+    <h4>Формат записи маски</h4>
+
+    <table>
+      <tr><th>CIDR</th><th>Маска</th><th>Хостов в подсети</th><th>Пример использования</th></tr>
+      <tr><td>/8</td><td>255.0.0.0</td><td>16 777 214</td><td>Очень крупные сети</td></tr>
+      <tr><td>/16</td><td>255.255.0.0</td><td>65 534</td><td>Корпоративные сети</td></tr>
+      <tr><td>/24</td><td>255.255.255.0</td><td>254</td><td>Домашние и офисные сети</td></tr>
+      <tr><td>/25</td><td>255.255.255.128</td><td>126</td><td>Половина /24</td></tr>
+      <tr><td>/26</td><td>255.255.255.192</td><td>62</td><td>Небольшой отдел</td></tr>
+      <tr><td>/27</td><td>255.255.255.224</td><td>30</td><td>Маленькая группа</td></tr>
+      <tr><td>/28</td><td>255.255.255.240</td><td>14</td><td>Микро-сегмент</td></tr>
+      <tr><td>/29</td><td>255.255.255.248</td><td>6</td><td>Точка-точка</td></tr>
+      <tr><td>/30</td><td>255.255.255.252</td><td>2</td><td>Линк между маршрутизаторами</td></tr>
+      <tr><td>/31</td><td>255.255.255.254</td><td>2 (без broadcast)</td><td>Точка-точка (RFC 3021)</td></tr>
+      <tr><td>/32</td><td>255.255.255.255</td><td>1</td><td>Один конкретный IP</td></tr>
+    </table>
+
+    <h3>6.5. Формулы для расчёта подсети</h3>
+
+    <p>Для любой маски /N:</p>
+
+    <div class="box note">
+      <div class="label">Формулы</div>
+      <p><b>Хостов в подсети:</b> $2^{(32 - N)} - 2$</p>
+      <p><b>Адрес сети:</b> IP AND маска (побитовое «И»)</p>
+      <p><b>Broadcast:</b> адрес сети + все единицы в хостовой части</p>
+      <p><b>Первый хост:</b> адрес сети + 1</p>
+      <p><b>Последний хост:</b> broadcast − 1</p>
+    </div>
+
+    <div class="box example">
+      <div class="label">Пример расчёта</div>
+      <b>IP:</b> 192.168.1.45  <b>Маска:</b> 255.255.255.0 (/24)<br><br>
+      <b>Адрес сети:</b> 192.168.1.0<br>
+      <b>Broadcast:</b> 192.168.1.255<br>
+      <b>Первый хост:</b> 192.168.1.1<br>
+      <b>Последний хост:</b> 192.168.1.254<br>
+      <b>Всего хостов:</b> 2⁸ − 2 = 254
+    </div>
+
+    <div class="box example">
+      <div class="label">Пример посложнее: /26</div>
+      <b>IP:</b> 10.0.5.130  <b>Маска:</b> 255.255.255.192 (/26)<br><br>
+      /26 = 64 адреса в подсети. Кратные 64: 0, 64, 128, 192.<br>
+      130 попадает в диапазон 128–191, значит:<br>
+      <b>Адрес сети:</b> 10.0.5.128<br>
+      <b>Broadcast:</b> 10.0.5.191<br>
+      <b>Первый хост:</b> 10.0.5.129<br>
+      <b>Последний хост:</b> 10.0.5.190<br>
+      <b>Всего хостов:</b> 2⁶ − 2 = 62
+    </div>
+
+    <h3>6.6. Команды для работы с IP</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="# Windows
+ipconfig
+ipconfig /all
+ipconfig /release
+ipconfig /renew
+
+# Linux
+ip a
+ip addr show
+ip -c a        # с цветом">📋 Копировать</button>
+      <pre><span class="cmt"># Windows</span>
+ipconfig
+ipconfig /all
+ipconfig /release
+ipconfig /renew
+
+<span class="cmt"># Linux</span>
+ip a
+ip addr show
+ip -c a        <span class="cmt"># с цветом</span></pre>
+      <div class="desc">Просмотр IP-адресов, масок, шлюзов, MAC-адресов.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="# Проверка связи
+ping 8.8.8.8
+ping -c 4 google.com
+
+# Трассировка маршрута
+tracert 8.8.8.8        # Windows
+traceroute 8.8.8.8     # Linux/Mac
+
+# Проверить, свободен ли IP
+arp -a                 # Windows
+ip neigh               # Linux">📋 Копировать</button>
+      <pre><span class="cmt"># Проверка связи</span>
+ping 8.8.8.8
+ping -c 4 google.com
+
+<span class="cmt"># Трассировка маршрута</span>
+tracert 8.8.8.8        <span class="cmt"># Windows</span>
+traceroute 8.8.8.8     <span class="cmt"># Linux/Mac</span>
+
+<span class="cmt"># Проверить, свободен ли IP</span>
+arp -a                 <span class="cmt"># Windows</span>
+ip neigh               <span class="cmt"># Linux</span></pre>
+      <div class="desc">Диагностические команды для работы с IP.</div>
+    </div>
+
+    <h3>6.7. IPv6 — будущее</h3>
+
+    <p>IPv6 решает главную проблему IPv4 — нехватку адресов.</p>
+
+    <table>
+      <tr><th>Параметр</th><th>IPv4</th><th>IPv6</th></tr>
+      <tr><td>Длина адреса</td><td>32 бита</td><td>128 бит</td></tr>
+      <tr><td>Всего адресов</td><td>4,3 млрд</td><td>340 ундециллионов</td></tr>
+      <tr><td>Запись</td><td>192.168.1.1</td><td>2001:0db8:85a3::8a2e:0370:7334</td></tr>
+      <tr><td>NAT</td><td>Нужен</td><td>Не нужен (у каждого свой адрес)</td></tr>
+      <tr><td>Broadcast</td><td>Есть</td><td>Заменён на multicast</td></tr>
+      <tr><td>Автоконфигурация</td><td>DHCP</td><td>Встроена (SLAAC)</td></tr>
+    </table>
+
+    <h3>6.8. Где это применяется</h3>
+
+    <table>
+      <tr><th>Область</th><th>Пример</th></tr>
+      <tr><td><b>Настройка домашнего роутера</b></td><td>DHCP-пул 192.168.1.100-200, шлюз 192.168.1.1, маска /24</td></tr>
+      <tr><td><b>Проектирование офисной сети</b></td><td>Отделы разбиваются на подсети: бухгалтерия 10.0.1.0/24, IT 10.0.2.0/24</td></tr>
+      <tr><td><b>VLAN и сегментация</b></td><td>Каждый VLAN = отдельная подсеть, трафик изолирован</td></tr>
+      <tr><td><b>Планирование ЦОД</b></td><td>Огромные сети 10.0.0.0/8 с подсетями /20 для каждого сервиса</td></tr>
+      <tr><td><b>Диагностика</b></td><td>Понять, в какой сети проблема, если адрес не входит в правильную подсеть</td></tr>
+    </table>
+
+    <h3>Практические задания</h3>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №6 · Расчёт подсетей <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> для 10 IP-адресов рассчитать адрес сети, broadcast и диапазон хостов.</div>
+
+      <table>
+        <tr><th>IP</th><th>Маска</th><th>Сеть</th><th>Broadcast</th><th>1-й хост</th><th>Последний</th><th>Хостов</th></tr>
+        <tr><td>192.168.1.50</td><td>/24</td><td>?</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+        <tr><td>10.0.0.100</td><td>/8</td><td>?</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+        <tr><td>172.16.10.5</td><td>/16</td><td>?</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+        <tr><td>192.168.5.130</td><td>/26</td><td>?</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+        <tr><td>192.168.5.200</td><td>/27</td><td>?</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+        <tr><td>10.10.10.10</td><td>/28</td><td>?</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+        <tr><td>172.16.50.75</td><td>/30</td><td>?</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+        <tr><td>192.168.100.99</td><td>/25</td><td>?</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+        <tr><td>10.0.5.180</td><td>/29</td><td>?</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+        <tr><td>172.20.1.1</td><td>/22</td><td>?</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+      </table>
+
+      <p>Сдайте таблицу с расчётами. Проверьте через любой онлайн-калькулятор подсетей.</p>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №7 · Разбиение сети <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> разбить сеть 192.168.10.0/24 на 4 подсети.</div>
+      <ol>
+        <li>Сколько подсетей нужно? <b>4</b>. Значит, занимаем 2 бита из хостовой части (2² = 4).</li>
+        <li>Новая маска: /24 + 2 = /26 (255.255.255.192).</li>
+        <li>Хостов в каждой подсети: 2⁶ − 2 = 62.</li>
+        <li>Заполните таблицу:</li>
+      </ol>
+
+      <table>
+        <tr><th>№</th><th>Адрес сети</th><th>Первый хост</th><th>Последний хост</th><th>Broadcast</th></tr>
+        <tr><td>1</td><td>192.168.10.0/26</td><td>?</td><td>?</td><td>?</td></tr>
+        <tr><td>2</td><td>192.168.10.64/26</td><td>?</td><td>?</td><td>?</td></tr>
+        <tr><td>3</td><td>192.168.10.128/26</td><td>?</td><td>?</td><td>?</td></tr>
+        <tr><td>4</td><td>192.168.10.192/26</td><td>?</td><td>?</td><td>?</td></tr>
+      </table>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №8 · Настройка IP в miminet <span class="badge">40 мин</span></div>
+      <div class="goal"><b>Задача:</b> настроить IP-адреса на хостах и проверить связь.</div>
+      <ol>
+        <li>Откройте <a href="https://miminet.ru" target="_blank">miminet.ru</a>, создайте проект.</li>
+        <li>Разместите 3 хоста и 1 коммутатор.</li>
+        <li>Соедините все хосты со коммутатором.</li>
+        <li>Настройте IP:
+          <ul>
+            <li>Host1: <code>192.168.50.10/24</code></li>
+            <li>Host2: <code>192.168.50.20/24</code></li>
+            <li>Host3: <code>192.168.50.30/24</code></li>
+          </ul>
+        </li>
+        <li>Запустите и проверьте пинг между всеми парами.</li>
+        <li>Измените маску Host2 на <code>/28</code>. Что произойдёт? Почему пинг перестанет работать?</li>
+      </ol>
+      <div class="goal"><b>Результат:</b> скриншот успешного ping + объяснение, почему /28 ломает связь.</div>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Почему адреса 192.168.x.x нельзя использовать в интернете?</summary>
+      <div class="answer">
+        Это <b>приватные адреса</b> по RFC 1918. Их может использовать кто угодно в своей локальной сети — они <b>не уникальны глобально</b>.<br><br>
+        Если бы ваш компьютер с адресом 192.168.1.5 отправил пакет в интернет напрямую, он бы не нашёл получателя: таких адресов миллионы по всему миру.<br><br>
+        <b>Решение — NAT:</b> роутер подменяет приватный адрес на свой публичный. Снаружи кажется, что все запросы из вашей сети идут с одного IP.<br><br>
+        Именно NAT позволил интернету расти, несмотря на нехватку IPv4-адресов.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Что такое broadcast и зачем он нужен?</summary>
+      <div class="answer">
+        <b>Broadcast</b> — адрес, по которому пакет идёт <b>всем устройствам</b> в локальной сети. Для /24 это последний адрес подсети: <code>192.168.1.255</code>.<br><br>
+        <b>Где применяется:</b>
+        <ul>
+          <li><b>ARP</b> — «У кого IP 192.168.1.5? Ответьте своим MAC».</li>
+          <li><b>DHCP</b> — «Есть ли DHCP-сервер в сети?» (клиент ещё не знает IP сервера).</li>
+          <li><b>Обнаружение сервисов</b> — принтеры, медиасерверы (NetBIOS, mDNS).</li>
+        </ul>
+        <b>Проблема:</b> broadcast-пакеты обрабатываются всеми устройствами, загружая их. Поэтому стараются ограничивать размер подсети (/24 или /25 — оптимально).
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Почему в подсети /31 только 2 адреса и нет broadcast?</summary>
+      <div class="answer">
+        <b>/31</b> описан в RFC 3021 для линков «точка-точка» — соединений между двумя маршрутизаторами.<br><br>
+        В обычной подсети /30 было бы 4 адреса: сеть, 2 хоста, broadcast — итого 2 хоста.<br>
+        В /31 — 2 адреса, оба используются как адреса интерфейсов. Broadcast не нужен, потому что в линке всего два устройства — они и так знают друг друга.<br><br>
+        <b>Экономия:</b> в современных магистралях это заметно — на каждое соединение экономится 2 адреса.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 4. Как посчитать адрес сети в уме?</summary>
+      <div class="answer">
+        <b>Простой способ для масок /24, /25, /26, /27, /28:</b>
+        <ol>
+          <li>Размер подсети: /24 = 256, /25 = 128, /26 = 64, /27 = 32, /28 = 16, /29 = 8, /30 = 4.</li>
+          <li>Найдите ближайшее меньшее или равное число, кратное размеру подсети, — это адрес сети в последнем октете.</li>
+        </ol>
+        <b>Пример:</b> 192.168.5.130 /26. Размер = 64. Кратные 64: 0, 64, 128, 192. Ближайшее ≤ 130 — это <b>128</b>. Адрес сети: <b>192.168.5.128</b>. Broadcast: 128 + 64 − 1 = <b>191</b>.<br><br>
+        <b>Для сложных масок</b> лучше использовать онлайн-калькулятор (например, <a href="https://www.subnet-calculator.com/" target="_blank">subnet-calculator.com</a>).
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание по теме</div>
+      Сдать файл <code>practice-ip.docx</code>:
+      <ol>
+        <li>Заполненная таблица расчёта подсетей (ПР №6, 10 строк)</li>
+        <li>Разбиение /24 на 4 подсети (ПР №7)</li>
+        <li>Скриншот пинга из miminet + объяснение, почему /28 ломает связь</li>
+        <li>Таблица сравнения IPv4 и IPv6</li>
+        <li>Ответы на 4 вопроса самопроверки</li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="05-transmission.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">5. Передача данных</span>
+  </a>
+  <a href="07-dns-routing.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">7. DNS, маршрутизация, NAT</span>
+  </a>
+</div>
+
+<footer>
+  ОП.11 Компьютерные сети · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

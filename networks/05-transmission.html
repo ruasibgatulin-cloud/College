@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сети · 5. Передача данных · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ОП.11 Сети · Тема 5</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="networks-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-basics.html">1. Основы</a>
+  <a href="02-models.html">2. OSI/TCP-IP</a>
+  <a href="03-hardware.html">3. Аппаратура</a>
+  <a href="04-cables.html">4. Кабели</a>
+  <a href="05-transmission.html" class="current">5. Передача</a>
+  <a href="06-ip-addressing.html">6. IP</a>
+  <a href="07-dns-routing.html">7. DNS</a>
+  <a href="08-architectures.html">8. Архитектуры</a>
+  <a href="09-miminet-practice.html">🎯 Практика</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">5</span>Передача данных по сети</h2>
+
+    <p>Чтобы данные прошли от отправителя к получателю, их нужно представить в виде сигнала, передать по среде, а затем правильно принять. Это целая наука — от кодирования до коммутации.</p>
+
+    <h3>5.1. Сигналы и данные</h3>
+
+    <p><b>Данные</b> — информация (текст, картинка, видео). <b>Сигнал</b> — физическое представление данных (электричество, свет, радиоволна).</p>
+
+    <table>
+      <tr><th>Тип сигнала</th><th>Описание</th><th>Где применяется</th></tr>
+      <tr><td><b>Аналоговый</b></td><td>Непрерывно меняется (синусоида)</td><td>Старые телефоны, радио, аудио</td></tr>
+      <tr><td><b>Цифровой</b></td><td>Дискретные значения (0 и 1)</td><td>Все современные сети</td></tr>
+    </table>
+
+    <div class="viz">
+      <svg viewBox="0 0 620 200" width="620">
+        <!-- Аналоговый -->
+        <g transform="translate(10,20)">
+          <text x="140" y="0" text-anchor="middle" font-size="12" fill="#4f46e5" font-weight="600">Аналоговый сигнал</text>
+          <line x1="10" y1="90" x2="270" y2="90" stroke="#8891a6" stroke-width="1"/>
+          <path d="M 10 90 Q 30 20 50 90 T 90 90 T 130 90 T 170 90 T 210 90 T 250 90"
+                fill="none" stroke="#4f46e5" stroke-width="2.2"/>
+          <text x="140" y="185" text-anchor="middle" font-size="11" fill="#889">непрерывное изменение</text>
+        </g>
+
+        <!-- Цифровой -->
+        <g transform="translate(330,20)">
+          <text x="140" y="0" text-anchor="middle" font-size="12" fill="#16a34a" font-weight="600">Цифровой сигнал</text>
+          <line x1="10" y1="90" x2="270" y2="90" stroke="#8891a6" stroke-width="1"/>
+          <path d="M 10 60 L 40 60 L 40 120 L 80 120 L 80 60 L 130 60 L 130 120 L 170 120 L 170 60 L 220 60 L 220 120 L 260 120"
+                fill="none" stroke="#16a34a" stroke-width="2.2"/>
+          <text x="140" y="185" text-anchor="middle" font-size="11" fill="#889">дискретные уровни</text>
+        </g>
+      </svg>
+      <div class="cap">Аналоговый сигнал непрерывен, цифровой — последовательность 0 и 1.</div>
+    </div>
+
+    <h3>5.2. Кодирование данных</h3>
+
+    <p><b>Кодирование</b> — способ представления битов сигналом. Разные схемы дают разную устойчивость к помехам.</p>
+
+    <table>
+      <tr><th>Схема</th><th>Идея</th></tr>
+      <tr><td><b>NRZ</b> (Non-Return to Zero)</td><td>1 — высокий уровень, 0 — низкий. Просто, но теряется синхронизация при длинных последовательностях.</td></tr>
+      <tr><td><b>Манчестерский</b></td><td>Переход в середине бита. Всегда есть синхронизация.</td></tr>
+      <tr><td><b>4B/5B</b></td><td>4 бита данных → 5 бит сигнала. Гарантирует смену уровня.</td></tr>
+      <tr><td><b>8B/10B</b></td><td>8 бит → 10 бит. Используется в Gigabit Ethernet, USB 3.0.</td></tr>
+    </table>
+
+    <h3>5.3. Модуляция</h3>
+
+    <p><b>Модуляция</b> — изменение параметров несущей волны для передачи данных. Применяется, когда нужно передать цифру через аналоговый канал (Wi-Fi, DSL, радиосвязь).</p>
+
+    <table>
+      <tr><th>Тип</th><th>Что меняется</th></tr>
+      <tr><td><b>AM</b> (Amplitude Modulation)</td><td>Амплитуда — громкость сигнала</td></tr>
+      <tr><td><b>FM</b> (Frequency Modulation)</td><td>Частота — высота тона</td></tr>
+      <tr><td><b>PM</b> (Phase Modulation)</td><td>Фаза — сдвиг волны</td></tr>
+      <tr><td><b>QAM</b> (Quadrature AM)</td><td>Амплитуда + фаза одновременно. Много бит в одном символе.</td></tr>
+    </table>
+
+    <div class="box note">
+      <div class="label">QAM в Wi-Fi и кабельном интернете</div>
+      Например, QAM-256 кодирует <b>8 бит</b> в одном символе (2⁸ = 256 комбинаций). Чем больше бит на символ, тем выше скорость — но и выше требования к качеству канала. В шумной среде используют QPSK (2 бита/символ), в чистой — QAM-1024+.
+    </div>
+
+    <h3>5.4. Оцифровка сигнала</h3>
+
+    <p>Чтобы передать аналоговый сигнал (например, голос) по цифровой сети, его оцифровывают.</p>
+
+    <h4>Дискретизация (Sampling)</h4>
+    <p>Аналоговый сигнал измеряют через равные промежутки времени.</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 620 200" width="620">
+        <text x="310" y="20" text-anchor="middle" font-size="12" fill="#1c2331">Оцифровка: дискретизация → квантование → кодирование</text>
+
+        <line x1="30" y1="160" x2="600" y2="160" stroke="#8891a6" stroke-width="1"/>
+        <path d="M 30 100 Q 80 30 130 100 T 230 100 T 330 100 T 430 100 T 530 100"
+              fill="none" stroke="#4f46e5" stroke-width="2"/>
+
+        <!-- точки дискретизации -->
+        <g fill="#e11d48">
+          <circle cx="50" cy="80" r="4"/>
+          <circle cx="90" cy="50" r="4"/>
+          <circle cx="130" cy="100" r="4"/>
+          <circle cx="170" cy="80" r="4"/>
+          <circle cx="210" cy="60" r="4"/>
+          <circle cx="250" cy="80" r="4"/>
+          <circle cx="290" cy="100" r="4"/>
+          <circle cx="330" cy="100" r="4"/>
+          <circle cx="370" cy="80" r="4"/>
+          <circle cx="410" cy="60" r="4"/>
+          <circle cx="450" cy="80" r="4"/>
+          <circle cx="490" cy="100" r="4"/>
+          <circle cx="530" cy="100" r="4"/>
+        </g>
+
+        <!-- ступеньки -->
+        <path d="M 50 80 L 70 80 L 70 50 L 110 50 L 110 100 L 150 100 L 150 80 L 190 80 L 190 60 L 230 60 L 230 80 L 270 80 L 270 100 L 310 100 L 310 100 L 350 100 L 350 80 L 390 80 L 390 60 L 430 60 L 430 80 L 470 80 L 470 100 L 510 100 L 510 100 L 530 100"
+              fill="none" stroke="#16a34a" stroke-width="1.6" stroke-dasharray="3 3"/>
+
+        <text x="310" y="185" text-anchor="middle" font-size="11" fill="#889">Синяя кривая — аналог; красные точки — отсчёты; зелёная — восстановленный сигнал</text>
+      </svg>
+      <div class="cap">Теорема Котельникова: частота дискретизации должна быть минимум в 2 раза выше максимальной частоты сигнала.</div>
+    </div>
+
+    <h4>Этапы оцифровки</h4>
+    <ol>
+      <li><b>Дискретизация</b> — снятие отсчётов через равные интервалы.</li>
+      <li><b>Квантование</b> — округление значений до ближайшего уровня.</li>
+      <li><b>Кодирование</b> — превращение в биты (обычно 8-16 бит на отсчёт).</li>
+    </ol>
+
+    <div class="box example">
+      <div class="label">Пример: телефонный звонок</div>
+      Голос человека — от 300 до 3400 Гц. По теореме Котельникова нужно дискретизировать с частотой ≥ 6800 Гц. В телефонии используют <b>8000 Гц</b> (запас) и <b>8 бит</b> на отсчёт. Итого: 8000 × 8 = <b>64 Кбит/с</b> — стандартный телефонный канал.
+    </div>
+
+    <h3>5.5. Коммутация</h3>
+
+    <p><b>Коммутация</b> — способ соединения отправителя и получателя в сети.</p>
+
+    <h4>Коммутация каналов (Circuit Switching)</h4>
+    <p>Устанавливается <b>выделенный физический канал</b> на всё время сессии. Использовалась в телефонных сетях.</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 560 180" width="560">
+        <text x="280" y="20" text-anchor="middle" font-size="12" fill="#4f46e5" font-weight="600">Коммутация каналов: выделенная линия</text>
+
+        <circle cx="60" cy="90" r="30" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5"/>
+        <text x="60" y="94" text-anchor="middle" font-size="12">A</text>
+
+        <circle cx="500" cy="90" r="30" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5"/>
+        <text x="500" y="94" text-anchor="middle" font-size="12">B</text>
+
+        <circle cx="280" cy="40" r="25" fill="#fff9e6" stroke="#d97706" stroke-width="1.5"/>
+        <text x="280" y="45" text-anchor="middle" font-size="11">SW1</text>
+
+        <circle cx="280" cy="140" r="25" fill="#fff9e6" stroke="#d97706" stroke-width="1.5"/>
+        <text x="280" y="145" text-anchor="middle" font-size="11">SW2</text>
+
+        <line x1="90" y1="90" x2="255" y2="45" stroke="#e11d48" stroke-width="3"/>
+        <line x1="305" y1="45" x2="470" y2="90" stroke="#e11d48" stroke-width="3"/>
+
+        <line x1="90" y1="90" x2="255" y2="135" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4 3"/>
+        <line x1="305" y1="135" x2="470" y2="90" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4 3"/>
+
+        <text x="280" y="175" text-anchor="middle" font-size="11" fill="#e11d48">Красная линия — выделенный канал</text>
+      </svg>
+      <div class="cap">Все ресурсы канала заняты, даже если данные не передаются.</div>
+    </div>
+
+    <ul>
+      <li><b>Плюсы:</b> гарантированная полоса, постоянная задержка.</li>
+      <li><b>Минусы:</b> неэффективное использование (канал занят всегда), дорого.</li>
+    </ul>
+
+    <h4>Коммутация пакетов (Packet Switching)</h4>
+    <p>Данные разбиваются на <b>пакеты</b>, каждый может идти своим путём. Используется в интернете.</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 560 200" width="560">
+        <text x="280" y="20" text-anchor="middle" font-size="12" fill="#16a34a" font-weight="600">Коммутация пакетов: разные маршруты</text>
+
+        <circle cx="60" cy="100" r="30" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5"/>
+        <text x="60" y="105" text-anchor="middle" font-size="12">A</text>
+
+        <circle cx="500" cy="100" r="30" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5"/>
+        <text x="500" y="105" text-anchor="middle" font-size="12">B</text>
+
+        <circle cx="200" cy="50" r="22" fill="#fff9e6" stroke="#d97706" stroke-width="1.5"/>
+        <text x="200" y="55" text-anchor="middle" font-size="10">R1</text>
+
+        <circle cx="360" cy="50" r="22" fill="#fff9e6" stroke="#d97706" stroke-width="1.5"/>
+        <text x="360" y="55" text-anchor="middle" font-size="10">R2</text>
+
+        <circle cx="200" cy="150" r="22" fill="#fff9e6" stroke="#d97706" stroke-width="1.5"/>
+        <text x="200" y="155" text-anchor="middle" font-size="10">R3</text>
+
+        <circle cx="360" cy="150" r="22" fill="#fff9e6" stroke="#d97706" stroke-width="1.5"/>
+        <text x="360" y="155" text-anchor="middle" font-size="10">R4</text>
+
+        <!-- Путь 1 -->
+        <path d="M 90 90 L 180 55 M 220 45 L 340 45 M 380 55 L 470 90"
+              stroke="#16a34a" stroke-width="2.2" fill="none"/>
+        <text x="280" y="35" text-anchor="middle" font-size="10" fill="#16a34a">Пакет 1</text>
+
+        <!-- Путь 2 -->
+        <path d="M 90 110 L 180 145 M 220 155 L 340 155 M 380 145 L 470 110"
+              stroke="#e11d48" stroke-width="2.2" fill="none"/>
+        <text x="280" y="180" text-anchor="middle" font-size="10" fill="#e11d48">Пакет 2</text>
+      </svg>
+      <div class="cap">Пакеты могут идти разными путями, при этом каждый использует сеть только когда передаётся.</div>
+    </div>
+
+    <ul>
+      <li><b>Плюсы:</b> эффективное использование, устойчивость к отказам, гибкость.</li>
+      <li><b>Минусы:</b> задержки могут варьироваться (jitter), нужны буферы.</li>
+    </ul>
+
+    <h4>Коммутация сообщений (Message Switching)</h4>
+    <p>Передаётся <b>целое сообщение</b> целиком. Использовалась в первых телеграфных сетях.</p>
+    <ul>
+      <li>Сообщение передаётся через промежуточные узлы, где хранится целиком, потом пересылается дальше.</li>
+      <li>Минус: очень большие задержки, много места для хранения.</li>
+    </ul>
+
+    <h3>5.6. Сравнение типов коммутации</h3>
+
+    <table>
+      <tr><th>Тип</th><th>Что передаётся</th><th>Полоса</th><th>Задержка</th><th>Пример</th></tr>
+      <tr><td>Каналов</td><td>Поток битов</td><td>Фиксированная</td><td>Постоянная</td><td>Телефония (старая)</td></tr>
+      <tr><td>Пакетов</td><td>Пакеты</td><td>Динамическая</td><td>Переменная</td><td>Интернет</td></tr>
+      <tr><td>Сообщений</td><td>Сообщения</td><td>Фиксированная</td><td>Большая</td><td>Телеграф</td></tr>
+    </table>
+
+    <h3>5.7. Понятие пакета</h3>
+
+    <p><b>Пакет</b> — небольшой блок данных с заголовком и полезной нагрузкой.</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 620 120" width="620">
+        <rect x="30" y="30" width="120" height="60" fill="#fff9e6" stroke="#d97706" stroke-width="1.6"/>
+        <text x="90" y="55" text-anchor="middle" font-size="11" fill="#d97706" font-weight="600">IP-заголовок</text>
+        <text x="90" y="75" text-anchor="middle" font-size="10" fill="#889">откуда, куда, TTL</text>
+
+        <rect x="150" y="30" width="120" height="60" fill="#fff1f4" stroke="#e11d48" stroke-width="1.6"/>
+        <text x="210" y="55" text-anchor="middle" font-size="11" fill="#e11d48" font-weight="600">TCP-заголовок</text>
+        <text x="210" y="75" text-anchor="middle" font-size="10" fill="#889">порты, seq, ack</text>
+
+        <rect x="270" y="30" width="320" height="60" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.6"/>
+        <text x="430" y="55" text-anchor="middle" font-size="11" fill="#4f46e5" font-weight="600">Полезная нагрузка (data)</text>
+        <text x="430" y="75" text-anchor="middle" font-size="10" fill="#889">до 1460 байт (для Ethernet MTU 1500)</text>
+
+        <text x="310" y="110" text-anchor="middle" font-size="11" fill="#889">Весь пакет — до 1518 байт на канальном уровне</text>
+      </svg>
+      <div class="cap">Структура типичного сетевого пакета.</div>
+    </div>
+
+    <h3>5.8. Где это применяется</h3>
+
+    <table>
+      <tr><th>Область</th><th>Пример</th></tr>
+      <tr><td><b>VoIP и видеозвонки</b></td><td>Оцифровка голоса (8 кГц, 8 бит = 64 Кбит/с), передача через UDP-пакеты</td></tr>
+      <tr><td><b>Мобильная связь</b></td><td>4G/5G используют QAM и OFDM-модуляцию для высокой скорости</td></tr>
+      <tr><td><b>Wi-Fi</b></td><td>QAM-256/1024, OFDMA в Wi-Fi 6 для одновременной работы многих устройств</td></tr>
+      <tr><td><b>Оптические магистрали</b></td><td>WDM (Wavelength Division Multiplexing) — до 100+ каналов в одном волокне</td></tr>
+      <tr><td><b>Спутниковая связь</b></td><td>QPSK, 8PSK для помехоустойчивости</td></tr>
+    </table>
+
+    <h3>Практическое задание</h3>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №5 · Анализ пакетов в Wireshark <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> увидеть структуру пакетов и понять их размеры.</div>
+      <ol>
+        <li>Откройте Wireshark, начните захват трафика.</li>
+        <li>Откройте любой сайт, посмотрите YouTube-видео 10 секунд.</li>
+        <li>Остановите захват и ответьте:
+          <ul>
+            <li>Сколько всего пакетов? (вверху окна)</li>
+            <li>Сколько занимает один HTTP-запрос? (в байтах)</li>
+            <li>Какие протоколы встречаются чаще всего? (меню Statistics → Protocol Hierarchy)</li>
+            <li>Сколько TCP vs UDP-пакетов?</li>
+          </ul>
+        </li>
+        <li>Отфильтруйте только DNS-запросы (<code>dns</code>) — сколько их?</li>
+        <li>Откройте один DNS-пакет и посмотрите:
+          <ul>
+            <li>Какой домен запрашивается?</li>
+            <li>Какой ответ (IP-адрес)?</li>
+            <li>Какой размер пакета?</li>
+          </ul>
+        </li>
+      </ol>
+      <div class="goal"><b>Результат:</b> скриншоты + письменный отчёт с ответами.</div>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Почему интернет использует коммутацию пакетов, а не каналов?</summary>
+      <div class="answer">
+        <b>Эффективность.</b> При коммутации каналов полоса выделяется на всё время соединения, даже если данные не передаются. При коммутации пакетов канал используется только когда есть что передавать.<br><br>
+        <b>Устойчивость.</b> Если один маршрут сломался — пакеты пойдут другим путём. При коммутации каналов обрыв линии разрывает соединение.<br><br>
+        <b>Масштабируемость.</b> Миллиарды устройств не могут одновременно иметь выделенные линии. Коммутация пакетов позволяет работать всем в одной среде.<br><br>
+        <b>Стоимость.</b> Одна инфраструктура обслуживает всех, а не отдельные выделенные линии.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Что такое теорема Котельникова?</summary>
+      <div class="answer">
+        <b>Теорема Котельникова (Найквиста–Шеннона):</b> для корректной оцифровки сигнала частота дискретизации должна быть <b>минимум в 2 раза выше</b> максимальной частоты в сигнале.<br><br>
+        Пример: голос содержит частоты до 4000 Гц. Значит, дискретизировать нужно с частотой ≥ 8000 Гц. Именно поэтому телефон использует 8 кГц.<br><br>
+        Если дискретизировать реже — сигнал искажается (aliasing). Пример: видео с колёсами машины, которые «крутятся назад» — это эффект наложения частот.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Зачем нужна модуляция, если данные и так цифровые?</summary>
+      <div class="answer">
+        <b>Среда не всегда цифровая.</b> Wi-Fi, радио, DSL, спутник передают данные через аналоговые волны (электромагнитные).<br><br>
+        <b>Как передать биты через волну?</b> Меняем её параметры — модулируем. Например:
+        <ul>
+          <li>AM: бит 1 — громче, бит 0 — тише.</li>
+          <li>FM: бит 1 — выше частота, бит 0 — ниже.</li>
+          <li>QAM: комбинация амплитуды и фазы — можно передать много бит в одном символе.</li>
+        </ul>
+        <b>Плюс эффективности:</b> QAM-256 передаёт 8 бит за раз, а не по одному.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 4. Чем плох метод коммутации сообщений?</summary>
+      <div class="answer">
+        <ul>
+          <li><b>Большая задержка</b> — сообщение передаётся целиком через каждый узел.</li>
+          <li><b>Нужно много памяти</b> — на каждом промежуточном узле хранится всё сообщение.</li>
+          <li><b>Неэффективно при ошибке</b> — если пакет потерялся, приходится передавать всё заново.</li>
+          <li><b>Плохо для интерактивных приложений</b> — видео, голос, игры не потерпят больших задержек.</li>
+        </ul>
+        Поэтому современные сети используют <b>пакетную коммутацию</b> — небольшие пакеты, которые можно быстро передавать и повторно отправлять только потерянные.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание по теме</div>
+      Сдать файл <code>practice-transmission.docx</code>:
+      <ol>
+        <li>Схема аналогового и цифрового сигналов</li>
+        <li>Таблица сравнения коммутации каналов, пакетов, сообщений</li>
+        <li>Схема структуры сетевого пакета</li>
+        <li>Отчёт по Wireshark (см. ПР №5)</li>
+        <li>Ответы на 4 вопроса самопроверки</li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="04-cables.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">4. Кабели и беспроводные среды</span>
+  </a>
+  <a href="06-ip-addressing.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">6. IP-адресация и маски</span>
+  </a>
+</div>
+
+<footer>
+  ОП.11 Компьютерные сети · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

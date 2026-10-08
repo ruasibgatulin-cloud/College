@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сети · 1. Основы · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ОП.11 Сети · Тема 1</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="networks-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-basics.html" class="current">1. Основы</a>
+  <a href="02-models.html">2. OSI/TCP-IP</a>
+  <a href="03-hardware.html">3. Аппаратура</a>
+  <a href="04-cables.html">4. Кабели</a>
+  <a href="05-transmission.html">5. Передача</a>
+  <a href="06-ip-addressing.html">6. IP</a>
+  <a href="07-dns-routing.html">7. DNS</a>
+  <a href="08-architectures.html">8. Архитектуры</a>
+  <a href="09-miminet-practice.html">🎯 Практика</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">1</span>Общие сведения о компьютерной сети</h2>
+
+    <p><b>Компьютерная сеть</b> — совокупность устройств (компьютеров, серверов, принтеров, телефонов), соединённых каналами связи для обмена данными и совместного использования ресурсов.</p>
+
+    <div class="box note">
+      <div class="label">Зачем нужны сети</div>
+      <ul>
+        <li><b>Обмен файлами</b> — отправить документ коллеге</li>
+        <li><b>Совместное использование ресурсов</b> — один принтер на офис</li>
+        <li><b>Централизованное хранение</b> — файловый сервер</li>
+        <li><b>Коммуникация</b> — почта, мессенджеры, видеозвонки</li>
+        <li><b>Веб-сервисы</b> — сайты, приложения, облачные хранилища</li>
+      </ul>
+    </div>
+
+    <h3>1.1. Классификация по масштабу</h3>
+
+    <table>
+      <tr><th>Тип</th><th>Расшифровка</th><th>Масштаб</th><th>Пример</th></tr>
+      <tr><td><b>PAN</b></td><td>Personal Area Network</td><td>~10 м</td><td>Bluetooth-наушники, смарт-часы</td></tr>
+      <tr><td><b>LAN</b></td><td>Local Area Network</td><td>Офис, дом, этаж</td><td>Wi-Fi в квартире, офисная сеть</td></tr>
+      <tr><td><b>MAN</b></td><td>Metropolitan Area Network</td><td>Город</td><td>Городская сеть провайдера</td></tr>
+      <tr><td><b>WAN</b></td><td>Wide Area Network</td><td>Страна, мир</td><td>Интернет, сети между городами</td></tr>
+    </table>
+
+    <h3>1.2. Классификация по административной модели</h3>
+
+    <h4>Одноранговая сеть (Peer-to-Peer)</h4>
+    <p>Все устройства равноправны. Каждое может быть и клиентом, и сервером.</p>
+    <ul>
+      <li><b>Плюсы:</b> просто настроить, не нужен выделенный сервер.</li>
+      <li><b>Минусы:</b> плохо масштабируется, слабая безопасность.</li>
+      <li><b>Где:</b> домашние сети 2-5 устройств, торренты.</li>
+    </ul>
+
+    <h4>Сеть на основе сервера</h4>
+    <p>Есть выделенный сервер (или несколько), который управляет ресурсами.</p>
+    <ul>
+      <li><b>Плюсы:</b> централизованное управление, безопасность, резервное копирование.</li>
+      <li><b>Минусы:</b> дороже, нужен администратор.</li>
+      <li><b>Где:</b> офисы, предприятия, дата-центры.</li>
+    </ul>
+
+    <h3>1.3. Топологии</h3>
+
+    <div class="viz">
+      <svg viewBox="0 0 620 200" width="620">
+        <!-- Звезда -->
+        <g transform="translate(10,10)">
+          <circle cx="80" cy="90" r="20" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.8"/>
+          <text x="80" y="95" text-anchor="middle" font-size="11" fill="#4f46e5" font-weight="600">SW</text>
+          <g stroke="#8891a6" stroke-width="1.5">
+            <line x1="80" y1="70" x2="80" y2="25"/>
+            <line x1="80" y1="110" x2="80" y2="155"/>
+            <line x1="60" y1="90" x2="15" y2="90"/>
+            <line x1="100" y1="90" x2="145" y2="90"/>
+          </g>
+          <g fill="#0891b2">
+            <circle cx="80" cy="20" r="9"/>
+            <circle cx="80" cy="160" r="9"/>
+            <circle cx="10" cy="90" r="9"/>
+            <circle cx="150" cy="90" r="9"/>
+          </g>
+          <text x="80" y="195" text-anchor="middle" font-size="12" fill="#4f46e5" font-weight="600">Звезда</text>
+        </g>
+        <!-- Кольцо -->
+        <g transform="translate(200,10)">
+          <circle cx="80" cy="90" r="65" fill="none" stroke="#8891a6" stroke-width="1.5"/>
+          <g fill="#0891b2">
+            <circle cx="80" cy="25" r="9"/>
+            <circle cx="145" cy="90" r="9"/>
+            <circle cx="80" cy="155" r="9"/>
+            <circle cx="15" cy="90" r="9"/>
+          </g>
+          <text x="80" y="195" text-anchor="middle" font-size="12" fill="#4f46e5" font-weight="600">Кольцо</text>
+        </g>
+        <!-- Шина -->
+        <g transform="translate(390,10)">
+          <line x1="20" y1="90" x2="190" y2="90" stroke="#8891a6" stroke-width="3"/>
+          <g fill="#0891b2">
+            <circle cx="40" cy="90" r="9"/>
+            <circle cx="90" cy="90" r="9"/>
+            <circle cx="140" cy="90" r="9"/>
+            <circle cx="180" cy="90" r="9"/>
+          </g>
+          <text x="105" y="195" text-anchor="middle" font-size="12" fill="#4f46e5" font-weight="600">Шина</text>
+        </g>
+      </svg>
+      <div class="cap">Три классические топологии: звезда (актуальна), кольцо (устарела), шина (устарела).</div>
+    </div>
+
+    <table>
+      <tr><th>Топология</th><th>Плюсы</th><th>Минусы</th></tr>
+      <tr><td><b>Звезда</b></td><td>Отказ одного узла не ломает сеть, легко добавлять устройства</td><td>Отказ центра (коммутатора) — вся сеть падает</td></tr>
+      <tr><td><b>Кольцо</b></td><td>Каждый узел равноудалён</td><td>Разрыв кольца ломает всю сеть</td></tr>
+      <tr><td><b>Шина</b></td><td>Минимум кабеля</td><td>Коллизии, при обрыве — вся сеть встаёт</td></tr>
+      <tr><td><b>Mesh (полносвязная)</b></td><td>Отказоустойчивая, много путей</td><td>Дорого, сложно настраивать</td></tr>
+    </table>
+
+    <h3>1.4. Методы доступа к среде передачи</h3>
+
+    <p>Когда несколько устройств используют один канал (например, Wi-Fi), нужно правило, кто когда передаёт.</p>
+
+    <h4>CSMA/CD (Carrier Sense Multiple Access with Collision Detection)</h4>
+    <p>Используется в <b>старом Ethernet</b> (с общим кабелем). Алгоритм:</p>
+    <ol>
+      <li><b>Слушай</b> — если канал свободен, начинай передачу.</li>
+      <li><b>Слушай во время передачи</b> — если слышишь чужой сигнал, значит коллизия.</li>
+      <li><b>Стоп</b> — прекрати передачу, отправь сигнал JAM.</li>
+      <li><b>Случайная пауза</b> — подожди случайное время.</li>
+      <li><b>Повтори</b>.</li>
+    </ol>
+    <p><b>Проблема:</b> чем больше устройств, тем больше коллизий.</p>
+
+    <h4>CSMA/CA (Collision Avoidance)</h4>
+    <p>Используется в <b>Wi-Fi</b> (802.11). Нельзя одновременно передавать и слушать (радио), поэтому <b>избегаем</b> коллизий:</p>
+    <ol>
+      <li>Слушай канал.</li>
+      <li>Если свободен — подожди ещё немного (Inter-Frame Space).</li>
+      <li>Отправь короткий пакет <b>RTS</b> (Request to Send).</li>
+      <li>Точка доступа отвечает <b>CTS</b> (Clear to Send).</li>
+      <li>Передавай данные.</li>
+    </ol>
+
+    <h4>Маркерные методы</h4>
+    <p>По сети ходит «маркер» (token) — специальный пакет. Передавать данные может только тот, у кого маркер. Использовался в <b>Token Ring</b> и <b>FDDI</b>.</p>
+    <ul>
+      <li><b>Плюс:</b> нет коллизий, предсказуемая задержка.</li>
+      <li><b>Минус:</b> если маркер потерялся — вся сеть ждёт.</li>
+    </ul>
+
+    <h3>1.5. Модель клиент-сервер</h3>
+
+    <p>Большинство сетевых взаимодействий построено по модели «клиент — сервер»:</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 500 200" width="500">
+        <rect x="30" y="60" width="140" height="80" fill="#eef0ff" stroke="#4f46e5" stroke-width="2" rx="8"/>
+        <text x="100" y="90" text-anchor="middle" font-size="13" fill="#4f46e5" font-weight="600">Клиент</text>
+        <text x="100" y="110" text-anchor="middle" font-size="11" fill="#889">Браузер, приложение</text>
+        <text x="100" y="128" text-anchor="middle" font-size="11" fill="#889">Запрашивает данные</text>
+
+        <rect x="330" y="60" width="140" height="80" fill="#ecfdf3" stroke="#16a34a" stroke-width="2" rx="8"/>
+        <text x="400" y="90" text-anchor="middle" font-size="13" fill="#16a34a" font-weight="600">Сервер</text>
+        <text x="400" y="110" text-anchor="middle" font-size="11" fill="#889">Веб-сервер, БД</text>
+        <text x="400" y="128" text-anchor="middle" font-size="11" fill="#889">Отвечает на запросы</text>
+
+        <defs><marker id="ar-cl" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#4f46e5"/></marker>
+        <marker id="ar-sv" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#16a34a"/></marker></defs>
+        <path d="M 175 85 L 320 85" stroke="#4f46e5" stroke-width="2" marker-end="url(#ar-cl)"/>
+        <text x="250" y="78" text-anchor="middle" font-size="11" fill="#4f46e5">Запрос (request)</text>
+
+        <path d="M 320 120 L 175 120" stroke="#16a34a" stroke-width="2" marker-end="url(#ar-sv)"/>
+        <text x="250" y="140" text-anchor="middle" font-size="11" fill="#16a34a">Ответ (response)</text>
+      </svg>
+      <div class="cap">Клиент отправляет запрос, сервер обрабатывает и возвращает ответ.</div>
+    </div>
+
+    <p>Примеры:</p>
+    <ul>
+      <li><b>Веб:</b> браузер (клиент) → веб-сервер (Apache, Nginx) → HTML-страница.</li>
+      <li><b>Email:</b> почтовый клиент (Outlook) → почтовый сервер (SMTP, IMAP).</li>
+      <li><b>Базы данных:</b> приложение → сервер БД (PostgreSQL).</li>
+    </ul>
+
+    <h3>1.6. Где это применяется</h3>
+
+    <table>
+      <tr><th>Область</th><th>Пример</th></tr>
+      <tr><td><b>Домашние сети</b></td><td>Роутер раздаёт Wi-Fi, компьютеры, телефоны, телевизор</td></tr>
+      <tr><td><b>Офисные сети</b></td><td>Коммутаторы соединяют отделы, серверы обслуживают сотрудников</td></tr>
+      <tr><td><b>Дата-центры</b></td><td>Тысячи серверов соединены в стойки, стойки — в кластеры</td></tr>
+      <tr><td><b>Промышленность</b></td><td>IoT-датчики на производстве передают данные на сервер</td></tr>
+      <tr><td><b>Мобильные сети</b></td><td>4G/5G базовые станции соединяют телефоны</td></tr>
+    </table>
+
+    <h3>Практическое задание</h3>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №1 · Знакомство с miminet.ru <span class="badge">40 мин</span></div>
+      <div class="goal"><b>Задача:</b> зарегистрироваться в тренажёре и собрать первую простую сеть.</div>
+      <ol>
+        <li>Откройте <a href="https://miminet.ru" target="_blank">miminet.ru</a> и зарегистрируйтесь.</li>
+        <li>Создайте новый проект: <b>Проекты → Создать</b>.</li>
+        <li>Перетащите на рабочее поле:
+          <ul>
+            <li>2 хоста (Host)</li>
+            <li>1 коммутатор (Switch)</li>
+          </ul>
+        </li>
+        <li>Соедините: Host1 → Switch, Switch → Host2.</li>
+        <li>Задайте адреса:
+          <ul>
+            <li>Host1: <code>192.168.1.1/24</code></li>
+            <li>Host2: <code>192.168.1.2/24</code></li>
+          </ul>
+        </li>
+        <li>Запустите проект и выполните пинг из Host1 в Host2.</li>
+      </ol>
+      <div class="goal"><b>Результат:</b> 4 пакета получены, 0% потерь. Сохраните скриншот и JSON-файл проекта.</div>
+      <p>📖 Подробнее — в разделе <a href="09-miminet-practice.html">Практика в miminet</a>.</p>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Чем LAN отличается от WAN?</summary>
+      <div class="answer">
+        <b>LAN</b> (Local Area Network) — локальная сеть в пределах одного здания или кампуса. Высокая скорость (1-10 Гбит/с), малые задержки, один владелец.<br><br>
+        <b>WAN</b> (Wide Area Network) — глобальная сеть, соединяющая устройства на больших расстояниях. Более медленная (обычно до 1 Гбит/с), большие задержки, много владельцев (провайдеры).<br><br>
+        <b>Интернет</b> — самая известная WAN. LAN обычно подключается к WAN через роутер провайдера.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Почему CSMA/CD устарел?</summary>
+      <div class="answer">
+        Три причины:
+        <ol>
+          <li><b>Коммутаторы вытеснили хабы.</b> В современном Ethernet каждое устройство подключено к отдельному порту коммутатора. Коллизий нет в принципе.</li>
+          <li><b>Full-duplex.</b> Устройства могут одновременно передавать и принимать.</li>
+          <li><b>Скорости выросли.</b> При 1 Гбит/с коллизии стали бы фатальны для производительности.</li>
+        </ol>
+        CSMA/CD остался в учебниках как историческая концепция. Реально работает только <b>CSMA/CA</b> — в Wi-Fi, где среда всё ещё общая.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Зачем нужна топология «звезда», если есть Mesh?</summary>
+      <div class="answer">
+        <b>Mesh</b> — отказоустойчив (много путей), но дорог и сложен. Нужен минимум N(N-1)/2 соединений для N устройств.<br><br>
+        <b>Звезда</b> — просто и дёшево. Один коммутатор + N кабелей. Отказ одного узла не влияет на других.<br><br>
+        <b>Компромисс:</b> в современных сетях используют <b>звёздно-распределённую топологию</b> — несколько коммутаторов соединены иерархически. Это даёт и надёжность, и простоту.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание по теме</div>
+      Сдать файл <code>practice-basics.docx</code>:
+      <ol>
+        <li>Таблица сравнения LAN/WAN/PAN/MAN с примерами</li>
+        <li>Схема топологии «звезда» в Word (Вставка → Фигуры)</li>
+        <li>Ответы на 3 вопроса самопроверки</li>
+        <li>Скриншот первой сети из miminet + JSON-файл проекта</li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="networks-index.html">
+    <span class="dir">← К оглавлению</span>
+    <span class="title">Все темы курса</span>
+  </a>
+  <a href="02-models.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">2. Модели OSI и TCP/IP</span>
+  </a>
+</div>
+
+<footer>
+  ОП.11 Компьютерные сети · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

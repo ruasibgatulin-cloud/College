@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сети · 8. Архитектуры · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ОП.11 Сети · Тема 8</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="networks-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-basics.html">1. Основы</a>
+  <a href="02-models.html">2. OSI/TCP-IP</a>
+  <a href="03-hardware.html">3. Аппаратура</a>
+  <a href="04-cables.html">4. Кабели</a>
+  <a href="05-transmission.html">5. Передача</a>
+  <a href="06-ip-addressing.html">6. IP</a>
+  <a href="07-dns-routing.html">7. DNS</a>
+  <a href="08-architectures.html" class="current">8. Архитектуры</a>
+  <a href="09-miminet-practice.html">🎯 Практика</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">8</span>Сетевые архитектуры и технологии</h2>
+
+    <p>Каждая сетевая технология — это набор правил: как передавать, на какой скорости, на каком уровне. Здесь собраны основные стандарты от Ethernet до 5G.</p>
+
+    <h3>8.1. Ethernet (IEEE 802.3)</h3>
+
+    <p>Самая распространённая технология проводных локальных сетей. Работает на <b>канальном уровне</b> (2).</p>
+
+    <h4>Скорости Ethernet</h4>
+
+    <table>
+      <tr><th>Стандарт</th><th>Скорость</th><th>Среда</th><th>Год</th></tr>
+      <tr><td>Ethernet</td><td>10 Мбит/с</td><td>Коаксиал, витая пара</td><td>1983</td></tr>
+      <tr><td>Fast Ethernet (100BASE-TX)</td><td>100 Мбит/с</td><td>Cat 5</td><td>1995</td></tr>
+      <tr><td>Gigabit Ethernet (1000BASE-T)</td><td>1 Гбит/с</td><td>Cat 5e/6</td><td>1999</td></tr>
+      <tr><td>10G Ethernet (10GBASE-T)</td><td>10 Гбит/с</td><td>Cat 6a/7</td><td>2006</td></tr>
+      <tr><td>40/100G Ethernet</td><td>40-100 Гбит/с</td><td>Оптика</td><td>2010</td></tr>
+      <tr><td>400G/800G Ethernet</td><td>400-800 Гбит/с</td><td>Оптика</td><td>2017+</td></tr>
+    </table>
+
+    <h4>Формат Ethernet-кадра</h4>
+
+    <div class="viz">
+      <svg viewBox="0 0 620 100" width="620">
+        <rect x="20" y="30" width="90" height="40" fill="#e6f7fb" stroke="#0891b2" stroke-width="1.5"/>
+        <text x="65" y="55" text-anchor="middle" font-size="10" fill="#0891b2">MAC-получателя</text>
+        <text x="65" y="85" text-anchor="middle" font-size="9" fill="#889">6 байт</text>
+
+        <rect x="110" y="30" width="90" height="40" fill="#e6f7fb" stroke="#0891b2" stroke-width="1.5"/>
+        <text x="155" y="55" text-anchor="middle" font-size="10" fill="#0891b2">MAC-отправителя</text>
+        <text x="155" y="85" text-anchor="middle" font-size="9" fill="#889">6 байт</text>
+
+        <rect x="200" y="30" width="60" height="40" fill="#fff9e6" stroke="#d97706" stroke-width="1.5"/>
+        <text x="230" y="55" text-anchor="middle" font-size="10" fill="#d97706">Тип</text>
+        <text x="230" y="85" text-anchor="middle" font-size="9" fill="#889">2 байта</text>
+
+        <rect x="260" y="30" width="240" height="40" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5"/>
+        <text x="380" y="55" text-anchor="middle" font-size="11" fill="#4f46e5">Данные (payload)</text>
+        <text x="380" y="85" text-anchor="middle" font-size="9" fill="#889">46 – 1500 байт</text>
+
+        <rect x="500" y="30" width="100" height="40" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="550" y="55" text-anchor="middle" font-size="10" fill="#16a34a">CRC (FCS)</text>
+        <text x="550" y="85" text-anchor="middle" font-size="9" fill="#889">4 байта</text>
+      </svg>
+      <div class="cap">Ethernet-кадр: 14 байт заголовка + данные + 4 байта контрольной суммы.</div>
+    </div>
+
+    <h3>8.2. Wi-Fi (IEEE 802.11)</h3>
+
+    <p>Беспроводная технология. Работает на канальном уровне (2), но через радиоканал.</p>
+
+    <h4>Режимы работы</h4>
+    <ul>
+      <li><b>Infrastructure</b> — клиенты подключаются к точке доступа (обычный Wi-Fi).</li>
+      <li><b>Ad-Hoc</b> — устройства соединяются напрямую, без точки доступа.</li>
+      <li><b>Mesh</b> — несколько точек доступа создают единую сеть.</li>
+    </ul>
+
+    <h4>Проблемы Wi-Fi</h4>
+    <ul>
+      <li><b>Помехи</b> — микроволновки, соседские сети, Bluetooth работают в 2.4 ГГц.</li>
+      <li><b>Затухание</b> — стены, мебель, вода снижают сигнал.</li>
+      <li><b>Разделение среды</b> — все клиенты делят пропускную способность точки доступа.</li>
+      <li><b>Безопасность</b> — WEP устарел, WPA2 минимальный, WPA3 рекомендуется.</li>
+    </ul>
+
+    <h4>Стандарты безопасности</h4>
+
+    <table>
+      <tr><th>Стандарт</th><th>Год</th><th>Стойкость</th></tr>
+      <tr><td>WEP</td><td>1999</td><td>Взломан за минуты, устарел</td></tr>
+      <tr><td>WPA</td><td>2003</td><td>Устарел</td></tr>
+      <tr><td>WPA2 (PSK / Enterprise)</td><td>2004</td><td>Стандарт, но есть атаки</td></tr>
+      <tr><td>WPA3</td><td>2018</td><td>Современный стандарт</td></tr>
+    </table>
+
+    <h3>8.3. Token Ring (IEEE 802.5)</h3>
+
+    <p>Историческая технология IBM. Устарела, но интересна как альтернатива Ethernet.</p>
+
+    <ul>
+      <li><b>Топология:</b> кольцо.</li>
+      <li><b>Метод доступа:</b> маркер (token). Передавать может только владелец маркера.</li>
+      <li><b>Скорости:</b> 4 и 16 Мбит/с.</li>
+      <li><b>Плюс:</b> нет коллизий, предсказуемая задержка.</li>
+      <li><b>Минус:</b> дорого, сложно, обрыв кольца ломает сеть.</li>
+      <li><b>Проиграла Ethernet</b> — проще и дешевле.</li>
+    </ul>
+
+    <h3>8.4. FDDI (Fiber Distributed Data Interface)</h3>
+
+    <p>Оптическая технология кольца, развивавшая идеи Token Ring.</p>
+
+    <ul>
+      <li><b>Скорость:</b> 100 Мбит/с.</li>
+      <li><b>Среда:</b> оптоволокно.</li>
+      <li><b>Отказоустойчивость:</b> два кольца, при обрыве используется резервное.</li>
+      <li><b>Дальность:</b> до 200 км (для магистралей).</li>
+      <li><b>Устарела</b> с приходом Gigabit Ethernet.</li>
+    </ul>
+
+    <h3>8.5. Технологии глобальных сетей</h3>
+
+    <h4>WAN-технологии</h4>
+
+    <table>
+      <tr><th>Технология</th><th>Скорость</th><th>Среда</th><th>Применение</th></tr>
+      <tr><td><b>DSL</b></td><td>до 100 Мбит/с</td><td>Телефонная линия</td><td>Домашний интернет</td></tr>
+      <tr><td><b>DOCSIS</b></td><td>до 10 Гбит/с</td><td>Коаксиал (кабельное ТВ)</td><td>Кабельный интернет</td></tr>
+      <tr><td><b>GPON</b></td><td>до 2,5 Гбит/с</td><td>Оптика до дома</td><td>Современные провайдеры</td></tr>
+      <tr><td><b>4G LTE</b></td><td>до 300 Мбит/с</td><td>Сотовая связь</td><td>Мобильный интернет</td></tr>
+      <tr><td><b>5G</b></td><td>до 10 Гбит/с</td><td>Сотовая связь</td><td>Мобильный, IoT</td></tr>
+      <tr><td><b>Спутник</b></td><td>до 1 Гбит/с</td><td>Радио</td><td>Удалённые регионы, Starlink</td></tr>
+    </table>
+
+    <h4>Выделенные линии (Leased Line)</h4>
+
+    <p>Постоянное соединение между офисами компании с гарантированной полосой. Используется в корпоративной среде.</p>
+    <ul>
+      <li><b>SDH/SONET</b> — оптические магистрали 10+ Гбит/с.</li>
+      <li><b>MPLS</b> — виртуальные частные сети между офисами.</li>
+      <li><b>Ethernet Line (E-Line)</b> — L2-канал между двумя точками через провайдера.</li>
+    </ul>
+
+    <h3>8.6. VPN — виртуальные частные сети</h3>
+
+    <p><b>VPN</b> (Virtual Private Network) — защищённый туннель через публичную сеть.</p>
+
+    <h4>Зачем нужен VPN</h4>
+    <ul>
+      <li><b>Удалённый доступ сотрудников</b> к корпоративной сети.</li>
+      <li><b>Соединение офисов</b> через интернет (site-to-site VPN).</li>
+      <li><b>Шифрование трафика</b> — защита от перехвата в публичных Wi-Fi.</li>
+      <li><b>Смена IP</b> — обход географических ограничений.</li>
+    </ul>
+
+    <h4>Основные протоколы VPN</h4>
+
+    <table>
+      <tr><th>Протокол</th><th>Уровень</th><th>Особенности</th></tr>
+      <tr><td><b>IPsec</b></td><td>Сетевой (3)</td><td>Стандарт для site-to-site, работает в ядре</td></tr>
+      <tr><td><b>OpenVPN</b></td><td>Прикладной</td><td>Открытый, работает через TLS, порт 1194</td></tr>
+      <tr><td><b>WireGuard</b></td><td>Сетевой (3)</td><td>Современный, быстрый, простой в настройке</td></tr>
+      <tr><td><b>L2TP/IPsec</b></td><td>Канальный + сетевой</td><td>Популярен в Windows для VPN-подключений</td></tr>
+      <tr><td><b>PPTP</b></td><td>Канальный</td><td>Устарел, взломан</td></tr>
+      <tr><td><b>SSTP</b></td><td>Прикладной</td><td>Microsoft, работает через HTTPS (443)</td></tr>
+    </table>
+
+    <div class="box note">
+      <div class="label">WireGuard — современный стандарт</div>
+      В отличие от OpenVPN и IPsec, WireGuard написан заново с нуля — всего <b>4000 строк кода</b>. Работает в ядре Linux, очень быстрый, простой в настройке. Активно используется в корпоративных и личных VPN.
+    </div>
+
+    <h3>8.7. Удалённый доступ</h3>
+
+    <table>
+      <tr><th>Технология</th><th>Что делает</th><th>Порт</th></tr>
+      <tr><td><b>SSH</b></td><td>Защищённая командная строка</td><td>22</td></tr>
+      <tr><td><b>Telnet</b></td><td>Незащищённая командная строка (устарел)</td><td>23</td></tr>
+      <tr><td><b>RDP</b></td><td>Удалённый рабочий стол Windows</td><td>3389</td></tr>
+      <tr><td><b>VNC</b></td><td>Кроссплатформенный удалённый рабочий стол</td><td>5900</td></tr>
+      <tr><td><b>TeamViewer / AnyDesk</b></td><td>Удалённое управление (через свой сервер)</td><td>—</td></tr>
+    </table>
+
+    <h4>SSH — золотой стандарт</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="# Подключение к серверу
+ssh user@192.168.1.100
+ssh -p 2222 user@example.com    # на нестандартном порту
+
+# С ключом
+ssh -i ~/.ssh/id_rsa user@example.com
+
+# Генерация ключа
+ssh-keygen -t ed25519 -C &quot;my email&quot;
+# Публичный ключ копируется на сервер
+ssh-copy-id user@example.com
+
+# Проброс портов
+ssh -L 8080:localhost:80 user@example.com
+# Теперь локально http://localhost:8080 = удалённый порт 80">📋 Копировать</button>
+      <pre><span class="cmt"># Подключение к серверу</span>
+ssh user@192.168.1.100
+ssh -p 2222 user@example.com    <span class="cmt"># на нестандартном порту</span>
+
+<span class="cmt"># С ключом</span>
+ssh -i ~/.ssh/id_rsa user@example.com
+
+<span class="cmt"># Генерация ключа</span>
+ssh-keygen -t ed25519 -C "my email"
+<span class="cmt"># Публичный ключ копируется на сервер</span>
+ssh-copy-id user@example.com
+
+<span class="cmt"># Проброс портов</span>
+ssh -L 8080:localhost:80 user@example.com
+<span class="cmt"># Теперь локально http://localhost:8080 = удалённый порт 80</span></pre>
+      <div class="desc">SSH используется для управления серверами, передачи файлов, проброса портов.</div>
+    </div>
+
+    <h3>8.8. Где это применяется</h3>
+
+    <table>
+      <tr><th>Технология</th><th>Где используется</th></tr>
+      <tr><td>Ethernet</td><td>Все проводные LAN — офисы, дата-центры, домашние сети</td></tr>
+      <tr><td>Wi-Fi</td><td>Мобильные устройства, офисы, кафе, дома</td></tr>
+      <tr><td>GPON</td><td>Оптические сети провайдеров (Ростелеком, МГТС)</td></tr>
+      <tr><td>5G</td><td>Мобильный интернет, IoT, промышленность</td></tr>
+      <tr><td>VPN</td><td>Удалённая работа, корпоративные сети, приватность</td></tr>
+      <tr><td>SSH</td><td>Управление Linux-серверами по всему миру</td></tr>
+    </table>
+
+    <h3>Практические задания</h3>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №12 · Беспроводная сеть с WPA2 <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> настроить Wi-Fi-сеть с защитой в miminet (если поддерживается) или описать процесс для реального роутера.</div>
+      <ol>
+        <li>Если у вас есть роутер дома:
+          <ul>
+            <li>Зайдите в панель управления (обычно 192.168.1.1 или 192.168.0.1).</li>
+            <li>Найдите раздел Wireless.</li>
+            <li>Запишите: SSID, канал, тип шифрования, пароль.</li>
+            <li>Смените канал на другой (например, с 6 на 11) — проверьте, изменилась ли скорость.</li>
+            <li><b>Не меняйте пароль</b>, если не хотите заново подключать устройства.</li>
+          </ul>
+        </li>
+        <li>Или в miminet: если есть модуль Wi-Fi, соберите схему с точкой доступа и 3 клиентами.</li>
+        <li>Проверьте: клиенты видят друг друга, могут пинговать.</li>
+      </ol>
+      <div class="goal"><b>Результат:</b> скриншот панели роутера + отчёт о параметрах Wi-Fi.</div>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №13 · Удалённое подключение через SSH <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> настроить SSH-доступ к Linux-машине.</div>
+      <ol>
+        <li>Если у вас Linux (или WSL):
+          <ul>
+            <li>Установите OpenSSH: <code>sudo apt install openssh-server</code></li>
+            <li>Запустите: <code>sudo systemctl start ssh</code></li>
+            <li>Проверьте: <code>sudo systemctl status ssh</code></li>
+            <li>Узнайте свой IP: <code>ip a</code></li>
+          </ul>
+        </li>
+        <li>С другого компьютера в той же сети подключитесь: <code>ssh user@192.168.1.100</code></li>
+        <li>Сгенерируйте SSH-ключ: <code>ssh-keygen -t ed25519</code></li>
+        <li>Скопируйте ключ на сервер: <code>ssh-copy-id user@192.168.1.100</code></li>
+        <li>Проверьте, что вход по ключу работает без пароля.</li>
+      </ol>
+      <div class="goal"><b>Результат:</b> скриншоты успешного подключения + отчёт.</div>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Почему Ethernet победил Token Ring и FDDI?</summary>
+      <div class="answer">
+        <b>Проще, дешевле, быстрее развивался.</b><br><br>
+        <ul>
+          <li><b>Простота.</b> Ethernet — общая шина или звезда с коммутатором. Token Ring требовал сложной логики маркера.</li>
+          <li><b>Стоимость.</b> Ethernet-оборудование дешевле в производстве и монтаже.</li>
+          <li><b>Открытый стандарт.</b> Ethernet — IEEE 802.3, доступен всем. Token Ring — изначально технология IBM, менее открытая.</li>
+          <li><b>Скорость развития.</b> Ethernet быстро прошёл путь 10 Мбит → 100 Мбит → 1 Гбит → 10 Гбит. Token Ring застрял на 16 Мбит.</li>
+        </ul>
+        К 2000-м Ethernet полностью вытеснил конкурентов.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Чем WPA2 отличается от WPA3?</summary>
+      <div class="answer">
+        <b>WPA2</b> (2004) — долгое время был стандартом. Использует шифрование AES-CCMP. Уязвим к атакам KRACK (2017) и перебору пароля по handshake (PMKID).<br><br>
+        <b>WPA3</b> (2018) — современный стандарт:
+        <ul>
+          <li><b>SAE</b> (Simultaneous Authentication of Equals) — защита от перебора пароля (даже слабого).</li>
+          <li><b>Forward Secrecy</b> — если пароль утек, ранее переданные данные всё равно нельзя расшифровать.</li>
+          <li><b>Шифрование в открытых сетях</b> (OWE) — даже в кафе трафик защищён.</li>
+          <li><b>192-битное шифрование</b> для корпоративных сетей.</li>
+        </ul>
+        Рекомендуется везде, где поддерживается (Wi-Fi 6+).
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Зачем нужен VPN, если HTTPS и так шифрует?</summary>
+      <div class="answer">
+        HTTPS защищает <b>содержимое</b> страницы, но не всю поездку данных.<br><br>
+        <b>Что видно без VPN</b> (даже с HTTPS):
+        <ul>
+          <li><b>Провайдер</b> видит, к каким сайтам вы обращаетесь (по IP и SNI).</li>
+          <li><b>Локальная сеть</b> в кафе видит те же IP и, если нет HTTPS, всё содержимое.</li>
+          <li><b>Рекламные сети</b> строят профиль по вашим запросам.</li>
+          <li><b>Географические ограничения</b> — сайт не открывается из вашей страны.</li>
+        </ul>
+        <b>VPN решает:</b>
+        <ul>
+          <li>Шифрует весь трафик до VPN-сервера.</li>
+          <li>Скрывает от провайдера, куда вы идёте.</li>
+          <li>Меняет видимый IP-адрес.</li>
+          <li>Позволяет подключаться к корпоративной сети из дома.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 4. Чем 5G отличается от 4G?</summary>
+      <div class="answer">
+        <table style="margin-top:8px;">
+          <tr><th>Параметр</th><th>4G LTE</th><th>5G</th></tr>
+          <tr><td>Скорость (пик)</td><td>1 Гбит/с</td><td>20 Гбит/с</td></tr>
+          <tr><td>Задержка</td><td>20-30 мс</td><td>1-5 мс</td></tr>
+          <tr><td>Плотность устройств</td><td>100 000 / км²</td><td>1 млн / км²</td></tr>
+          <tr><td>Частоты</td><td>до 6 ГГц</td><td>до 40 ГГц (mmWave)</td></tr>
+        </table>
+        <b>Применение 5G:</b>
+        <ul>
+          <li>Автономные автомобили (низкая задержка).</li>
+          <li>IoT в промышленности (миллионы датчиков).</li>
+          <li>VR/AR-стриминг (высокая пропускная способность).</li>
+          <li>Умные города.</li>
+        </ul>
+        <b>Минус:</b> mmWave плохо проходит через стены, поэтому нужны базовые станции каждые 100-300 метров.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание по теме</div>
+      Сдать файл <code>practice-architectures.docx</code>:
+      <ol>
+        <li>Таблица сравнения Ethernet / Wi-Fi / Token Ring / FDDI</li>
+        <li>Схема Ethernet-кадра</li>
+        <li>Отчёт по Wi-Fi (ПР №12): скриншот панели роутера</li>
+        <li>Отчёт по SSH (ПР №13): скриншоты подключения</li>
+        <li>Ответы на 4 вопроса самопроверки</li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="07-dns-routing.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">7. DNS, маршрутизация, NAT</span>
+  </a>
+  <a href="09-miminet-practice.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">🎯 Практика в miminet.ru</span>
+  </a>
+</div>
+
+<footer>
+  ОП.11 Компьютерные сети · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

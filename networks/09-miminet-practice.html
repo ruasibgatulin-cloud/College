@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сети · Практика в miminet.ru · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ОП.11 Сети · Практика miminet</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="networks-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-basics.html">1. Основы</a>
+  <a href="02-models.html">2. OSI/TCP-IP</a>
+  <a href="03-hardware.html">3. Аппаратура</a>
+  <a href="04-cables.html">4. Кабели</a>
+  <a href="05-transmission.html">5. Передача</a>
+  <a href="06-ip-addressing.html">6. IP</a>
+  <a href="07-dns-routing.html">7. DNS</a>
+  <a href="08-architectures.html">8. Архитектуры</a>
+  <a href="09-miminet-practice.html" class="current">🎯 Практика</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">🎯</span>Практика в miminet.ru</h2>
+
+    <p><a href="https://miminet.ru" target="_blank">miminet.ru</a> — бесплатный онлайн-симулятор сетей. Позволяет собирать сети из хостов, коммутаторов, маршрутизаторов, настраивать IP-адреса, запускать ping, traceroute, curl и анализировать трафик.</p>
+
+    <div class="box note">
+      <div class="label">Перед началом работы</div>
+      <ol style="margin:8px 0;">
+        <li>Зарегистрируйтесь на <a href="https://miminet.ru" target="_blank">miminet.ru</a>.</li>
+        <li>Войдите в аккаунт.</li>
+        <li>Создайте новый проект: <b>Проекты → Создать</b>.</li>
+        <li>Интерфейс: слева — библиотека устройств, по центру — рабочее поле, справа — настройки выбранного элемента, снизу — консоль.</li>
+      </ol>
+    </div>
+
+    <h3>Как сдавать работы</h3>
+
+    <ul>
+      <li><b>Экспорт проекта:</b> <code>Файл → Сохранить как JSON</code>. Прикрепите файл к отчёту.</li>
+      <li><b>Скриншоты:</b> успешный ping, traceroute, настройки устройств.</li>
+      <li><b>Отчёт:</b> файл Word с описанием шагов и скриншотами.</li>
+    </ul>
+
+    <h3>Основные элементы miminet</h3>
+
+    <table>
+      <tr><th>Устройство</th><th>Иконка</th><th>Для чего</th></tr>
+      <tr><td>Host</td><td>🖥</td><td>Компьютер, конечное устройство</td></tr>
+      <tr><td>Switch</td><td>🔀</td><td>Коммутатор, соединяет устройства в одной сети</td></tr>
+      <tr><td>Router</td><td>📡</td><td>Маршрутизатор, соединяет разные сети</td></tr>
+      <tr><td>Server</td><td>🗄</td><td>Сервер (HTTP, DNS, DHCP)</td></tr>
+      <tr><td>Cloud</td><td>☁️</td><td>Внешняя сеть (интернет)</td></tr>
+    </table>
+
+    <hr>
+
+    <!-- ============================================================ -->
+    <h2 style="font-size:22px;margin:30px 0 10px;">Практическая работа №1 · Пинг двух хостов</h2>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №1 · Базовое соединение <span class="badge">20 мин</span></div>
+
+      <div class="goal">
+        <b>Цель:</b> соединить два компьютера через коммутатор и добиться пинга.<br>
+        <b>Отрабатываемые навыки:</b> работа с интерфейсом, соединение устройств, настройка IP, базовая диагностика.
+      </div>
+
+      <h4>Шаги</h4>
+      <ol>
+        <li>Перетащите на рабочее поле:
+          <ul>
+            <li>2 хоста (Host)</li>
+            <li>1 коммутатор (Switch)</li>
+          </ul>
+        </li>
+        <li>Соедините кабелями:
+          <ul>
+            <li>Host1 → Switch (порт 1)</li>
+            <li>Host2 → Switch (порт 2)</li>
+          </ul>
+        </li>
+        <li>Кликните на Host1, в настройках задайте:
+          <ul>
+            <li>IP: <code>192.168.1.10</code></li>
+            <li>Маска: <code>255.255.255.0</code> или <code>/24</code></li>
+          </ul>
+        </li>
+        <li>Аналогично Host2:
+          <ul>
+            <li>IP: <code>192.168.1.20</code></li>
+            <li>Маска: <code>/24</code></li>
+          </ul>
+        </li>
+        <li>Запустите проект кнопкой ▶.</li>
+        <li>Откройте терминал Host1 (клик на устройстве → Terminal).</li>
+        <li>Выполните пинг:</li>
+      </ol>
+
+      <div class="cmd">
+        <button class="copy-btn" data-copy="ping 192.168.1.20
+ping -c 5 192.168.1.20">📋 Копировать</button>
+        <pre><span class="prompt">$</span> ping 192.168.1.20
+<span class="prompt">$</span> ping -c 5 192.168.1.20</pre>
+        <div class="desc"><code>-c 5</code> — отправить 5 пакетов и остановиться.</div>
+      </div>
+
+      <div class="goal">
+        <b>Ожидаемый результат:</b>
+        <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:6px;">5 packets transmitted, 5 received, 0% packet loss</pre>
+        Все пакеты дошли, потерь нет.
+      </div>
+
+      <div class="goal">
+        <b>Что сдать:</b>
+        <ol>
+          <li>Скриншот успешного ping</li>
+          <li>JSON-файл проекта</li>
+          <li>Ответ на вопрос: что произойдёт, если задать Host2 IP <code>192.168.2.20</code>? Почему ping не пройдёт?</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 style="font-size:22px;margin:30px 0 10px;">Практическая работа №2 · Маршрутизация между двумя подсетями</h2>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №2 · Маршрутизатор в действии <span class="badge">30 мин</span></div>
+
+      <div class="goal">
+        <b>Цель:</b> соединить две подсети через маршрутизатор и добиться связи между ними.<br>
+        <b>Отрабатываемые навыки:</b> настройка двух сетей, шлюзов, traceroute.
+      </div>
+
+      <h4>Схема</h4>
+      <pre style="background:#f5f5f5;padding:10px;border-radius:6px;font-size:12.5px;">Host1, Host2 → Switch1 → Router → Switch2 → Host3, Host4</pre>
+
+      <h4>Шаги</h4>
+      <ol>
+        <li>Разместите:
+          <ul>
+            <li>4 хоста</li>
+            <li>2 коммутатора</li>
+            <li>1 маршрутизатор (Router)</li>
+          </ul>
+        </li>
+        <li>У маршрутизатора два интерфейса: <code>eth0</code> и <code>eth1</code>.
+          <ul>
+            <li>eth0 → в Switch1</li>
+            <li>eth1 → в Switch2</li>
+          </ul>
+        </li>
+        <li>Настройте сеть A (левая):
+          <ul>
+            <li>Router eth0: <code>10.0.0.1/24</code></li>
+            <li>Host1: <code>10.0.0.10/24</code>, шлюз <code>10.0.0.1</code></li>
+            <li>Host2: <code>10.0.0.11/24</code>, шлюз <code>10.0.0.1</code></li>
+          </ul>
+        </li>
+        <li>Настройте сеть B (правая):
+          <ul>
+            <li>Router eth1: <code>10.0.1.1/24</code></li>
+            <li>Host3: <code>10.0.1.10/24</code>, шлюз <code>10.0.1.1</code></li>
+            <li>Host4: <code>10.0.1.11/24</code>, шлюз <code>10.0.1.1</code></li>
+          </ul>
+        </li>
+        <li>Убедитесь, что на роутере включена маршрутизация между интерфейсами:
+          <div class="cmd">
+            <button class="copy-btn" data-copy="# на роутере:
+echo 1 > /proc/sys/net/ipv4/ip_forward">📋 Копировать</button>
+            <pre><span class="cmt"># на роутере:</span>
+echo 1 &gt; /proc/sys/net/ipv4/ip_forward</pre>
+          </div>
+        </li>
+        <li>Проверьте связь из Host1 (левой сети) до Host3 (правой):</li>
+      </ol>
+
+      <div class="cmd">
+        <button class="copy-btn" data-copy="ping 10.0.1.10
+traceroute 10.0.1.10">📋 Копировать</button>
+        <pre><span class="prompt">$</span> ping 10.0.1.10
+<span class="prompt">$</span> traceroute 10.0.1.10</pre>
+        <div class="desc"><code>traceroute</code> покажет, что пакет идёт через роутер 10.0.0.1.</div>
+      </div>
+
+      <div class="goal">
+        <b>Ожидаемый результат:</b>
+        <ul>
+          <li>Ping проходит без потерь.</li>
+          <li>Traceroute показывает 1 хоп (роутер 10.0.0.1).</li>
+        </ul>
+      </div>
+
+      <div class="goal">
+        <b>Что сдать:</b>
+        <ol>
+          <li>Скриншот ping</li>
+          <li>Скриншот traceroute с видимым роутером</li>
+          <li>JSON проекта</li>
+          <li>Ответ: почему Host1 не может пинговать Host3 <b>без</b> указания шлюза?</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 style="font-size:22px;margin:30px 0 10px;">Практическая работа №3 · Статическая маршрутизация</h2>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №3 · Маршруты вручную <span class="badge">40 мин</span></div>
+
+      <div class="goal">
+        <b>Цель:</b> соединить две сети через два маршрутизатора, настроив статические маршруты.<br>
+        <b>Отрабатываемые навыки:</b> добавление маршрутов, анализ таблицы маршрутизации.
+      </div>
+
+      <h4>Схема</h4>
+      <pre style="background:#f5f5f5;padding:10px;border-radius:6px;font-size:12.5px;">LAN-A — R1 — (транзит) — R2 — LAN-B</pre>
+
+      <h4>Адресация</h4>
+      <ul>
+        <li>LAN-A: <code>192.168.1.0/24</code> (шлюз на R1: <code>192.168.1.1</code>)</li>
+        <li>LAN-B: <code>192.168.2.0/24</code> (шлюз на R2: <code>192.168.2.1</code>)</li>
+        <li>Транзитный линк R1↔R2: <code>192.168.100.0/30</code> (R1 = .1, R2 = .2)</li>
+      </ul>
+
+      <h4>Шаги</h4>
+      <ol>
+        <li>Настройте IP-адреса на всех интерфейсах.</li>
+        <li>Хост в LAN-A пингует свой шлюз (192.168.1.1) — должен работать.</li>
+        <li>Хост в LAN-A пингует хост в LAN-B — <b>не работает</b>, потому что R1 не знает, куда отправлять пакеты для сети 192.168.2.0.</li>
+        <li>Добавьте статический маршрут на R1:
+          <div class="cmd">
+            <button class="copy-btn" data-copy="# на R1:
+ip route add 192.168.2.0/24 via 192.168.100.2
+
+# проверить таблицу:
+ip route show">📋 Копировать</button>
+            <pre><span class="cmt"># на R1:</span>
+ip route add 192.168.2.0/24 via 192.168.100.2
+
+<span class="cmt"># проверить таблицу:</span>
+ip route show</pre>
+          </div>
+        </li>
+        <li>Добавьте обратный маршрут на R2:
+          <div class="cmd">
+            <button class="copy-btn" data-copy="# на R2:
+ip route add 192.168.1.0/24 via 192.168.100.1">📋 Копировать</button>
+            <pre><span class="cmt"># на R2:</span>
+ip route add 192.168.1.0/24 via 192.168.100.1</pre>
+          </div>
+        </li>
+        <li>Проверьте пинг между хостами разных сетей.</li>
+      </ol>
+
+      <div class="goal">
+        <b>Ожидаемый результат:</b> ping между любыми хостами LAN-A и LAN-B проходит.
+      </div>
+
+      <div class="goal">
+        <b>Что сдать:</b>
+        <ol>
+          <li>Скриншот таблиц маршрутизации R1 и R2</li>
+          <li>Скриншот ping между хостами</li>
+          <li>JSON проекта</li>
+          <li>Ответ: что произойдёт, если убрать обратный маршрут на R2? Почему ping не пройдёт в одну сторону?</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 style="font-size:22px;margin:30px 0 10px;">Практическая работа №4 · DHCP-сервер</h2>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №4 · Автоматическая раздача IP <span class="badge">40 мин</span></div>
+
+      <div class="goal">
+        <b>Цель:</b> настроить DHCP-сервер, чтобы хосты получали IP автоматически.<br>
+        <b>Отрабатываемые навыки:</b> настройка DHCP, работа с dhclient, проверка lease.
+      </div>
+
+      <h4>Схема</h4>
+      <pre style="background:#f5f5f5;padding:10px;border-radius:6px;font-size:12.5px;">DHCP-сервер — Switch — 3 хоста-клиента</pre>
+
+      <h4>Шаги</h4>
+      <ol>
+        <li>Разместите:
+          <ul>
+            <li>1 сервер (Server)</li>
+            <li>1 коммутатор</li>
+            <li>3 хоста-клиента</li>
+          </ul>
+        </li>
+        <li>Настройте на сервере DHCP:
+          <ul>
+            <li>Диапазон: <code>192.168.10.100</code> – <code>192.168.10.200</code></li>
+            <li>Маска: <code>/24</code></li>
+            <li>Шлюз: <code>192.168.10.1</code></li>
+            <li>DNS: <code>8.8.8.8</code></li>
+          </ul>
+        </li>
+        <li>На хостах-клиентах запустите клиент DHCP:
+          <div class="cmd">
+            <button class="copy-btn" data-copy="dhclient eth0
+# или в некоторых системах:
+# udhcpc -i eth0">📋 Копировать</button>
+            <pre><span class="prompt">$</span> dhclient eth0
+<span class="cmt"># или в некоторых системах:</span>
+<span class="cmt"># udhcpc -i eth0</span></pre>
+          </div>
+        </li>
+        <li>Проверьте, что хосты получили IP:
+          <div class="cmd">
+            <button class="copy-btn" data-copy="ip a
+ip route">📋 Копировать</button>
+            <pre><span class="prompt">$</span> ip a
+<span class="prompt">$</span> ip route</pre>
+            <div class="desc">Каждый хост должен получить адрес из диапазона .100–.200.</div>
+          </div>
+        </li>
+        <li>Проверьте пинг между клиентами и до сервера.</li>
+      </ol>
+
+      <div class="goal">
+        <b>Что сдать:</b>
+        <ol>
+          <li>Скриншоты <code>ip a</code> на всех 3 клиентах</li>
+          <li>Скриншот успешного ping</li>
+          <li>JSON проекта</li>
+          <li>Ответ: почему клиент не может получить IP, если сервер выключен?</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 style="font-size:22px;margin:30px 0 10px;">Практическая работа №5 · DNS и HTTP-сервер</h2>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №5 · Веб-сервер и доменное имя <span class="badge">50 мин</span></div>
+
+      <div class="goal">
+        <b>Цель:</b> поднять DNS и веб-сервер, обратиться к сайту по имени.<br>
+        <b>Отрабатываемые навыки:</b> DNS-записи, HTTP-запросы, разрешение имён.
+      </div>
+
+      <h4>Шаги</h4>
+      <ol>
+        <li>Разместите:
+          <ul>
+            <li>1 клиент (Host)</li>
+            <li>1 коммутатор</li>
+            <li>1 сервер DNS</li>
+            <li>1 HTTP-сервер</li>
+          </ul>
+        </li>
+        <li>Настройте IP в одной сети: <code>192.168.10.0/24</code>
+          <ul>
+            <li>Client: <code>192.168.10.10</code></li>
+            <li>DNS: <code>192.168.10.20</code></li>
+            <li>HTTP: <code>192.168.10.30</code></li>
+          </ul>
+        </li>
+        <li>На DNS-сервере добавьте зону и A-запись:
+          <ul>
+            <li><code>mysite.local → 192.168.10.30</code></li>
+          </ul>
+        </li>
+        <li>На HTTP-сервере запустите веб-сервер (встроенный в miminet).</li>
+        <li>На клиенте укажите DNS-сервер <code>192.168.10.20</code> в настройках.</li>
+        <li>Проверьте резолвинг и HTTP-доступ:</li>
+      </ol>
+
+      <div class="cmd">
+        <button class="copy-btn" data-copy="nslookup mysite.local
+curl http://mysite.local
+curl -I http://mysite.local">📋 Копировать</button>
+        <pre><span class="prompt">$</span> nslookup mysite.local        <span class="cmt"># должен вернуть 192.168.10.30</span>
+<span class="prompt">$</span> curl http://mysite.local     <span class="cmt"># получить HTML</span>
+<span class="prompt">$</span> curl -I http://mysite.local  <span class="cmt"># только заголовки</span></pre>
+      </div>
+
+      <div class="goal">
+        <b>Ожидаемый результат:</b>
+        <ul>
+          <li><code>nslookup</code> возвращает IP сервера.</li>
+          <li><code>curl</code> получает HTML-страницу.</li>
+          <li><code>curl -I</code> показывает HTTP-заголовки (200 OK).</li>
+        </ul>
+      </div>
+
+      <div class="goal">
+        <b>Что сдать:</b>
+        <ol>
+          <li>Скриншоты всех 3 команд</li>
+          <li>JSON проекта</li>
+          <li>Ответ: почему без указания DNS-сервера curl не работает по домену?</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 style="font-size:22px;margin:30px 0 10px;">Практическая работа №6 · NAT и выход в интернет</h2>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №6 · Выход через NAT <span class="badge">40 мин</span></div>
+
+      <div class="goal">
+        <b>Цель:</b> настроить NAT, чтобы внутренние хосты выходили во внешнюю сеть через один публичный IP.<br>
+        <b>Отрабатываемые навыки:</b> NAT, iptables, проверка внешнего IP.
+      </div>
+
+      <h4>Схема</h4>
+      <pre style="background:#f5f5f5;padding:10px;border-radius:6px;font-size:12.5px;">LAN (192.168.1.0/24) — NAT-Router — Internet (Cloud)</pre>
+
+      <h4>Шаги</h4>
+      <ol>
+        <li>Разместите:
+          <ul>
+            <li>2 хоста в LAN</li>
+            <li>1 коммутатор</li>
+            <li>1 маршрутизатор (NAT)</li>
+            <li>1 Cloud (внешняя сеть)</li>
+          </ul>
+        </li>
+        <li>Настройте LAN:
+          <ul>
+            <li>Host1: <code>192.168.1.10/24</code>, шлюз <code>192.168.1.1</code></li>
+            <li>Host2: <code>192.168.1.11/24</code>, шлюз <code>192.168.1.1</code></li>
+            <li>Router eth0 (LAN): <code>192.168.1.1/24</code></li>
+          </ul>
+        </li>
+        <li>Настройте WAN:
+          <ul>
+            <li>Router eth1 (WAN): <code>203.0.113.5/24</code></li>
+            <li>Cloud: подключён к eth1</li>
+          </ul>
+        </li>
+        <li>Включите NAT на роутере:
+          <div class="cmd">
+            <button class="copy-btn" data-copy="# на роутере:
+echo 1 > /proc/sys/net/ipv4/ip_forward
+
+iptables -t nat -A POSTROUTING -o eth1 -j MASQUERADE">📋 Копировать</button>
+            <pre><span class="cmt"># на роутере:</span>
+echo 1 &gt; /proc/sys/net/ipv4/ip_forward
+
+iptables -t nat -A POSTROUTING -o eth1 -j MASQUERADE</pre>
+            <div class="desc">MASQUERADE — режим PAT: подменяет IP-источника на IP интерфейса eth1.</div>
+          </div>
+        </li>
+        <li>Проверьте пинг из Host1 во внешнюю сеть:
+          <div class="cmd">
+            <button class="copy-btn" data-copy="ping 8.8.8.8
+curl ifconfig.me">📋 Копировать</button>
+            <pre><span class="prompt">$</span> ping 8.8.8.8
+<span class="prompt">$</span> curl ifconfig.me</pre>
+            <div class="desc">curl ifconfig.me покажет ваш внешний IP — должен быть 203.0.113.5.</div>
+          </div>
+        </li>
+      </ol>
+
+      <div class="goal">
+        <b>Что сдать:</b>
+        <ol>
+          <li>Скриншот ping 8.8.8.8</li>
+          <li>Скриншот curl ifconfig.me (показывает внешний IP)</li>
+          <li>JSON проекта</li>
+          <li>Ответ: почему без NAT хост в LAN не может выйти в интернет?</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 style="font-size:22px;margin:30px 0 10px;">Практическая работа №7 · Анализ трафика (Wireshark в miminet)</h2>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №7 · Захват пакетов <span class="badge">40 мин</span></div>
+
+      <div class="goal">
+        <b>Цель:</b> захватить трафик и увидеть структуру пакетов на разных уровнях OSI.<br>
+        <b>Отрабатываемые навыки:</b> чтение pcap-файлов, понимание инкапсуляции.
+      </div>
+
+      <h4>Шаги</h4>
+      <ol>
+        <li>Соберите простую сеть: 2 хоста + коммутатор (как в ПР №1).</li>
+        <li>Запустите захват трафика на коммутаторе (в miminet есть режим capture).</li>
+        <li>С хоста 1 отправьте несколько пакетов:
+          <div class="cmd">
+            <button class="copy-btn" data-copy="ping -c 5 192.168.1.20
+arp -a">📋 Копировать</button>
+            <pre><span class="prompt">$</span> ping -c 5 192.168.1.20
+<span class="prompt">$</span> arp -a</pre>
+          </div>
+        </li>
+        <li>Остановите захват и скачайте pcap-файл.</li>
+        <li>Откройте в Wireshark (если есть) или проанализируйте во встроенном анализаторе miminet.</li>
+        <li>Найдите:
+          <ul>
+            <li>ICMP Echo Request и Echo Reply</li>
+            <li>ARP-запрос (Who has 192.168.1.20?)</li>
+            <li>MAC-адреса отправителя и получателя</li>
+          </ul>
+        </li>
+      </ol>
+
+      <div class="goal">
+        <b>Что сдать:</b>
+        <ol>
+          <li>Скриншот захваченных пакетов</li>
+          <li>Описание: какие уровни OSI видны в одном пакете ICMP?</li>
+          <li>Ответ: зачем нужен ARP, если уже есть IP-адреса?</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 style="font-size:22px;margin:30px 0 10px;">Практическая работа №8 · Сеть офиса (итоговый проект)</h2>
+
+    <div class="trainer">
+      <div class="head">🎯 ПР №8 · Комплексный проект <span class="badge">90 мин</span></div>
+
+      <div class="goal">
+        <b>Цель:</b> собрать полноценную сеть офиса с двумя отделами, интернетом и серверами.<br>
+        <b>Отрабатываемые навыки:</b> всё вместе — VLAN-сегментация через подсети, маршрутизация, NAT, DNS, HTTP.
+      </div>
+
+      <h4>Требования</h4>
+      <ul>
+        <li><b>Отдел 1 (Разработчики):</b> 4 компьютера, подсеть <code>192.168.10.0/24</code></li>
+        <li><b>Отдел 2 (Бухгалтерия):</b> 3 компьютера, подсеть <code>192.168.20.0/24</code></li>
+        <li><b>Серверный сегмент:</b> 2 сервера (DNS + HTTP), подсеть <code>192.168.100.0/24</code></li>
+        <li><b>Маршрутизатор</b> соединяет все три подсети.</li>
+        <li><b>NAT-роутер</b> даёт выход в интернет (Cloud).</li>
+        <li><b>DNS-сервер</b> резолвит <code>office.local → IP HTTP-сервера</code>.</li>
+        <li><b>HTTP-сервер</b> отдаёт тестовую страницу.</li>
+      </ul>
+
+      <h4>Задания</h4>
+      <ol>
+        <li>Нарисуйте схему сети (на бумаге или в draw.io).</li>
+        <li>Разместите все устройства в miminet.</li>
+        <li>Настройте IP-адреса, шлюзы, маски.</li>
+        <li>Настройте статическую маршрутизацию на роутере между тремя подсетями.</li>
+        <li>Настройте NAT на пограничном роутере.</li>
+        <li>Настройте DNS и HTTP на серверах.</li>
+        <li>Проверьте:
+          <ul>
+            <li>Пинг между отделами — работает.</li>
+            <li>Пинг до интернета — работает через NAT.</li>
+            <li>DNS-резолвинг <code>office.local</code> — работает.</li>
+            <li>HTTP-доступ — работает.</li>
+          </ul>
+        </li>
+      </ol>
+
+      <div class="goal">
+        <b>Что сдать:</b>
+        <ol>
+          <li>Схема сети (рисунок)</li>
+          <li>JSON проекта</li>
+          <li>Скриншоты:
+            <ul>
+              <li>ping между отделами</li>
+              <li>ping 8.8.8.8 через NAT</li>
+              <li>nslookup office.local</li>
+              <li>curl http://office.local</li>
+            </ul>
+          </li>
+          <li>Таблица IP-адресов всех устройств</li>
+          <li>Краткое описание (10-15 предложений): какие технологии применили и почему</li>
+        </ol>
+      </div>
+
+      <div class="box note">
+        <div class="label">Критерии оценки</div>
+        <ul>
+          <li><b>Отлично</b> — вся сеть работает, все проверки пройдены, оформлен отчёт.</li>
+          <li><b>Хорошо</b> — работает большинство проверок, есть 1-2 ошибки.</li>
+          <li><b>Удовлетворительно</b> — сеть собрана, но часть сервисов не работает.</li>
+          <li><b>Неудовлетворительно</b> — сеть не функционирует или не сдана.</li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="block">
+    <h2><span class="num">📚</span>Полезные ссылки и материалы</h2>
+
+    <table>
+      <tr><th>Ресурс</th><th>Что там</th></tr>
+      <tr><td><a href="https://miminet.ru" target="_blank">miminet.ru</a></td><td>Тренажёр для всех практических работ</td></tr>
+      <tr><td><a href="https://wireshark.org" target="_blank">wireshark.org</a></td><td>Анализатор трафика (для локальных практик)</td></tr>
+      <tr><td><a href="https://www.subnet-calculator.com/" target="_blank">subnet-calculator.com</a></td><td>Онлайн-калькулятор подсетей</td></tr>
+      <tr><td><a href="https://www.speedtest.net/" target="_blank">speedtest.net</a></td><td>Измерение скорости интернета</td></tr>
+      <tr><td><a href="https://www.dnsleaktest.com/" target="_blank">dnsleaktest.com</a></td><td>Проверка DNS</td></tr>
+      <tr><td><a href="https://ifconfig.me/" target="_blank">ifconfig.me</a></td><td>Показывает ваш внешний IP</td></tr>
+      <tr><td><a href="https://www.drawio.com/" target="_blank">draw.io</a></td><td>Онлайн-редактор диаграмм и схем сетей</td></tr>
+    </table>
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="08-architectures.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">8. Сетевые архитектуры</span>
+  </a>
+  <a href="networks-index.html" class="next">
+    <span class="dir">К оглавлению →</span>
+    <span class="title">Все темы курса</span>
+  </a>
+</div>
+
+<footer>
+  ОП.11 Компьютерные сети · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>
