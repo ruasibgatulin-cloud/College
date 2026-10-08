@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОС · 1. История и функции · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ОП.01 ОС · Раздел 1</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="os-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-history.html" class="current">1. История</a>
+  <a href="02-architecture.html">2. Архитектура</a>
+  <a href="03-processes.html">3. Процессы</a>
+  <a href="04-memory.html">4. Память</a>
+  <a href="05-filesystem.html">5. ФС</a>
+  <a href="06-commands.html">6. Команды</a>
+  <a href="07-security.html">7. Безопасность</a>
+</nav>
+
+<div class="layout" style="grid-template-columns:1fr;max-width:1000px;">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">1</span>История, назначение и функции ОС</h2>
+
+    <h3>1.1. Что такое операционная система</h3>
+    <p><b>Операционная система (ОС)</b> — комплекс программ, который:</p>
+    <ul>
+      <li>управляет ресурсами компьютера (CPU, память, устройства ввода-вывода);</li>
+      <li>предоставляет пользователю удобный интерфейс для работы;</li>
+      <li>создаёт среду для запуска и взаимодействия прикладных программ.</li>
+    </ul>
+
+    <div class="box note">
+      <div class="label">Аналогия</div>
+      ОС — как диспетчер в аэропорту: он не перевозит пассажиров (это делают приложения), но управляет расписанием, взлётными полосами (CPU), терминалами (памятью) и связью. Без него — хаос.
+    </div>
+
+    <h3>1.2. Функции ОС</h3>
+    <table>
+      <tr><th>Функция</th><th>Что делает</th><th>Пример</th></tr>
+      <tr><td>Управление процессами</td><td>Запуск, остановка, распределение CPU между процессами</td><td>Планировщик Windows / Linux CFS</td></tr>
+      <tr><td>Управление памятью</td><td>Выделение RAM, виртуальная память, swap</td><td>MMU, page fault</td></tr>
+      <tr><td>Управление файлами</td><td>Создание, чтение, удаление, права доступа</td><td>ext4, NTFS, APFS</td></tr>
+      <tr><td>Управление устройствами</td><td>Драйверы для принтеров, дисков, сети</td><td>Диспетчер устройств</td></tr>
+      <tr><td>Защита и безопасность</td><td>Разграничение доступа, изоляция процессов</td><td>Пользователи, права, ACL</td></tr>
+      <tr><td>Интерфейс пользователя</td><td>CLI, GUI, API для приложений</td><td>Bash, Windows Explorer</td></tr>
+    </table>
+
+    <h3>1.3. Классификация ОС</h3>
+
+    <h4>По назначению</h4>
+    <ul>
+      <li><b>Универсальные</b> — Windows, Linux, macOS — для всего</li>
+      <li><b>Серверные</b> — Ubuntu Server, Windows Server, CentOS — обслуживание сети</li>
+      <li><b>Встраиваемые</b> — в устройствах: роутеры, банкоматы, стиральные машины</li>
+      <li><b>Мобильные</b> — Android, iOS — оптимизированы под тачскрин и батарею</li>
+      <li><b>Реального времени (RTOS)</b> — FreeRTOS, QNX — критичны к задержкам (роботы, медицина)</li>
+    </ul>
+
+    <h4>По числу пользователей</h4>
+    <ul>
+      <li><b>Однопользовательские</b> — Windows 10/11 для дома</li>
+      <li><b>Многопользовательские</b> — Linux-серверы, где одновременно работают десятки людей</li>
+    </ul>
+
+    <h4>По числу задач</h4>
+    <ul>
+      <li><b>Однозадачные</b> — MS-DOS (исторически)</li>
+      <li><b>Многозадачные</b> — все современные ОС</li>
+    </ul>
+
+    <h4>По типу интерфейса</h4>
+    <ul>
+      <li><b>CLI</b> (Command Line Interface) — консоль, только текст</li>
+      <li><b>GUI</b> (Graphical User Interface) — окна, иконки, мышь</li>
+      <li><b>Смешанные</b> — Linux с графической оболочкой + терминал</li>
+    </ul>
+
+    <h3>1.4. Краткая история</h3>
+    <table>
+      <tr><th>Год</th><th>Событие</th><th>Значение</th></tr>
+      <tr><td>1940-50-е</td><td>Первые ЭВМ без ОС</td><td>Программы на перфокартах, оператор вручную</td></tr>
+      <tr><td>1956</td><td>GM-NAA I/O</td><td>Первая пакетная система — прообраз ОС</td></tr>
+      <tr><td>1969</td><td>Unix (Bell Labs)</td><td>Родоначальник современных ОС, идея «всё — файл»</td></tr>
+      <tr><td>1981</td><td>MS-DOS</td><td>Первая массовая ОС для IBM PC</td></tr>
+      <tr><td>1985</td><td>Windows 1.0</td><td>Графический интерфейс вместо командной строки</td></tr>
+      <tr><td>1991</td><td>Linux (Линус Торвальдс)</td><td>Свободная Unix-подобная ОС, сейчас — на серверах и Android</td></tr>
+      <tr><td>1993</td><td>Windows NT</td><td>Начало современной линейки Windows</td></tr>
+      <tr><td>2001</td><td>macOS X, Windows XP</td><td>Массовые стабильные ОС</td></tr>
+      <tr><td>2007-2008</td><td>iOS, Android</td><td>Мобильная эра</td></tr>
+      <tr><td>2020-е</td><td>Windows 11, Ubuntu 24, облачные ОС</td><td>Гибридные решения, виртуализация, WSL</td></tr>
+    </table>
+
+    <h3>1.5. Три кита современной ОС</h3>
+    <ul>
+      <li><b>Windows</b> — доминирует на десктопах, тесная интеграция с MS Office и Azure</li>
+      <li><b>Linux</b> — доминирует на серверах и мобильных (Android основан на ядре Linux)</li>
+      <li><b>macOS</b> — экосистема Apple, Unix-подобная, популярна у разработчиков</li>
+    </ul>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Чем серверная ОС отличается от десктопной?</summary>
+      <div class="answer">
+        <ul>
+          <li><b>Отсутствие GUI</b> — экономия ресурсов, всё через консоль или веб-панель.</li>
+          <li><b>Многопользовательская работа</b> — одновременно сотни подключений.</li>
+          <li><b>Длительная работа без перезагрузки</b> — месяцами и годами.</li>
+          <li><b>Приоритет сетевых сервисов</b> — веб-серверы, БД, файловые хранилища.</li>
+          <li><b>Особые требования к безопасности</b> — SELinux/AppArmor, изоляция служб.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Зачем нужна ОС реального времени (RTOS)?</summary>
+      <div class="answer">
+        В RTOS гарантируется <b>время реакции</b> на событие. Если система обещает отреагировать за 1 мс — она отреагирует максимум за 1 мс, независимо от загрузки.<br>
+        Это критично для:
+        <ul>
+          <li>Промышленных роботов</li>
+          <li>Медицинских приборов (кардиостимулятор)</li>
+          <li>Авионики и автопилотов</li>
+          <li>ABS/ESP в автомобилях</li>
+        </ul>
+        Примеры: FreeRTOS, QNX, VxWorks, RT-Thread.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Почему Linux стал популярен на серверах?</summary>
+      <div class="answer">
+        <ul>
+          <li><b>Бесплатный</b> — не надо покупать лицензии на каждое ядро сервера.</li>
+          <li><b>Открытый исходный код</b> — можно доработать под себя, аудит безопасности.</li>
+          <li><b>Стабильность</b> — аптаймы в годах без перезагрузки.</li>
+          <li><b>Мощная консоль</b> — автоматизация через shell-скрипты.</li>
+          <li><b>Разнообразие дистрибутивов</b> — Ubuntu, Debian, CentOS, RHEL, Alpine.</li>
+          <li><b>Экосистема</b> — Docker, Kubernetes, облачные платформы.</li>
+        </ul>
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Задание на пару</div>
+      Составьте таблицу «ОС на моём устройстве»: найдите дома смартфон, ноутбук, роутер, Smart TV. Определите для каждого:
+      <ol>
+        <li>Название и версия ОС</li>
+        <li>Класс (универсальная / мобильная / встраиваемая / серверная)</li>
+        <li>Тип интерфейса (CLI / GUI / смешанный)</li>
+        <li>Однопользовательская или многопользовательская</li>
+      </ol>
+      Обсуждение на следующей паре.
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a class="disabled">
+    <span class="dir">← Предыдущая</span>
+    <span class="title empty">Это первая тема</span>
+  </a>
+  <a href="02-architecture.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">2. Архитектура ОС</span>
+  </a>
+</div>
+
+<footer style="padding:30px;text-align:center;color:var(--muted);font-size:13px;">
+  ОП.01 Операционные системы и среды · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

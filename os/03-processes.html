@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОС · 3. Процессы и потоки · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ОП.01 ОС · Раздел 3</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="os-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-history.html">1. История</a>
+  <a href="02-architecture.html">2. Архитектура</a>
+  <a href="03-processes.html" class="current">3. Процессы</a>
+  <a href="04-memory.html">4. Память</a>
+  <a href="05-filesystem.html">5. ФС</a>
+  <a href="06-commands.html">6. Команды</a>
+  <a href="07-security.html">7. Безопасность</a>
+</nav>
+
+<div class="layout" style="grid-template-columns:1fr;max-width:1000px;">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">3</span>Общие сведения о процессах и потоках</h2>
+
+    <h3>3.1. Что такое процесс</h3>
+    <p><b>Процесс</b> — программа в состоянии выполнения. Каждому процессу ОС выделяет:</p>
+    <ul>
+      <li><b>PID</b> — уникальный идентификатор</li>
+      <li><b>Адресное пространство</b> — изолированная виртуальная память</li>
+      <li><b>Ресурсы</b> — файловые дескрипторы, сетевые соединения, права</li>
+      <li><b>Состояние</b> — регистры процессора, стек, счётчик команд</li>
+    </ul>
+
+    <div class="box note">
+      <div class="label">Программа ≠ процесс</div>
+      <b>Программа</b> — файл на диске (например, <code>/usr/bin/firefox</code>).<br>
+      <b>Процесс</b> — запущенный экземпляр. Один Firefox может иметь 20 процессов одновременно (по одному на вкладку).
+    </div>
+
+    <h3>3.2. Состояния процесса</h3>
+    <p>Процесс в жизненном цикле проходит через несколько состояний:</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 560 200" width="560">
+        <defs>
+          <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 z" fill="#8891a6"/>
+          </marker>
+        </defs>
+        <g font-size="12" fill="#1c2331" text-anchor="middle">
+          <circle cx="60"  cy="100" r="32" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5"/><text x="60" y="104">New</text>
+          <circle cx="200" cy="100" r="32" fill="#e6f7fb" stroke="#0891b2" stroke-width="1.5"/><text x="200" y="104">Ready</text>
+          <circle cx="360" cy="100" r="32" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.5"/><text x="360" y="104">Running</text>
+          <circle cx="510" cy="100" r="32" fill="#fff9e6" stroke="#d97706" stroke-width="1.5"/><text x="510" y="104">Wait</text>
+        </g>
+        <g stroke="#8891a6" stroke-width="1.4" marker-end="url(#ar)">
+          <line x1="92"  y1="100" x2="168" y2="100"/>
+          <line x1="232" y1="100" x2="328" y2="100"/>
+          <line x1="392" y1="100" x2="478" y2="100"/>
+          <path d="M 510 132 Q 400 180 200 132" fill="none" stroke-dasharray="4 3"/>
+          <path d="M 360 132 Q 340 160 200 132" fill="none"/>
+        </g>
+        <text x="130" y="94" font-size="11" fill="#64748b" text-anchor="middle">admit</text>
+        <text x="280" y="94" font-size="11" fill="#64748b" text-anchor="middle">dispatch</text>
+        <text x="435" y="94" font-size="11" fill="#64748b" text-anchor="middle">I/O wait</text>
+        <text x="350" y="185" font-size="11" fill="#64748b" text-anchor="middle">I/O завершён → Ready</text>
+        <text x="280" y="152" font-size="11" fill="#64748b" text-anchor="middle">preempt → Ready</text>
+      </svg>
+      <div class="cap">Диаграмма состояний процесса.</div>
+    </div>
+
+    <ul>
+      <li><b>New</b> — только создан</li>
+      <li><b>Ready</b> — готов к выполнению, ждёт своей очереди на CPU</li>
+      <li><b>Running</b> — выполняется на процессоре прямо сейчас</li>
+      <li><b>Waiting</b> (Blocked) — ждёт события (I/O, сигнал, сеть)</li>
+      <li><b>Terminated</b> — завершён, ресурсы освобождаются</li>
+    </ul>
+
+    <h3>3.3. Создание и завершение процесса</h3>
+
+    <h4>Создание (Linux/Unix)</h4>
+    <p>Процессы создаются через <b>fork()</b>:</p>
+    <ul>
+      <li>Родитель вызывает <code>fork()</code> — ядро создаёт копию процесса.</li>
+      <li>Затем обычно вызывается <code>exec()</code> — копия заменяется новой программой.</li>
+      <li>Первый процесс в Linux — <b>PID 1</b> (<code>init</code> или <code>systemd</code>).</li>
+    </ul>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="ps -ef | head">📋 Копировать</button>
+      <pre><span class="prompt">$</span> ps -ef | head</pre>
+      <div class="desc">Дерево процессов: PID, PPID (родитель), команда.</div>
+    </div>
+
+    <h4>Завершение процесса</h4>
+    <ul>
+      <li><b>Нормальное</b> — процесс сам вызвал <code>exit(0)</code>.</li>
+      <li><b>По сигналу</b> — ОС или другой процесс послал сигнал (например, <code>kill -15</code>).</li>
+      <li><b>Зомби (Zombie)</b> — процесс завершился, но родитель не прочитал статус. Остаётся «мёртвая запись».</li>
+      <li><b>Сирота (Orphan)</b> — процесс, чей родитель завершился раньше. Усыновляется PID 1.</li>
+    </ul>
+
+    <h3>3.4. Потоки (threads)</h3>
+    <p><b>Поток</b> — единица выполнения внутри процесса. Все потоки одного процесса:</p>
+    <ul>
+      <li>Разделяют адресное пространство</li>
+      <li>Разделяют открытые файлы и ресурсы</li>
+      <li>Имеют свой стек и набор регистров</li>
+    </ul>
+
+    <h4>Процессы vs потоки</h4>
+    <table>
+      <tr><th>Свойство</th><th>Процесс</th><th>Поток</th></tr>
+      <tr><td>Адресное пространство</td><td>Своё</td><td>Общее с процессом</td></tr>
+      <tr><td>Создание</td><td>Дорого (fork ~ мс)</td><td>Дёшево (~ мкс)</td></tr>
+      <tr><td>Переключение</td><td>Медленное (смена таблиц страниц)</td><td>Быстрое</td></tr>
+      <tr><td>Общение</td><td>Через IPC (pipe, shm, сокеты)</td><td>Через общую память</td></tr>
+      <tr><td>Падение</td><td>Изолировано</td><td>Убивает весь процесс</td></tr>
+      <tr><td>Изоляция</td><td>Высокая</td><td>Низкая</td></tr>
+    </table>
+
+    <h4>Когда что использовать</h4>
+    <ul>
+      <li><b>Потоки</b> — когда задачи делят память и данные (веб-сервер обрабатывает запросы).</li>
+      <li><b>Процессы</b> — когда нужна изоляция (браузер: одна вкладка упала — остальные работают).</li>
+    </ul>
+
+    <h3>3.5. Планирование процессов</h3>
+    <p><b>Планировщик (scheduler)</b> решает, какой процесс получит CPU следующим. Задача: справедливость + отзывчивость + пропускная способность.</p>
+
+    <h4>Основные алгоритмы</h4>
+    <table>
+      <tr><th>Алгоритм</th><th>Идея</th><th>Особенности</th></tr>
+      <tr><td>FCFS</td><td>First Come, First Served</td><td>Просто, но «эффект конвоя»</td></tr>
+      <tr><td>SJF</td><td>Shortest Job First</td><td>Оптимален по среднему времени</td></tr>
+      <tr><td>Round Robin</td><td>По кругу с квантом времени</td><td>Справедлив, но частые переключения</td></tr>
+      <tr><td>Приоритеты</td><td>У кого приоритет — тот и работает</td><td>Возможно голодание низких</td></tr>
+      <tr><td>CFS (Linux)</td><td>Complete Fair Scheduler</td><td>Красно-чёрное дерево по «виртуальному времени»</td></tr>
+    </table>
+
+    <h3>3.6. Команды для работы с процессами</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="ps aux">📋 Копировать</button>
+      <pre><span class="prompt">$</span> ps aux</pre>
+      <div class="desc">Все процессы: PID, пользователь, %CPU, %MEM, команда.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="ps -ef --forest">📋 Копировать</button>
+      <pre><span class="prompt">$</span> ps -ef --forest</pre>
+      <div class="desc">Дерево процессов (кто кого породил).</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="top">📋 Копировать</button>
+      <pre><span class="prompt">$</span> top</pre>
+      <div class="desc">Интерактивный монитор в реальном времени. Выход — <kbd>q</kbd>. <kbd>M</kbd> — сортировка по памяти, <kbd>P</kbd> — по CPU.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="htop">📋 Копировать</button>
+      <pre><span class="prompt">$</span> htop</pre>
+      <div class="desc">Улучшенная версия top (может быть не установлена: <code>sudo apt install htop</code>).</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="ps aux --sort=-%cpu | head -5">📋 Копировать</button>
+      <pre><span class="prompt">$</span> ps aux --sort=-%cpu | head -5</pre>
+      <div class="desc">Топ-5 процессов по загрузке CPU.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="ps aux --sort=-%mem | head -5">📋 Копировать</button>
+      <pre><span class="prompt">$</span> ps aux --sort=-%mem | head -5</pre>
+      <div class="desc">Топ-5 процессов по памяти.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="pstree -p">📋 Копировать</button>
+      <pre><span class="prompt">$</span> pstree -p</pre>
+      <div class="desc">Дерево процессов с PID в скобках.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="pgrep firefox">📋 Копировать</button>
+      <pre><span class="prompt">$</span> pgrep firefox</pre>
+      <div class="desc">Найти PID процессов по имени.</div>
+    </div>
+
+    <h3>3.7. Управление процессами — kill и сигналы</h3>
+
+    <h4>Основные сигналы</h4>
+    <table>
+      <tr><th>Номер</th><th>Имя</th><th>Что делает</th></tr>
+      <tr><td>1</td><td>SIGHUP</td><td>Перечитать конфиг (для демонов)</td></tr>
+      <tr><td>2</td><td>SIGINT</td><td>Прерывание (<kbd>Ctrl</kbd>+<kbd>C</kbd>)</td></tr>
+      <tr><td>9</td><td>SIGKILL</td><td>Принудительное убийство (нельзя перехватить)</td></tr>
+      <tr><td>15</td><td>SIGTERM</td><td>Вежливое завершение (по умолчанию у kill)</td></tr>
+      <tr><td>18</td><td>SIGCONT</td><td>Продолжить после SIGSTOP</td></tr>
+      <tr><td>19</td><td>SIGSTOP</td><td>Приостановить (нельзя перехватить)</td></tr>
+    </table>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="kill -15 1234
+kill -9 1234">📋 Копировать</button>
+      <pre><span class="prompt">$</span> kill -15 1234    <span class="cmt"># SIGTERM — вежливое завершение</span>
+<span class="prompt">$</span> kill -9  1234    <span class="cmt"># SIGKILL — принудительное (без шансов)</span></pre>
+      <div class="desc">Сначала пробуем 15, если процесс не завершился — 9.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="pkill -f firefox">📋 Копировать</button>
+      <pre><span class="prompt">$</span> pkill -f firefox</pre>
+      <div class="desc">Убить все процессы, в командной строке которых есть «firefox».</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="killall firefox">📋 Копировать</button>
+      <pre><span class="prompt">$</span> killall firefox</pre>
+      <div class="desc">Убить все процессы с именем «firefox».</div>
+    </div>
+
+    <div class="box note">
+      <div class="label">Правило</div>
+      Сначала <code>kill -15</code> (вежливо). Процесс может сохранить данные, закрыть файлы. Только если не реагирует — <code>kill -9</code> (жёстко). После <code>-9</code> процесс не успевает убрать за собой.
+    </div>
+
+    <h3>Вопросы и задачи для самопроверки</h3>
+
+    <details class="task">
+      <summary>Задача 1. Найти топ-5 процессов по загрузке CPU и остановить самый «тяжёлый».</summary>
+      <div class="answer">
+        <div class="cmd" style="margin-top:10px">
+          <button class="copy-btn" data-copy="ps aux --sort=-%cpu | head -6">📋</button>
+          <pre><span class="prompt">$</span> ps aux --sort=-%cpu | head -6
+<span class="prompt">$</span> kill -15 &lt;PID&gt;</pre>
+        </div>
+        Если процесс не завершился — повторить с <code>kill -9</code>.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Задача 2. Чем отличается зомби-процесс от процесса-сироты?</summary>
+      <div class="answer">
+        <b>Зомби</b> — процесс уже завершился, но его родитель ещё не прочитал код возврата через <code>wait()</code>. Он занимает строчку в таблице процессов, но не CPU и не память.<br><br>
+        <b>Сирота</b> — процесс, чей родитель завершился раньше. Такой процесс «усыновляется» PID 1 (init/systemd), который корректно уберёт его после завершения.<br><br>
+        <b>Опасность зомби:</b> если их слишком много, таблица процессов переполняется и новые не могут создаваться.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос. Почему браузер Chrome использует отдельные процессы для каждой вкладки?</summary>
+      <div class="answer">
+        <b>Изоляция.</b> Если одна вкладка «упадёт» (из-за плохого JS, ошибки в рендере), упадёт только её процесс — остальные продолжат работать.<br><br>
+        <b>Безопасность.</b> Каждая вкладка работает в «песочнице», не имея доступа к другим вкладкам и системе.<br><br>
+        <b>Планирование.</b> ОС сама решает, какой вкладке дать больше CPU.<br><br>
+        Минус — больше памяти: каждый процесс имеет свои накладные расходы.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос. Что произойдёт при <kbd>Ctrl</kbd>+<kbd>C</kbd> в терминале?</summary>
+      <div class="answer">
+        Терминал отправит всем процессам в переднем плане сигнал <b>SIGINT (2)</b>.<br>
+        Программа может:
+        <ul>
+          <li>Завершиться — стандартное поведение.</li>
+          <li>Перехватить сигнал и выполнить свою логику (например, сохранить данные).</li>
+          <li>Игнорировать сигнал.</li>
+        </ul>
+        Если программа зависла и не реагирует на SIGINT — <kbd>Ctrl</kbd>+<kbd>Z</kbd> приостановит её (SIGTSTP), затем можно убить через <code>kill -9</code>.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Задание на пару</div>
+      <ol>
+        <li>Запустить 3 «долгих» процесса: <code>sleep 1000 &</code> (три раза)</li>
+        <li>Найти их через <code>ps aux | grep sleep</code></li>
+        <li>Убить один через <code>kill -15</code></li>
+        <li>Убить второй через <code>kill -9</code></li>
+        <li>Третий оставить — что произойдёт, если закрыть терминал?</li>
+      </ol>
+      Ответ: если это не nohup, процесс получит SIGHUP и завершится.
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="02-architecture.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">2. Архитектура ОС</span>
+  </a>
+  <a href="04-memory.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">4. Управление памятью</span>
+  </a>
+</div>
+
+<footer style="padding:30px;text-align:center;color:var(--muted);font-size:13px;">
+  ОП.01 Операционные системы и среды · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

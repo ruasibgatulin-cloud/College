@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОС · 6. Команды · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ОП.01 ОС · Раздел 6</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="os-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-history.html">1. История</a>
+  <a href="02-architecture.html">2. Архитектура</a>
+  <a href="03-processes.html">3. Процессы</a>
+  <a href="04-memory.html">4. Память</a>
+  <a href="05-filesystem.html">5. ФС</a>
+  <a href="06-commands.html" class="current">6. Команды</a>
+  <a href="07-security.html">7. Безопасность</a>
+</nav>
+
+<div class="layout" style="grid-template-columns:1fr;max-width:1000px;">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">6</span>Команды Linux и Windows</h2>
+
+    <p>Все команды ниже можно скопировать в один клик и вставить в терминал или PowerShell. Сравнение Linux ↔ Windows дано для обеих ОС.</p>
+
+    <h3>6.1. Навигация по файловой системе</h3>
+
+    <table>
+      <tr><th>Действие</th><th>Linux</th><th>Windows (PowerShell)</th></tr>
+      <tr><td>Текущий каталог</td><td><code>pwd</code></td><td><code>Get-Location</code></td></tr>
+      <tr><td>Список файлов</td><td><code>ls -la</code></td><td><code>Get-ChildItem -Force</code></td></tr>
+      <tr><td>Перейти в каталог</td><td><code>cd /var/log</code></td><td><code>Set-Location C:\Logs</code></td></tr>
+      <tr><td>На уровень выше</td><td><code>cd ..</code></td><td><code>Set-Location ..</code></td></tr>
+      <tr><td>В домашний каталог</td><td><code>cd ~</code></td><td><code>Set-Location ~</code></td></tr>
+    </table>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="pwd; ls -la; cd /var/log; ls -la">📋 Копировать</button>
+      <pre><span class="prompt">$</span> pwd; ls -la; cd /var/log; ls -la</pre>
+      <div class="desc">Быстрый «обход» системы за одну строку.</div>
+    </div>
+
+    <h3>6.2. Работа с файлами</h3>
+
+    <table>
+      <tr><th>Действие</th><th>Linux</th><th>Windows (PowerShell)</th></tr>
+      <tr><td>Создать файл</td><td><code>touch file.txt</code></td><td><code>New-Item file.txt</code></td></tr>
+      <tr><td>Создать каталог</td><td><code>mkdir dir</code></td><td><code>New-Item -ItemType Directory dir</code></td></tr>
+      <tr><td>Копировать</td><td><code>cp src dst</code></td><td><code>Copy-Item src dst</code></td></tr>
+      <tr><td>Переместить</td><td><code>mv src dst</code></td><td><code>Move-Item src dst</code></td></tr>
+      <tr><td>Удалить</td><td><code>rm file</code></td><td><code>Remove-Item file</code></td></tr>
+      <tr><td>Удалить каталог</td><td><code>rm -rf dir</code></td><td><code>Remove-Item -Recurse dir</code></td></tr>
+      <tr><td>Просмотр файла</td><td><code>cat file</code></td><td><code>Get-Content file</code></td></tr>
+      <tr><td>Первые 20 строк</td><td><code>head -20 file</code></td><td><code>Get-Content file -TotalCount 20</code></td></tr>
+      <tr><td>Следить за файлом</td><td><code>tail -f file</code></td><td><code>Get-Content file -Wait</code></td></tr>
+      <tr><td>Поиск файлов</td><td><code>find . -name "*.log"</code></td><td><code>Get-ChildItem -Recurse -Filter *.log</code></td></tr>
+      <tr><td>Поиск в файлах</td><td><code>grep -r "error" .</code></td><td><code>Select-String -Path .\* -Pattern error -Recurse</code></td></tr>
+    </table>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="touch test.txt
+echo 'Hello, OS!' > test.txt
+cat test.txt
+rm test.txt">📋 Копировать</button>
+      <pre><span class="prompt">$</span> touch test.txt
+<span class="prompt">$</span> echo "Hello, OS!" &gt; test.txt
+<span class="prompt">$</span> cat test.txt
+<span class="prompt">$</span> rm test.txt</pre>
+      <div class="desc">Полный цикл работы с файлом.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="find /etc -name "*.conf" 2>/dev/null | head -10">📋 Копировать</button>
+      <pre><span class="prompt">$</span> find /etc -name "*.conf" 2&gt;/dev/null | head -10</pre>
+      <div class="desc">Найти конфигурационные файлы в /etc.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="grep -rn "ERROR" /var/log/ 2>/dev/null | head -20">📋 Копировать</button>
+      <pre><span class="prompt">$</span> grep -rn "ERROR" /var/log/ 2&gt;/dev/null | head -20</pre>
+      <div class="desc">Найти все ошибки в логах с номерами строк.</div>
+    </div>
+
+    <h3>6.3. Работа с текстом и потоками</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="cat file.txt | wc -l
+cat file.txt | sort | uniq -c | sort -rn | head">📋 Копировать</button>
+      <pre><span class="prompt">$</span> cat file.txt | wc -l                              <span class="cmt"># число строк</span>
+<span class="prompt">$</span> cat file.txt | sort | uniq -c | sort -rn | head  <span class="cmt"># топ повторяющихся строк</span></pre>
+      <div class="desc">Конвейеры — сила Linux. Соединяют команды через <code>|</code>.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="sed 's/old/new/g' file.txt
+awk '{print $1}' file.txt">📋 Копировать</button>
+      <pre><span class="prompt">$</span> sed 's/old/new/g' file.txt     <span class="cmt"># заменить все old на new</span>
+<span class="prompt">$</span> awk '{print $1}' file.txt       <span class="cmt"># вывести первый столбец</span></pre>
+      <div class="desc">sed и awk — мощные инструменты обработки текста.</div>
+    </div>
+
+    <h3>6.4. Процессы и системная информация</h3>
+
+    <table>
+      <tr><th>Действие</th><th>Linux</th><th>Windows (PowerShell)</th></tr>
+      <tr><td>Все процессы</td><td><code>ps aux</code></td><td><code>Get-Process</code></td></tr>
+      <tr><td>Топ по CPU</td><td><code>top</code></td><td><code>Get-Process | Sort CPU -Desc</code></td></tr>
+      <tr><td>Найти по имени</td><td><code>pgrep firefox</code></td><td><code>Get-Process firefox</code></td></tr>
+      <tr><td>Убить по PID</td><td><code>kill -15 1234</code></td><td><code>Stop-Process -Id 1234</code></td></tr>
+      <tr><td>Убить по имени</td><td><code>pkill firefox</code></td><td><code>Stop-Process -Name firefox</code></td></tr>
+      <tr><td>Информация о системе</td><td><code>uname -a</code></td><td><code>Get-ComputerInfo</code></td></tr>
+      <tr><td>Время работы</td><td><code>uptime</code></td><td><code>(Get-CimInstance Win32_OperatingSystem).LastBootUpTime</code></td></tr>
+      <tr><td>Кто в системе</td><td><code>who</code></td><td><code>query user</code></td></tr>
+    </table>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="ps aux --sort=-%cpu | head -6
+ps aux --sort=-%mem | head -6">📋 Копировать</button>
+      <pre><span class="prompt">$</span> ps aux --sort=-%cpu | head -6   <span class="cmt"># топ по CPU</span>
+<span class="prompt">$</span> ps aux --sort=-%mem | head -6   <span class="cmt"># топ по памяти</span></pre>
+      <div class="desc">Быстрый поиск «пожирателей» ресурсов.</div>
+    </div>
+
+    <h3>6.5. Сетевые команды</h3>
+
+    <table>
+      <tr><th>Действие</th><th>Linux</th><th>Windows (PowerShell)</th></tr>
+      <tr><td>IP-адреса</td><td><code>ip a</code></td><td><code>Get-NetIPAddress</code></td></tr>
+      <tr><td>Слушающие порты</td><td><code>ss -tulpn</code></td><td><code>Get-NetTCPConnection -State Listen</code></td></tr>
+      <tr><td>Ping</td><td><code>ping -c 4 host</code></td><td><code>Test-Connection host -Count 4</code></td></tr>
+      <tr><td>Traceroute</td><td><code>traceroute host</code></td><td><code>tracert host</code></td></tr>
+      <tr><td>DNS-запрос</td><td><code>dig ya.ru</code></td><td><code>Resolve-DnsName ya.ru</code></td></tr>
+      <tr><td>Скачать файл</td><td><code>curl -O URL</code></td><td><code>Invoke-WebRequest URL -OutFile file</code></td></tr>
+      <tr><td>Скачать и вывести</td><td><code>curl URL</code></td><td><code>Invoke-RestMethod URL</code></td></tr>
+    </table>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="ss -tulpn">📋 Копировать</button>
+      <pre><span class="prompt">$</span> ss -tulpn</pre>
+      <div class="desc">Все слушающие TCP/UDP-порты с PID. Замена устаревшего netstat.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="curl -I https://example.com">📋 Копировать</button>
+      <pre><span class="prompt">$</span> curl -I https://example.com</pre>
+      <div class="desc">Получить только HTTP-заголовки — быстрая проверка доступности сайта.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="dig ya.ru +short
+nslookup ya.ru">📋 Копировать</button>
+      <pre><span class="prompt">$</span> dig ya.ru +short       <span class="cmt"># быстрый ответ — только IP</span>
+<span class="prompt">$</span> nslookup ya.ru         <span class="cmt"># подробный вывод</span></pre>
+      <div class="desc">DNS-диагностика.</div>
+    </div>
+
+    <div class="box note">
+      <div class="label">Почему ss, а не netstat</div>
+      <code>netstat</code> устарел и в новых дистрибутивах может отсутствовать. <code>ss</code> быстрее и показывает больше. Запомните: <code>ss -tulpn</code> — «что слушает система». Флаги: <b>t</b> — TCP, <b>u</b> — UDP, <b>l</b> — listen, <b>p</b> — PID, <b>n</b> — без резолва имён.
+    </div>
+
+    <h3>6.6. Архивация</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="tar -czvf archive.tar.gz /path/to/dir
+tar -xzvf archive.tar.gz
+tar -tzvf archive.tar.gz">📋 Копировать</button>
+      <pre><span class="prompt">$</span> tar -czvf archive.tar.gz /path/to/dir  <span class="cmt"># создать архив</span>
+<span class="prompt">$</span> tar -xzvf archive.tar.gz                <span class="cmt"># распаковать</span>
+<span class="prompt">$</span> tar -tzvf archive.tar.gz                <span class="cmt"># посмотреть содержимое</span></pre>
+      <div class="desc">tar — стандарт для архивов в Unix. Флаги: c — create, x — extract, t — list, z — gzip, v — verbose, f — file.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="zip -r archive.zip dir/
+unzip archive.zip
+unzip -l archive.zip">📋 Копировать</button>
+      <pre><span class="prompt">$</span> zip -r archive.zip dir/    <span class="cmt"># создать zip</span>
+<span class="prompt">$</span> unzip archive.zip           <span class="cmt"># распаковать</span>
+<span class="prompt">$</span> unzip -l archive.zip        <span class="cmt"># список файлов внутри</span></pre>
+      <div class="desc">Работа с ZIP — совместимо с Windows.</div>
+    </div>
+
+    <h3>6.7. Работа с текстовым редактором</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="nano file.txt">📋 Копировать</button>
+      <pre><span class="prompt">$</span> nano file.txt</pre>
+      <div class="desc">Простой редактор. Сохранить — <kbd>Ctrl</kbd>+<kbd>O</kbd>, выйти — <kbd>Ctrl</kbd>+<kbd>X</kbd>.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="vim file.txt">📋 Копировать</button>
+      <pre><span class="prompt">$</span> vim file.txt</pre>
+      <div class="desc">Мощный редактор. <kbd>i</kbd> — вставка, <kbd>Esc</kbd> — выход из режима, <code>:wq</code> — сохранить и выйти, <code>:q!</code> — выйти без сохранения.</div>
+    </div>
+
+    <h3>6.8. Права sudo и работа от root</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="sudo apt update
+sudo apt install htop
+sudo -i">📋 Копировать</button>
+      <pre><span class="prompt">$</span> sudo apt update          <span class="cmt"># обновить список пакетов</span>
+<span class="prompt">$</span> sudo apt install htop    <span class="cmt"># установить программу</span>
+<span class="prompt">$</span> sudo -i                  <span class="cmt"># войти в root-сессию</span></pre>
+      <div class="desc"><b>sudo</b> выполняет команду с правами root. Лучше использовать sudo для конкретных команд, а не сидеть в root-сессии.</div>
+    </div>
+
+    <h3>Вопросы и задачи для самопроверки</h3>
+
+    <details class="task">
+      <summary>Задача 1. Найти все .log-файлы в /var/log, которые изменялись за последние сутки.</summary>
+      <div class="answer">
+        <div class="cmd" style="margin-top:10px">
+          <button class="copy-btn" data-copy="find /var/log -name '*.log' -mtime -1">📋</button>
+          <pre><span class="prompt">$</span> find /var/log -name '*.log' -mtime -1</pre>
+        </div>
+        <code>-mtime -1</code> — изменённые за последние 24 часа.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Задача 2. Посчитать, сколько раз встречается слово ERROR в файле.</summary>
+      <div class="answer">
+        <div class="cmd" style="margin-top:10px">
+          <button class="copy-btn" data-copy="grep -c 'ERROR' file.log">📋</button>
+          <pre><span class="prompt">$</span> grep -c "ERROR" file.log</pre>
+        </div>
+        Или: <code>grep ERROR file.log | wc -l</code>.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Задача 3. Скопировать все .jpg-файлы из текущей папки в /tmp/photos.</summary>
+      <div class="answer">
+        <div class="cmd" style="margin-top:10px">
+          <button class="copy-btn" data-copy="mkdir -p /tmp/photos && cp *.jpg /tmp/photos/">📋</button>
+          <pre><span class="prompt">$</span> mkdir -p /tmp/photos &amp;&amp; cp *.jpg /tmp/photos/</pre>
+        </div>
+        <code>&amp;&amp;</code> — выполнить вторую команду только если первая успешна.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Практическое задание на пару</div>
+      <ol>
+        <li>Создать в <code>~/practice-cmds/</code> три файла: a.txt, b.txt, c.txt</li>
+        <li>Записать в a.txt 20 строк «data line N» (использовать <code>seq</code> или <code>for</code>)</li>
+        <li>Найти все файлы в папке, содержащие слово «line»</li>
+        <li>Посчитать общее количество строк во всех файлах</li>
+        <li>Упаковать каталог в tar.gz</li>
+        <li>Скопировать архив в /tmp и распаковать там</li>
+        <li>Сравнить содержимое оригинальной и распакованной папки через <code>diff -r</code></li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="05-filesystem.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">5. Файловые системы</span>
+  </a>
+  <a href="07-security.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">7. Диагностика и безопасность</span>
+  </a>
+</div>
+
+<footer style="padding:30px;text-align:center;color:var(--muted);font-size:13px;">
+  ОП.01 Операционные системы и среды · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

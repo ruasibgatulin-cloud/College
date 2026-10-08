@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОС · 7. Диагностика и безопасность · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ОП.01 ОС · Раздел 7</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="os-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-history.html">1. История</a>
+  <a href="02-architecture.html">2. Архитектура</a>
+  <a href="03-processes.html">3. Процессы</a>
+  <a href="04-memory.html">4. Память</a>
+  <a href="05-filesystem.html">5. ФС</a>
+  <a href="06-commands.html">6. Команды</a>
+  <a href="07-security.html" class="current">7. Безопасность</a>
+</nav>
+
+<div class="layout" style="grid-template-columns:1fr;max-width:1000px;">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">7</span>Диагностика и безопасность</h2>
+
+    <h3>7.1. Логи — основа диагностики</h3>
+    <p><b>Лог</b> — файл, куда ОС и программы записывают события: запуски, ошибки, подключения, предупреждения.</p>
+
+    <h4>Где лежат логи в Linux</h4>
+    <table>
+      <tr><th>Путь</th><th>Что там</th></tr>
+      <tr><td><code>/var/log/syslog</code></td><td>Общий системный лог (Debian/Ubuntu)</td></tr>
+      <tr><td><code>/var/log/messages</code></td><td>Общий системный лог (RHEL/CentOS)</td></tr>
+      <tr><td><code>/var/log/auth.log</code></td><td>Аутентификация, sudo, SSH</td></tr>
+      <tr><td><code>/var/log/kern.log</code></td><td>Сообщения ядра</td></tr>
+      <tr><td><code>/var/log/dpkg.log</code></td><td>Установка/удаление пакетов</td></tr>
+      <tr><td><code>/var/log/nginx/</code></td><td>Логи веб-сервера Nginx</td></tr>
+    </table>
+
+    <p>Современные системы (systemd) собирают логи через <b>journald</b> — централизованное хранилище, которое можно читать через <code>journalctl</code>.</p>
+
+    <h3>7.2. Команды работы с логами</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="journalctl -xe --since '1 hour ago'">📋 Копировать</button>
+      <pre><span class="prompt">$</span> journalctl -xe --since "1 hour ago"</pre>
+      <div class="desc">Ошибки за час. <code>-x</code> — пояснения, <code>-e</code> — сразу к концу.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="journalctl -u nginx.service --since today">📋 Копировать</button>
+      <pre><span class="prompt">$</span> journalctl -u nginx.service --since today</pre>
+      <div class="desc">Логи конкретного сервиса.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="journalctl -p err -b">📋 Копировать</button>
+      <pre><span class="prompt">$</span> journalctl -p err -b</pre>
+      <div class="desc">Только ошибки с момента последней загрузки.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="tail -f /var/log/syslog">📋 Копировать</button>
+      <pre><span class="prompt">$</span> tail -f /var/log/syslog</pre>
+      <div class="desc">Следить за системным логом в реальном времени.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="dmesg | tail -20">📋 Копировать</button>
+      <pre><span class="prompt">$</span> dmesg | tail -20</pre>
+      <div class="desc">Последние сообщения ядра (ошибки USB, диска, драйверов).</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="grep "Failed password" /var/log/auth.log | tail -10">📋 Копировать</button>
+      <pre><span class="prompt">$</span> grep "Failed password" /var/log/auth.log | tail -10</pre>
+      <div class="desc">Неудачные попытки входа. Если их много — возможен подбор пароля.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="last -n 20">📋 Копировать</button>
+      <pre><span class="prompt">$</span> last -n 20</pre>
+      <div class="desc">Последние 20 входов в систему.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="lastb -n 20">📋 Копировать</button>
+      <pre><span class="prompt">$</span> lastb -n 20</pre>
+      <div class="desc">Неудачные попытки входа (нужны права root).</div>
+    </div>
+
+    <h3>7.3. Управление сервисами (systemd)</h3>
+    <p>В современных Linux сервисы управляются через <b>systemd</b>. Каждый сервис — файл <code>.service</code> в <code>/etc/systemd/system/</code> или <code>/lib/systemd/system/</code>.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="systemctl status nginx">📋 Копировать</button>
+      <pre><span class="prompt">$</span> systemctl status nginx</pre>
+      <div class="desc">Текущее состояние сервиса: запущен, остановлен, ошибки.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="sudo systemctl start nginx
+sudo systemctl stop nginx
+sudo systemctl restart nginx
+sudo systemctl reload nginx">📋 Копировать</button>
+      <pre><span class="prompt">$</span> sudo systemctl start nginx    <span class="cmt"># запустить</span>
+<span class="prompt">$</span> sudo systemctl stop nginx     <span class="cmt"># остановить</span>
+<span class="prompt">$</span> sudo systemctl restart nginx  <span class="cmt"># перезапустить</span>
+<span class="prompt">$</span> sudo systemctl reload nginx   <span class="cmt"># перечитать конфиг без остановки</span></pre>
+      <div class="desc"><b>reload</b> мягче, чем restart — не теряет соединения.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="sudo systemctl enable nginx
+sudo systemctl disable nginx">📋 Копировать</button>
+      <pre><span class="prompt">$</span> sudo systemctl enable nginx   <span class="cmt"># автозапуск при загрузке</span>
+<span class="prompt">$</span> sudo systemctl disable nginx  <span class="cmt"># отключить автозапуск</span></pre>
+      <div class="desc">enable ≠ start. enable = «запустится при следующей загрузке». start = «запусти прямо сейчас».</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="systemctl list-units --type=service --state=running">📋 Копировать</button>
+      <pre><span class="prompt">$</span> systemctl list-units --type=service --state=running</pre>
+      <div class="desc">Все активные сервисы.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="systemctl list-unit-files --type=service | grep enabled">📋 Копировать</button>
+      <pre><span class="prompt">$</span> systemctl list-unit-files --type=service | grep enabled</pre>
+      <div class="desc">Какие сервисы включены в автозагрузку.</div>
+    </div>
+
+    <h3>7.4. Пользователи и группы</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="cat /etc/passwd">📋 Копировать</button>
+      <pre><span class="prompt">$</span> cat /etc/passwd</pre>
+      <div class="desc">Список пользователей. Формат: <code>имя:x:UID:GID:комментарий:домашний_каталог:shell</code>.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="cat /etc/group">📋 Копировать</button>
+      <pre><span class="prompt">$</span> cat /etc/group</pre>
+      <div class="desc">Список групп.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="sudo useradd -m -s /bin/bash alice
+sudo passwd alice
+sudo usermod -aG sudo alice
+sudo userdel -r alice">📋 Копировать</button>
+      <pre><span class="prompt">$</span> sudo useradd -m -s /bin/bash alice   <span class="cmt"># создать с домашней папкой</span>
+<span class="prompt">$</span> sudo passwd alice                     <span class="cmt"># задать пароль</span>
+<span class="prompt">$</span> sudo usermod -aG sudo alice           <span class="cmt"># добавить в группу sudo</span>
+<span class="prompt">$</span> sudo userdel -r alice                 <span class="cmt"># удалить вместе с домашней папкой</span></pre>
+      <div class="desc">Полный цикл работы с пользователем.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="who
+w
+last -n 10
+lastb -n 10">📋 Копировать</button>
+      <pre><span class="prompt">$</span> who           <span class="cmt"># кто сейчас в системе</span>
+<span class="prompt">$</span> w             <span class="cmt"># кто и что делает</span>
+<span class="prompt">$</span> last -n 10    <span class="cmt"># история успешных входов</span>
+<span class="prompt">$</span> lastb -n 10   <span class="cmt"># история неудачных входов</span></pre>
+      <div class="desc">Кто, когда и откуда входил.</div>
+    </div>
+
+    <h3>7.5. Безопасность: базовые правила</h3>
+
+    <h4>Правило 1: не работать под root</h4>
+    <p>Root может всё — включая <code>rm -rf /</code>. Работайте под обычным пользователем, а для конкретных команд используйте <code>sudo</code>.</p>
+
+    <h4>Правило 2: сильные пароли + SSH-ключи</h4>
+    <ul>
+      <li>Пароль ≥ 12 символов, с цифрами и спецсимволами.</li>
+      <li>Для серверов — отключить вход по паролю, оставить только SSH-ключи.</li>
+      <li>Приватный ключ — права 600, никому не передавать.</li>
+    </ul>
+
+    <h4>Правило 3: обновлять систему</h4>
+    <div class="cmd">
+      <button class="copy-btn" data-copy="sudo apt update && sudo apt upgrade -y
+sudo apt autoremove -y">📋 Копировать</button>
+      <pre><span class="prompt">$</span> sudo apt update &amp;&amp; sudo apt upgrade -y
+<span class="prompt">$</span> sudo apt autoremove -y</pre>
+      <div class="desc">Обновление системы — закрывает известные уязвимости.</div>
+    </div>
+
+    <h4>Правило 4: firewall</h4>
+    <div class="cmd">
+      <button class="copy-btn" data-copy="sudo ufw status
+sudo ufw enable
+sudo ufw allow 22/tcp
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp">📋 Копировать</button>
+      <pre><span class="prompt">$</span> sudo ufw status              <span class="cmt"># проверить</span>
+<span class="prompt">$</span> sudo ufw enable              <span class="cmt"># включить</span>
+<span class="prompt">$</span> sudo ufw allow 22/tcp        <span class="cmt"># SSH</span>
+<span class="prompt">$</span> sudo ufw allow 80/tcp        <span class="cmt"># HTTP</span>
+<span class="prompt">$</span> sudo ufw allow 443/tcp       <span class="cmt"># HTTPS</span></pre>
+      <div class="desc">UFW — простой фаервол для Ubuntu/Debian.</div>
+    </div>
+
+    <h4>Правило 5: не запускать неизвестные скрипты</h4>
+    <p>Команда <code>curl URL | bash</code> — популярный способ установки, но и опасный. Скрипт может делать всё, что угодно. Лучше сначала скачать и посмотреть:</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="curl -O https://example.com/install.sh
+less install.sh
+bash install.sh">📋 Копировать</button>
+      <pre><span class="prompt">$</span> curl -O https://example.com/install.sh
+<span class="prompt">$</span> less install.sh   <span class="cmt"># прочитать, что делает</span>
+<span class="prompt">$</span> bash install.sh   <span class="cmt"># запустить</span></pre>
+      <div class="desc">Никогда не делайте <code>curl URL | bash</code> не глядя.</div>
+    </div>
+
+    <h3>7.6. Резервное копирование</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="rsync -avz --delete /home/user/ /backup/user/
+rsync -avz /home/user/ user@server:/backup/user/">📋 Копировать</button>
+      <pre><span class="prompt">$</span> rsync -avz --delete /home/user/ /backup/user/          <span class="cmt"># локально</span>
+<span class="prompt">$</span> rsync -avz /home/user/ user@server:/backup/user/       <span class="cmt"># на удалённый сервер</span></pre>
+      <div class="desc">rsync — умное копирование: переносит только изменения. Флаги: a — архив (права, время), v — verbose, z — сжатие, --delete — удалять в цели то, что удалено в источнике.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="tar -czvf backup-$(date +%F).tar.gz /home/user/important/">📋 Копировать</button>
+      <pre><span class="prompt">$</span> tar -czvf backup-$(date +%F).tar.gz /home/user/important/</pre>
+      <div class="desc">Архив с датой в имени — удобно хранить историю.</div>
+    </div>
+
+    <h3>Вопросы и задачи для самопроверки</h3>
+
+    <details class="task">
+      <summary>Задача 1. В auth.log за час 500 записей «Failed password». Что делать?</summary>
+      <div class="answer">
+        Признаки <b>brute-force атаки</b>. Что предпринять:
+        <ol>
+          <li>Проверить IP-адреса попыток: <code>grep "Failed password" /var/log/auth.log | awk '{print $(NF-3)}' | sort | uniq -c | sort -rn | head</code></li>
+          <li>Установить <b>fail2ban</b> — он автоматически блокирует IP после N неудач.</li>
+          <li>Отключить вход по паролю в SSH: в <code>/etc/ssh/sshd_config</code> установить <code>PasswordAuthentication no</code>.</li>
+          <li>Перезапустить SSH: <code>sudo systemctl restart sshd</code>.</li>
+        </ol>
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Задача 2. Как узнать, какие сервисы запустятся при следующей загрузке?</summary>
+      <div class="answer">
+        <div class="cmd" style="margin-top:10px">
+          <button class="copy-btn" data-copy="systemctl list-unit-files --type=service | grep enabled">📋</button>
+          <pre><span class="prompt">$</span> systemctl list-unit-files --type=service | grep enabled</pre>
+        </div>
+        Или посмотреть цель загрузки: <code>systemctl list-dependencies default.target</code>.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Задача 3. Сервис nginx не стартует. Как найти причину?</summary>
+      <div class="answer">
+        <div class="cmd" style="margin-top:10px">
+          <button class="copy-btn" data-copy="sudo systemctl status nginx
+sudo journalctl -u nginx -n 50 --no-pager
+sudo nginx -t">📋</button>
+          <pre><span class="prompt">$</span> sudo systemctl status nginx                <span class="cmt"># общий статус и ошибка</span>
+<span class="prompt">$</span> sudo journalctl -u nginx -n 50 --no-pager   <span class="cmt"># последние 50 строк лога сервиса</span>
+<span class="prompt">$</span> sudo nginx -t                               <span class="cmt"># проверить конфиг nginx</span></pre>
+        </div>
+        Обычно причина — синтаксическая ошибка в конфиге или занятый порт.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос. Почему <code>curl URL | bash</code> опасен?</summary>
+      <div class="answer">
+        Вы запускаете <b>произвольный код с интернета</b> от своего имени (а если через sudo — от root).<br><br>
+        Возможные проблемы:
+        <ul>
+          <li>Скрипт может установить вредоносное ПО.</li>
+          <li>Может удалить ваши файлы.</li>
+          <li>Может отправить данные на чужой сервер.</li>
+          <li>Даже если источник доверенный — что, если сайт взломан и скрипт подменён?</li>
+        </ul>
+        Правильный подход: скачать → прочитать → запустить.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Практическое задание на пару</div>
+      <ol>
+        <li>Посмотреть: <code>journalctl -p err -b</code> — какие ошибки были с момента загрузки?</li>
+        <li>Найти в auth.log (или /var/log/secure) последние 5 неудачных попыток входа</li>
+        <li>Проверить активные сервисы: <code>systemctl list-units --state=running</code></li>
+        <li>Создать тестового пользователя <code>student_test</code> с домашней папкой</li>
+        <li>Добавить его в группу <code>sudo</code></li>
+        <li>Проверить через <code>id student_test</code></li>
+        <li>Удалить пользователя с домашней папкой</li>
+        <li>Сделать резервную копию <code>/etc/</code> в <code>/tmp/etc-backup.tar.gz</code></li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="06-commands.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">6. Команды Linux и Windows</span>
+  </a>
+  <a href="os-index.html" class="next">
+    <span class="dir">К оглавлению →</span>
+    <span class="title">Все темы курса</span>
+  </a>
+</div>
+
+<footer style="padding:30px;text-align:center;color:var(--muted);font-size:13px;">
+  ОП.01 Операционные системы и среды · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

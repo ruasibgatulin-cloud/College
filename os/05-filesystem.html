@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОС · 5. Файловые системы · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ОП.01 ОС · Раздел 5</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="os-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-history.html">1. История</a>
+  <a href="02-architecture.html">2. Архитектура</a>
+  <a href="03-processes.html">3. Процессы</a>
+  <a href="04-memory.html">4. Память</a>
+  <a href="05-filesystem.html" class="current">5. ФС</a>
+  <a href="06-commands.html">6. Команды</a>
+  <a href="07-security.html">7. Безопасность</a>
+</nav>
+
+<div class="layout" style="grid-template-columns:1fr;max-width:1000px;">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">5</span>Файловая система и ввод-вывод информации</h2>
+
+    <h3>5.1. Что такое файловая система</h3>
+    <p><b>Файловая система (ФС)</b> — способ организации данных на носителе: как хранятся имена файлов, где лежат их данные, как учитываются права, как вести журнал изменений.</p>
+
+    <h3>5.2. Сравнение основных ФС</h3>
+    <table>
+      <tr><th>ФС</th><th>ОС</th><th>Макс. файл</th><th>Особенности</th></tr>
+      <tr><td>ext4</td><td>Linux</td><td>16 ТБ</td><td>Журналируемая, стандарт де-факто</td></tr>
+      <tr><td>XFS</td><td>Linux</td><td>8 ЭБ</td><td>Хороша для больших файлов и серверов</td></tr>
+      <tr><td>Btrfs</td><td>Linux</td><td>16 ЭБ</td><td>Снапшоты, сжатие, самовосстановление</td></tr>
+      <tr><td>NTFS</td><td>Windows</td><td>16 ЭБ</td><td>Журналируемая, права, шифрование, сжатие</td></tr>
+      <tr><td>FAT32</td><td>Все</td><td>4 ГБ</td><td>Простая, но файлы ≤ 4 ГБ</td></tr>
+      <tr><td>exFAT</td><td>Все</td><td>16 ЭБ</td><td>Для флешек, без ограничения 4 ГБ</td></tr>
+      <tr><td>APFS</td><td>macOS</td><td>8 ЭБ</td><td>Оптимизирована для SSD, снапшоты</td></tr>
+    </table>
+
+    <div class="box note">
+      <div class="label">Что такое журналирование</div>
+      ФС перед изменением записывает намерение в специальный журнал. Если питание отключится — при следующей загрузке ФС восстановит целостность, не потеряв данные. NTFS, ext4, XFS, Btrfs — журналируемые. FAT32 — нет.
+    </div>
+
+    <h3>5.3. Иерархия каталогов Linux (FHS)</h3>
+    <p><b>FHS (Filesystem Hierarchy Standard)</b> — единый стандарт, где что должно лежать в Linux.</p>
+
+    <table>
+      <tr><th>Каталог</th><th>Что там</th></tr>
+      <tr><td><code>/</code></td><td>Корень — начало всего</td></tr>
+      <tr><td><code>/bin</code></td><td>Основные команды (ls, cp, mv)</td></tr>
+      <tr><td><code>/sbin</code></td><td>Системные команды для root (fdisk, iptables)</td></tr>
+      <tr><td><code>/etc</code></td><td>Конфигурации системы и программ</td></tr>
+      <tr><td><code>/home</code></td><td>Домашние каталоги пользователей</td></tr>
+      <tr><td><code>/root</code></td><td>Домашний каталог root</td></tr>
+      <tr><td><code>/var</code></td><td>Изменяемые данные: логи, кеши, БД</td></tr>
+      <tr><td><code>/tmp</code></td><td>Временные файлы (очищается при перезагрузке)</td></tr>
+      <tr><td><code>/usr</code></td><td>Пользовательские программы и библиотеки</td></tr>
+      <tr><td><code>/proc</code></td><td>Виртуальная ФС ядра — информация о процессах</td></tr>
+      <tr><td><code>/sys</code></td><td>Виртуальная ФС — устройства и настройки ядра</td></tr>
+      <tr><td><code>/dev</code></td><td>Файлы устройств (диски, порты)</td></tr>
+      <tr><td><code>/mnt</code>, <code>/media</code></td><td>Точки монтирования внешних устройств</td></tr>
+    </table>
+
+    <div class="viz">
+      <svg viewBox="0 0 500 260" width="500">
+        <g font-size="12" fill="#1c2331">
+          <text x="250" y="20" text-anchor="middle" font-weight="600" fill="#4f46e5">/ — корень</text>
+          <!-- Ветка 1 -->
+          <line x1="250" y1="30" x2="80" y2="60" stroke="#8891a6"/>
+          <rect x="30" y="60" width="100" height="26" fill="#eef0ff" stroke="#4f46e5" rx="4"/>
+          <text x="80" y="78" text-anchor="middle">/etc</text>
+
+          <!-- Ветка 2 -->
+          <line x1="250" y1="30" x2="180" y2="60" stroke="#8891a6"/>
+          <rect x="130" y="60" width="100" height="26" fill="#eef0ff" stroke="#4f46e5" rx="4"/>
+          <text x="180" y="78" text-anchor="middle">/home</text>
+
+          <!-- Ветка 3 -->
+          <line x1="250" y1="30" x2="300" y2="60" stroke="#8891a6"/>
+          <rect x="250" y="60" width="100" height="26" fill="#eef0ff" stroke="#4f46e5" rx="4"/>
+          <text x="300" y="78" text-anchor="middle">/var</text>
+
+          <!-- Ветка 4 -->
+          <line x1="250" y1="30" x2="420" y2="60" stroke="#8891a6"/>
+          <rect x="370" y="60" width="100" height="26" fill="#eef0ff" stroke="#4f46e5" rx="4"/>
+          <text x="420" y="78" text-anchor="middle">/usr</text>
+
+          <!-- Подкаталоги /home -->
+          <line x1="180" y1="86" x2="180" y2="115" stroke="#8891a6"/>
+          <rect x="130" y="115" width="100" height="26" fill="#f8fafc" stroke="#cbd5e1" rx="4"/>
+          <text x="180" y="133" text-anchor="middle" font-size="11">alice</text>
+
+          <line x1="180" y1="141" x2="180" y2="170" stroke="#8891a6"/>
+          <rect x="130" y="170" width="100" height="26" fill="#f8fafc" stroke="#cbd5e1" rx="4"/>
+          <text x="180" y="188" text-anchor="middle" font-size="11">bob</text>
+
+          <!-- Подкаталоги /var -->
+          <line x1="300" y1="86" x2="300" y2="115" stroke="#8891a6"/>
+          <rect x="250" y="115" width="100" height="26" fill="#f8fafc" stroke="#cbd5e1" rx="4"/>
+          <text x="300" y="133" text-anchor="middle" font-size="11">log</text>
+
+          <line x1="300" y1="141" x2="300" y2="170" stroke="#8891a6"/>
+          <rect x="250" y="170" width="100" height="26" fill="#f8fafc" stroke="#cbd5e1" rx="4"/>
+          <text x="300" y="188" text-anchor="middle" font-size="11">cache</text>
+        </g>
+      </svg>
+      <div class="cap">Пример иерархии каталогов в Linux.</div>
+    </div>
+
+    <h3>5.4. Права доступа</h3>
+    <p>У каждого файла есть <b>владелец</b> (user), <b>группа</b> (group) и <b>остальные</b> (other). Для каждой категории — три права:</p>
+
+    <table>
+      <tr><th>Буква</th><th>Число</th><th>Что значит для файла</th><th>Что значит для каталога</th></tr>
+      <tr><td>r</td><td>4</td><td>Читать содержимое</td><td>Просматривать список файлов</td></tr>
+      <tr><td>w</td><td>2</td><td>Изменять файл</td><td>Создавать/удалять файлы</td></tr>
+      <tr><td>x</td><td>1</td><td>Запускать (если программа/скрипт)</td><td>Заходить в каталог</td></tr>
+    </table>
+
+    <div class="box example">
+      <div class="label">Как читать права</div>
+      <code>rwxr-xr-x</code> = <b>755</b><br>
+      rwx = 4+2+1 = <b>7</b> — владелец может всё<br>
+      r-x = 4+0+1 = <b>5</b> — группа может читать и заходить<br>
+      r-x = 4+0+1 = <b>5</b> — остальные тоже<br><br>
+      <code>rw-r--r--</code> = <b>644</b> — стандартные права для файлов
+    </div>
+
+    <h4>Часто используемые значения</h4>
+    <table>
+      <tr><th>Число</th><th>Что значит</th><th>Где применяется</th></tr>
+      <tr><td>755</td><td>rwxr-xr-x</td><td>Исполняемые скрипты, каталоги</td></tr>
+      <tr><td>644</td><td>rw-r--r--</td><td>Обычные файлы</td></tr>
+      <tr><td>700</td><td>rwx------</td><td>Личные скрипты, приватные папки</td></tr>
+      <tr><td>600</td><td>rw-------</td><td>Файлы с паролями, ключи SSH</td></tr>
+      <tr><td>777</td><td>rwxrwxrwx</td><td>Все могут всё (небезопасно!)</td></tr>
+      <tr><td>555</td><td>r-xr-xr-x</td><td>Только чтение и выполнение</td></tr>
+    </table>
+
+    <h3>5.5. Команды работы с файлами</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="ls -la">📋 Копировать</button>
+      <pre><span class="prompt">$</span> ls -la</pre>
+      <div class="desc">Подробный список файлов с правами, владельцами, размерами (включая скрытые).</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="pwd">📋 Копировать</button>
+      <pre><span class="prompt">$</span> pwd</pre>
+      <div class="desc">Показать текущий рабочий каталог.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="cd /var/log">📋 Копировать</button>
+      <pre><span class="prompt">$</span> cd /var/log</pre>
+      <div class="desc">Перейти в каталог. <code>cd ~</code> — домой, <code>cd ..</code> — на уровень выше, <code>cd -</code> — в предыдущий.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="cp -r src/ dst/">📋 Копировать</button>
+      <pre><span class="prompt">$</span> cp -r src/ dst/</pre>
+      <div class="desc">Копировать рекурсивно (<code>-r</code> — для каталогов).</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="mv old.txt new.txt
+mv file.txt /tmp/">📋 Копировать</button>
+      <pre><span class="prompt">$</span> mv old.txt new.txt      <span class="cmt"># переименовать</span>
+<span class="prompt">$</span> mv file.txt /tmp/       <span class="cmt"># переместить</span></pre>
+      <div class="desc">Перемещение / переименование.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="rm file.txt
+rm -rf dir/">📋 Копировать</button>
+      <pre><span class="prompt">$</span> rm file.txt         <span class="cmt"># удалить файл</span>
+<span class="prompt">$</span> rm -rf dir/         <span class="cmt"># удалить каталог рекурсивно (ОСТОРОЖНО!)</span></pre>
+      <div class="desc">Файл после <code>rm</code> не попадает в «корзину». Восстановить сложно.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="mkdir -p a/b/c">📋 Копировать</button>
+      <pre><span class="prompt">$</span> mkdir -p a/b/c</pre>
+      <div class="desc">Создать каталоги рекурсивно (<code>-p</code> — вместе с родителями).</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="cat /etc/hostname
+less /var/log/syslog
+head -20 file.txt
+tail -f /var/log/syslog">📋 Копировать</button>
+      <pre><span class="prompt">$</span> cat /etc/hostname       <span class="cmt"># весь файл на экран</span>
+<span class="prompt">$</span> less /var/log/syslog    <span class="cmt"># постраничный просмотр (q — выход)</span>
+<span class="prompt">$</span> head -20 file.txt       <span class="cmt"># первые 20 строк</span>
+<span class="prompt">$</span> tail -f /var/log/syslog <span class="cmt"># следить в реальном времени</span></pre>
+      <div class="desc">Просмотр файлов.</div>
+    </div>
+
+    <h3>5.6. Управление правами</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="chmod 755 script.sh
+chmod 644 file.txt
+chmod u+x script.sh
+chmod -R 755 dir/">📋 Копировать</button>
+      <pre><span class="prompt">$</span> chmod 755 script.sh    <span class="cmt"># числовая нотация</span>
+<span class="prompt">$</span> chmod 644 file.txt
+<span class="prompt">$</span> chmod u+x script.sh    <span class="cmt"># символическая: u=user, g=group, o=other</span>
+<span class="prompt">$</span> chmod -R 755 dir/      <span class="cmt"># рекурсивно</span></pre>
+      <div class="desc">Изменение прав доступа.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="chown alice:users file.txt
+chown -R alice:users /home/alice/projects">📋 Копировать</button>
+      <pre><span class="prompt">$</span> chown alice:users file.txt
+<span class="prompt">$</span> chown -R alice:users /home/alice/projects</pre>
+      <div class="desc">Смена владельца (<code>alice</code>) и группы (<code>users</code>).</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="groups
+id alice
+whoami">📋 Копировать</button>
+      <pre><span class="prompt">$</span> groups        <span class="cmt"># группы текущего пользователя</span>
+<span class="prompt">$</span> id alice      <span class="cmt"># UID, GID и группы alice</span>
+<span class="prompt">$</span> whoami        <span class="cmt"># текущий пользователь</span></pre>
+      <div class="desc">Информация о пользователях и группах.</div>
+    </div>
+
+    <h3>5.7. Дисковое пространство</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="df -h">📋 Копировать</button>
+      <pre><span class="prompt">$</span> df -h</pre>
+      <div class="desc">Свободное место на всех смонтированных ФС.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="du -sh * | sort -h">📋 Копировать</button>
+      <pre><span class="prompt">$</span> du -sh * | sort -h</pre>
+      <div class="desc">Размеры файлов и папок в текущей директории, по возрастанию.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="du -sh /home/* 2>/dev/null | sort -h">📋 Копировать</button>
+      <pre><span class="prompt">$</span> du -sh /home/* 2&gt;/dev/null | sort -h</pre>
+      <div class="desc">Кто сколько занимает в /home.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="find / -type f -size +100M 2>/dev/null">📋 Копировать</button>
+      <pre><span class="prompt">$</span> find / -type f -size +100M 2&gt;/dev/null</pre>
+      <div class="desc">Найти все файлы больше 100 МБ.</div>
+    </div>
+
+    <h3>5.8. Монтирование</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="lsblk
+mount | grep /dev/sd
+findmnt /">📋 Копировать</button>
+      <pre><span class="prompt">$</span> lsblk              <span class="cmt"># список блочных устройств</span>
+<span class="prompt">$</span> mount | grep /dev/sd <span class="cmt"># что смонтировано</span>
+<span class="prompt">$</span> findmnt /           <span class="cmt"># какая ФС на корне</span></pre>
+      <div class="desc">Просмотр дисков и точек монтирования.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="sudo mount /dev/sdb1 /mnt
+sudo umount /mnt">📋 Копировать</button>
+      <pre><span class="prompt">$</span> sudo mount /dev/sdb1 /mnt    <span class="cmt"># смонтировать</span>
+<span class="prompt">$</span> sudo umount /mnt              <span class="cmt"># размонтировать</span></pre>
+      <div class="desc">Ручное монтирование/размонтирование.</div>
+    </div>
+
+    <h3>Вопросы и задачи для самопроверки</h3>
+
+    <details class="task">
+      <summary>Задача 1. Дать скрипту права на выполнение только владельцу.</summary>
+      <div class="answer">
+        <strong>chmod 700 script.sh</strong> или <strong>chmod u+x script.sh</strong>.<br>
+        700 = rwx------ — владелец может читать, писать, запускать. Остальные ничего не могут.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Задача 2. Почему SSH-ключ должен иметь права 600?</summary>
+      <div class="answer">
+        SSH-сервер <b>отказывается использовать приватный ключ</b>, если у него есть доступ у группы или остальных.<br><br>
+        Права <code>600</code> = rw------- — только владелец читает и пишет. Если ключ увидят другие — злоумышленник может выдать себя за вас.<br><br>
+        Проверить: <code>chmod 600 ~/.ssh/id_rsa</code>.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Задача 3. Файл занял 5 ГБ места. Как найти и удалить его?</summary>
+      <div class="answer">
+        <div class="cmd" style="margin-top:10px">
+          <button class="copy-btn" data-copy="du -h / 2>/dev/null | sort -h | tail -20
+find / -type f -size +1G 2>/dev/null
+rm большой_файл">📋</button>
+          <pre><span class="prompt">$</span> du -h / 2&gt;/dev/null | sort -h | tail -20
+<span class="prompt">$</span> find / -type f -size +1G 2&gt;/dev/null
+<span class="prompt">$</span> rm большой_файл</pre>
+        </div>
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос. Чем отличается жёсткая ссылка (hard link) от символической (symlink)?</summary>
+      <div class="answer">
+        <b>Hard link</b> — ещё одно имя для того же inode. Оба имени ссылаются на одни данные. Удаление одного — данные остаются в другом.<br><br>
+        <b>Symlink</b> — отдельный файл, который содержит путь к другому файлу. Если оригинал удалить — symlink станет «битым».<br><br>
+        <div class="cmd" style="margin-top:10px">
+          <button class="copy-btn" data-copy="ln file.txt hardlink.txt
+ln -s file.txt symlink.txt">📋</button>
+          <pre><span class="prompt">$</span> ln file.txt hardlink.txt       <span class="cmt"># hard link</span>
+<span class="prompt">$</span> ln -s file.txt symlink.txt     <span class="cmt"># symlink</span></pre>
+        </div>
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Задание на пару</div>
+      <ol>
+        <li>Создать каталог <code>~/practice</code> с подкаталогом <code>sub</code></li>
+        <li>Создать файл <code>~/practice/file.txt</code> с текстом «Hello, OS!»</li>
+        <li>Проверить права: <code>ls -la ~/practice/</code></li>
+        <li>Установить права 644 на файл и 755 на каталог</li>
+        <li>Создать симлинк <code>link.txt</code> на <code>file.txt</code></li>
+        <li>Проверить размер директории: <code>du -sh ~/practice</code></li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="04-memory.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">4. Управление памятью</span>
+  </a>
+  <a href="06-commands.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">6. Команды Linux и Windows</span>
+  </a>
+</div>
+
+<footer style="padding:30px;text-align:center;color:var(--muted);font-size:13px;">
+  ОП.01 Операционные системы и среды · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

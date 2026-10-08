@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОС · 2. Архитектура · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ОП.01 ОС · Раздел 2</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="os-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-history.html">1. История</a>
+  <a href="02-architecture.html" class="current">2. Архитектура</a>
+  <a href="03-processes.html">3. Процессы</a>
+  <a href="04-memory.html">4. Память</a>
+  <a href="05-filesystem.html">5. ФС</a>
+  <a href="06-commands.html">6. Команды</a>
+  <a href="07-security.html">7. Безопасность</a>
+</nav>
+
+<div class="layout" style="grid-template-columns:1fr;max-width:1000px;">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">2</span>Архитектура операционной системы</h2>
+
+    <h3>2.1. Составные части ОС</h3>
+    <ul>
+      <li><b>Ядро (kernel)</b> — центральная часть, управляет ресурсами, работает в привилегированном режиме</li>
+      <li><b>Драйверы</b> — «переводчики» между ядром и физическими устройствами</li>
+      <li><b>Оболочка (shell)</b> — интерфейс с пользователем (bash, zsh, PowerShell, cmd)</li>
+      <li><b>Системные библиотеки</b> — готовые функции для программ (libc, .NET BCL)</li>
+      <li><b>Утилиты</b> — сервисные программы (архиваторы, файловые менеджеры, редакторы)</li>
+    </ul>
+
+    <h3>2.2. Режимы работы процессора</h3>
+    <p>Современные процессоры поддерживают <b>уровни привилегий</b> (protection rings). На x86 их четыре, но используются в основном два:</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 480 240" width="480">
+        <!-- Внешнее кольцо ring 3 -->
+        <circle cx="240" cy="120" r="110" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="240" y="30" text-anchor="middle" font-size="12" fill="#64748b">Пользовательский режим (ring 3)</text>
+        <!-- Приложения -->
+        <circle cx="240" cy="120" r="85" fill="#fff1f4" stroke="#e11d48" stroke-width="1.5"/>
+        <text x="240" y="60" text-anchor="middle" font-size="12" fill="#e11d48">Приложения</text>
+        <!-- Драйверы -->
+        <circle cx="240" cy="120" r="60" fill="#fff9e6" stroke="#d97706" stroke-width="1.5"/>
+        <text x="240" y="90" text-anchor="middle" font-size="12" fill="#d97706">Драйверы</text>
+        <!-- Ядро -->
+        <circle cx="240" cy="120" r="35" fill="#eef0ff" stroke="#4f46e5" stroke-width="2"/>
+        <text x="240" y="124" text-anchor="middle" font-size="12" fill="#4f46e5" font-weight="600">Ядро</text>
+        <text x="240" y="140" text-anchor="middle" font-size="11" fill="#4f46e5">ring 0</text>
+        <!-- Стрелка переключения -->
+        <path d="M 380 120 Q 420 120 400 170 Q 380 200 340 200" fill="none" stroke="#0891b2" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <text x="405" y="130" font-size="11" fill="#0891b2">системный</text>
+        <text x="405" y="145" font-size="11" fill="#0891b2">вызов</text>
+      </svg>
+      <div class="cap">Уровни привилегий процессора. Переход из ring 3 в ring 0 — через системные вызовы.</div>
+    </div>
+
+    <h4>Что можно и что нельзя</h4>
+    <table>
+      <tr><th>Действие</th><th>Ring 0 (ядро)</th><th>Ring 3 (приложение)</th></tr>
+      <tr><td>Прямой доступ к диску</td><td>✅</td><td>❌</td></tr>
+      <tr><td>Запись в память другого процесса</td><td>✅</td><td>❌</td></tr>
+      <tr><td>Изменение таблицы страниц</td><td>✅</td><td>❌</td></tr>
+      <tr><td>Отправка сетевых пакетов</td><td>✅</td><td>❌ (только через syscall)</td></tr>
+      <tr><td>Работа с файлами</td><td>✅</td><td>✅ (через open/read/write)</td></tr>
+      <tr><td>Создать окно, отрисовать UI</td><td>✅</td><td>✅</td></tr>
+    </table>
+
+    <div class="box note">
+      <div class="label">Системный вызов</div>
+      Когда приложению нужно что-то «привилегированное» (прочитать файл, отправить пакет), оно вызывает <b>syscall</b>. Процессор переключается в ring 0, ядро выполняет операцию, возвращает результат. В Linux это <code>read()</code>, <code>write()</code>, <code>open()</code>, <code>fork()</code>, <code>socket()</code>.
+    </div>
+
+    <h3>2.3. Типы ядер</h3>
+
+    <h4>Монолитное ядро</h4>
+    <ul>
+      <li>Все службы (планировщик, ФС, драйверы, сеть) — в одном адресном пространстве.</li>
+      <li><b>Плюсы:</b> быстро, мало переключений контекста.</li>
+      <li><b>Минусы:</b> падение драйвера = крах системы.</li>
+      <li><b>Примеры:</b> Linux, старые Unix.</li>
+    </ul>
+
+    <h4>Микроядро</h4>
+    <ul>
+      <li>В ядре — минимум: планировщик, IPC, управление памятью. Всё остальное — как процессы в user space.</li>
+      <li><b>Плюсы:</b> надёжность (драйвер упал — перезапустили), модульность.</li>
+      <li><b>Минусы:</b> медленнее — много переключений контекста и IPC.</li>
+      <li><b>Примеры:</b> QNX, Minix, L4.</li>
+    </ul>
+
+    <h4>Гибридное ядро</h4>
+    <ul>
+      <li>Микроядерная структура + часть служб для скорости — обратно в ядро.</li>
+      <li><b>Примеры:</b> Windows NT, macOS (XNU).</li>
+    </ul>
+
+    <table>
+      <tr><th>Тип</th><th>Скорость</th><th>Надёжность</th><th>Сложность</th><th>Примеры</th></tr>
+      <tr><td>Монолитное</td><td>Высокая</td><td>Средняя</td><td>Низкая</td><td>Linux</td></tr>
+      <tr><td>Микроядро</td><td>Средняя</td><td>Высокая</td><td>Высокая</td><td>QNX, Minix</td></tr>
+      <tr><td>Гибридное</td><td>Высокая</td><td>Высокая</td><td>Средняя</td><td>Windows NT, macOS</td></tr>
+    </table>
+
+    <h3>2.4. Модель клиент-сервер (микроядерная)</h3>
+    <p>В микроядерной архитектуре части ОС работают как <b>серверы</b>, а пользовательские программы и другие компоненты выступают <b>клиентами</b>. Они общаются через <b>межпроцессное взаимодействие (IPC)</b>.</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 500 260" width="500">
+        <!-- Микроядро в центре -->
+        <rect x="200" y="105" width="100" height="50" fill="#eef0ff" stroke="#4f46e5" stroke-width="2" rx="6"/>
+        <text x="250" y="135" text-anchor="middle" font-size="12" fill="#4f46e5" font-weight="600">Микроядро</text>
+
+        <!-- Серверы вокруг -->
+        <rect x="40" y="40" width="110" height="40" fill="#e6f7fb" stroke="#0891b2" stroke-width="1.5" rx="6"/>
+        <text x="95" y="65" text-anchor="middle" font-size="11" fill="#0891b2">Файловый сервер</text>
+
+        <rect x="350" y="40" width="110" height="40" fill="#e6f7fb" stroke="#0891b2" stroke-width="1.5" rx="6"/>
+        <text x="405" y="65" text-anchor="middle" font-size="11" fill="#0891b2">Сетевой сервер</text>
+
+        <rect x="40" y="180" width="110" height="40" fill="#e6f7fb" stroke="#0891b2" stroke-width="1.5" rx="6"/>
+        <text x="95" y="205" text-anchor="middle" font-size="11" fill="#0891b2">Драйвер диска</text>
+
+        <rect x="350" y="180" width="110" height="40" fill="#e6f7fb" stroke="#0891b2" stroke-width="1.5" rx="6"/>
+        <text x="405" y="205" text-anchor="middle" font-size="11" fill="#0891b2">Драйвер USB</text>
+
+        <!-- IPC-линии -->
+        <g stroke="#8891a6" stroke-width="1.4" stroke-dasharray="4 3">
+          <line x1="150" y1="60"  x2="200" y2="115"/>
+          <line x1="350" y1="60"  x2="300" y2="115"/>
+          <line x1="150" y1="200" x2="200" y2="145"/>
+          <line x1="350" y1="200" x2="300" y2="145"/>
+        </g>
+        <text x="250" y="240" text-anchor="middle" font-size="11" fill="#8891a6">IPC (межпроцессное взаимодействие)</text>
+      </svg>
+      <div class="cap">Микроядерная модель клиент-сервер: службы ОС общаются через IPC.</div>
+    </div>
+
+    <h3>2.5. Драйверы устройств</h3>
+    <p><b>Драйвер</b> — программа, которая знает, как именно общаться с конкретным устройством. Ядро не содержит код для каждого принтера или видеокарты — оно загружает драйвер.</p>
+
+    <h4>Типы драйверов</h4>
+    <ul>
+      <li><b>Модули ядра (Linux)</b> — загружаются в ring 0, <code>lsmod</code>, <code>modprobe</code></li>
+      <li><b>Драйверы user-space</b> — работают в ring 3, медленнее, но безопаснее</li>
+      <li><b>Встроенные в ядро</b> — собраны при компиляции, всегда в RAM</li>
+    </ul>
+
+    <h4>Команды работы с модулями Linux</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="lsmod">📋 Копировать</button>
+      <pre><span class="prompt">$</span> lsmod</pre>
+      <div class="desc">Список загруженных модулей ядра.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="modinfo e1000">📋 Копировать</button>
+      <pre><span class="prompt">$</span> modinfo e1000</pre>
+      <div class="desc">Информация о конкретном модуле (например, драйвер сетевой карты Intel).</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="sudo modprobe -r e1000
+sudo modprobe e1000">📋 Копировать</button>
+      <pre><span class="prompt">$</span> sudo modprobe -r e1000   <span class="cmt"># выгрузить</span>
+<span class="prompt">$</span> sudo modprobe e1000      <span class="cmt"># загрузить</span></pre>
+      <div class="desc">Выгрузка/загрузка модуля ядра (осторожно — может отключить сеть!).</div>
+    </div>
+
+    <h3>2.6. Оболочки (shell)</h3>
+    <table>
+      <tr><th>Оболочка</th><th>ОС</th><th>Особенности</th></tr>
+      <tr><td>bash</td><td>Linux/macOS</td><td>Стандарт де-факто, скрипты .sh</td></tr>
+      <tr><td>zsh</td><td>Linux/macOS</td><td>Улучшенный bash, автодополнение</td></tr>
+      <tr><td>fish</td><td>Linux/macOS</td><td>Дружелюбный синтаксис</td></tr>
+      <tr><td>PowerShell</td><td>Windows/Linux</td><td>Объекты вместо текста, скрипты .ps1</td></tr>
+      <tr><td>cmd.exe</td><td>Windows</td><td>Наследие DOS, ограничен</td></tr>
+      <tr><td>sh</td><td>Unix</td><td>Классический минималистичный</td></tr>
+    </table>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Почему приложение не может напрямую писать в видеопамять?</summary>
+      <div class="answer">
+        Потому что видеопамять и видеокарта — критичные ресурсы. Если бы любая программа могла писать туда напрямую:
+        <ul>
+          <li>Одно приложение могло бы «сломать» вывод другого.</li>
+          <li>Вредоносная программа могла бы перехватить экран.</li>
+          <li>Не было бы изоляции между приложениями.</li>
+        </ul>
+        Поэтому вывод идёт через <b>драйвер видеокарты</b>, работающий в ring 0. Приложение просит нарисовать — ядро решает, как это сделать.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Почему Linux выбрал монолитное ядро, хотя микроядро надёжнее?</summary>
+      <div class="answer">
+        Исторически и практически — <b>скорость</b>. Монолитное ядро работает быстрее, потому что:
+        <ul>
+          <li>Меньше переключений контекста (всё в одном адресном пространстве).</li>
+          <li>Прямые вызовы функций вместо IPC.</li>
+          <li>Проще оптимизировать критические пути.</li>
+        </ul>
+        При этом в Linux есть <b>загружаемые модули</b> (LKM) — это компромисс: можно добавлять/убирать драйверы на лету.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Что произойдёт, если из системы удалить драйвер сетевой карты?</summary>
+      <div class="answer">
+        Ядро не сможет общаться с сетевой картой. Последствия:
+        <ul>
+          <li>Интерфейс исчезнет из системы (<code>ip a</code> его не покажет).</li>
+          <li>Пропадёт сеть, интернет, доступ к удалённым ресурсам.</li>
+          <li>Если это сервер — потеряете SSH-доступ.</li>
+          <li>После перезагрузки — снова нужно ставить драйвер (если он не встроен в ядро).</li>
+        </ul>
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Задание на пару</div>
+      На Linux-машине:
+      <ol>
+        <li>Посмотреть список загруженных модулей: <code>lsmod | head -20</code></li>
+        <li>Выбрать один модуль и узнать о нём через <code>modinfo</code></li>
+        <li>Найти в <code>/sys/module/</code> соответствующий каталог</li>
+        <li>Записать: назначение модуля, автор, версия, зависимости</li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="01-history.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">1. История и функции ОС</span>
+  </a>
+  <a href="03-processes.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">3. Процессы и потоки</span>
+  </a>
+</div>
+
+<footer style="padding:30px;text-align:center;color:var(--muted);font-size:13px;">
+  ОП.01 Операционные системы и среды · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

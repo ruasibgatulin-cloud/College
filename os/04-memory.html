@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОС · 4. Управление памятью · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ОП.01 ОС · Раздел 4</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="os-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-history.html">1. История</a>
+  <a href="02-architecture.html">2. Архитектура</a>
+  <a href="03-processes.html">3. Процессы</a>
+  <a href="04-memory.html" class="current">4. Память</a>
+  <a href="05-filesystem.html">5. ФС</a>
+  <a href="06-commands.html">6. Команды</a>
+  <a href="07-security.html">7. Безопасность</a>
+</nav>
+
+<div class="layout" style="grid-template-columns:1fr;max-width:1000px;">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">4</span>Управление памятью</h2>
+
+    <h3>4.1. Абстракция памяти</h3>
+    <p>Программа не видит <b>физическую</b> память напрямую. Каждому процессу ОС даёт <b>виртуальное адресное пространство</b> — непрерывный диапазон адресов, где процесс «живёт один».</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 560 300" width="560">
+        <!-- Виртуальная память процесса -->
+        <g font-size="11" fill="#1c2331">
+          <text x="100" y="20" text-anchor="middle" font-weight="600" fill="#4f46e5">Виртуальная память процесса</text>
+          <rect x="30" y="30"  width="140" height="30" fill="#eef0ff" stroke="#4f46e5"/><text x="100" y="50" text-anchor="middle">Стек</text>
+          <rect x="30" y="60"  width="140" height="30" fill="#eef0ff" stroke="#4f46e5"/><text x="100" y="80" text-anchor="middle">↓</text>
+          <rect x="30" y="90"  width="140" height="30" fill="#f1f3f8" stroke="#94a3b8"/>
+          <rect x="30" y="120" width="140" height="30" fill="#f1f3f8" stroke="#94a3b8"/>
+          <rect x="30" y="150" width="140" height="30" fill="#eef0ff" stroke="#4f46e5"/><text x="100" y="170" text-anchor="middle">↑</text>
+          <rect x="30" y="180" width="140" height="30" fill="#eef0ff" stroke="#4f46e5"/><text x="100" y="200" text-anchor="middle">Куча (heap)</text>
+          <rect x="30" y="210" width="140" height="30" fill="#ecfdf3" stroke="#16a34a"/><text x="100" y="230" text-anchor="middle">Данные</text>
+          <rect x="30" y="240" width="140" height="30" fill="#ecfdf3" stroke="#16a34a"/><text x="100" y="260" text-anchor="middle">Код</text>
+        </g>
+
+        <!-- Стрелки -->
+        <g stroke="#8891a6" stroke-width="1.5">
+          <line x1="175" y1="155" x2="240" y2="155"/>
+          <path d="M 235 150 L 245 155 L 235 160" fill="#8891a6"/>
+        </g>
+
+        <!-- Физическая память -->
+        <g font-size="11" fill="#1c2331">
+          <text x="410" y="20" text-anchor="middle" font-weight="600" fill="#0891b2">Физическая память (RAM)</text>
+          <rect x="280" y="30"  width="260" height="25" fill="#fff1f4" stroke="#e11d48"/><text x="410" y="47" text-anchor="middle">Процесс B</text>
+          <rect x="280" y="55"  width="260" height="25" fill="#eef0ff" stroke="#4f46e5"/><text x="410" y="72" text-anchor="middle">Наш процесс (кадры)</text>
+          <rect x="280" y="80"  width="260" height="25" fill="#fff9e6" stroke="#d97706"/><text x="410" y="97" text-anchor="middle">Ядро</text>
+          <rect x="280" y="105" width="260" height="25" fill="#fff1f4" stroke="#e11d48"/><text x="410" y="122" text-anchor="middle">Процесс A</text>
+          <rect x="280" y="130" width="260" height="25" fill="#eef0ff" stroke="#4f46e5"/><text x="410" y="147" text-anchor="middle">Наш процесс</text>
+          <rect x="280" y="155" width="260" height="25" fill="#f1f3f8" stroke="#94a3b8"/><text x="410" y="172" text-anchor="middle">Свободно</text>
+          <rect x="280" y="180" width="260" height="25" fill="#e6f7fb" stroke="#0891b2"/><text x="410" y="197" text-anchor="middle">Драйверы</text>
+          <rect x="280" y="205" width="260" height="25" fill="#ecfdf3" stroke="#16a34a"/><text x="410" y="222" text-anchor="middle">Кэш ФС</text>
+          <rect x="280" y="230" width="260" height="25" fill="#f1f3f8" stroke="#94a3b8"/><text x="410" y="247" text-anchor="middle">Свободно</text>
+          <rect x="280" y="255" width="260" height="25" fill="#eef0ff" stroke="#4f46e5"/><text x="410" y="272" text-anchor="middle">Наш процесс</text>
+        </g>
+
+        <!-- MMU по центру -->
+        <rect x="225" y="270" width="110" height="26" fill="#fff" stroke="#e11d48" stroke-width="1.5" rx="4"/>
+        <text x="280" y="287" text-anchor="middle" font-size="11" fill="#e11d48" font-weight="600">MMU</text>
+      </svg>
+      <div class="cap">MMU (Memory Management Unit) переводит виртуальные адреса в физические кадры через таблицы страниц.</div>
+    </div>
+
+    <h3>4.2. Страницы и кадры</h3>
+    <ul>
+      <li><b>Страница (page)</b> — блок виртуальной памяти. Обычно 4 КБ.</li>
+      <li><b>Кадр (frame)</b> — блок физической RAM того же размера.</li>
+      <li><b>Таблица страниц</b> — структура, которая говорит: «страница 5 процесса X → кадр 1001 в RAM».</li>
+    </ul>
+
+    <p>Когда процесс обращается по адресу, MMU:</p>
+    <ol>
+      <li>Разбивает адрес на «номер страницы» и «смещение».</li>
+      <li>Ищет номер страницы в таблице страниц.</li>
+      <li>Заменяет виртуальный номер на физический номер кадра.</li>
+      <li>Обращается к RAM по физическому адресу.</li>
+    </ol>
+
+    <h3>4.3. Page fault (страничный сбой)</h3>
+    <p>Если нужной страницы нет в RAM — MMU генерирует прерывание <b>page fault</b>. ОС:</p>
+    <ol>
+      <li>Останавливает процесс.</li>
+      <li>Ищет страницу на диске (в swap или в файле).</li>
+      <li>Если RAM полна — выгружает давно неиспользуемую страницу (LRU или Clock).</li>
+      <li>Загружает нужную страницу в освободившийся кадр.</li>
+      <li>Обновляет таблицу страниц.</li>
+      <li>Продолжает процесс.</li>
+    </ol>
+
+    <div class="box note">
+      <div class="label">Почему это медленно</div>
+      Обращение к RAM — ~100 наносекунд. Обращение к SSD — ~100 микросекунд (в 1000 раз медленнее). Обращение к HDD — ~10 миллисекунд (в 100 000 раз медленнее). Если система постоянно «свопится» — она становится очень медленной.
+    </div>
+
+    <h3>4.4. Виртуальная память</h3>
+    <p><b>Виртуальная память</b> — технология, при которой:</p>
+    <ul>
+      <li>Программа может быть больше, чем физическая RAM.</li>
+      <li>Процессы изолированы друг от друга.</li>
+      <li>Программисту не нужно думать о физических адресах.</li>
+    </ul>
+
+    <h4>Что даёт виртуальная память</h4>
+    <table>
+      <tr><th>Преимущество</th><th>Как реализовано</th></tr>
+      <tr><td>Изоляция процессов</td><td>У каждого своя таблица страниц</td></tr>
+      <tr><td>Программа больше RAM</td><td>Swap (страницы на диск)</td></tr>
+      <tr><td>Разделяемая память</td><td>Разные процессы ссылаются на один кадр</td></tr>
+      <tr><td>Защита прав</td><td>Биты r/w/x в таблице страниц</td></tr>
+      <tr><td>Ленивая загрузка</td><td>Страницы грузятся по требованию (demand paging)</td></tr>
+    </table>
+
+    <h3>4.5. Swap (файл/раздел подкачки)</h3>
+    <p><b>Swap</b> — область на диске, куда ОС выгружает неиспользуемые страницы, освобождая RAM.</p>
+    <ul>
+      <li>В Linux — отдельный swap-раздел или swap-файл.</li>
+      <li>В Windows — файл <code>pagefile.sys</code>.</li>
+      <li>Размер: на десктопах 4-8 ГБ или 1-2× объём RAM, на серверах можно отключить при достаточной RAM.</li>
+    </ul>
+
+    <h3>4.6. Команды для работы с памятью</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="free -h">📋 Копировать</button>
+      <pre><span class="prompt">$</span> free -h</pre>
+      <div class="desc">Свободно RAM и swap (в человекочитаемом формате: MiB, GiB).</div>
+    </div>
+
+    <div class="box example">
+      <div class="label">Как читать free -h</div>
+<pre><code>              total        used        free      shared  buff/cache   available
+Mem:           15Gi       4,2Gi       7,8Gi       412Mi       3,5Gi        10Gi
+Swap:         2,0Gi          0B       2,0Gi</code></pre>
+      <ul>
+        <li><b>total</b> — вся RAM</li>
+        <li><b>used</b> — занято приложениями</li>
+        <li><b>free</b> — полностью свободно</li>
+        <li><b>buff/cache</b> — кэш файлов (можно освободить при нужде)</li>
+        <li><b>available</b> — реально доступно для новых приложений (free + освобождаемая часть cache)</li>
+      </ul>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="cat /proc/meminfo | head -15">📋 Копировать</button>
+      <pre><span class="prompt">$</span> cat /proc/meminfo | head -15</pre>
+      <div class="desc">Детальная информация о памяти из псевдо-ФС /proc.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="vmstat 1 5">📋 Копировать</button>
+      <pre><span class="prompt">$</span> vmstat 1 5</pre>
+      <div class="desc">Статистика памяти и I/O каждую секунду, 5 раз.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="swapon --show">📋 Копировать</button>
+      <pre><span class="prompt">$</span> swapon --show</pre>
+      <div class="desc">Активные swap-устройства и их размер.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="ps aux --sort=-%mem | head -6">📋 Копировать</button>
+      <pre><span class="prompt">$</span> ps aux --sort=-%mem | head -6</pre>
+      <div class="desc">Топ-5 процессов по потреблению памяти.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="sudo sync && sudo sysctl -w vm.drop_caches=3">📋 Копировать</button>
+      <pre><span class="prompt">$</span> sudo sync &amp;&amp; sudo sysctl -w vm.drop_caches=3</pre>
+      <div class="desc">Сбросить кэш файлов (осторожно, только для тестов!).</div>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Почему при большом swap система начинает тормозить?</summary>
+      <div class="answer">
+        Обращение к диску в тысячи раз медленнее, чем к RAM:
+        <ul>
+          <li>RAM: ~100 нс</li>
+          <li>SSD: ~100 мкс (×1000 медленнее)</li>
+          <li>HDD: ~10 мс (×100 000 медленнее)</li>
+        </ul>
+        Если приложение активно работает с данными, которые выгружены в swap, процессор будет простаивать в ожидании дисковых операций. Это называют «трэшинг» (thrashing).
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Зачем нужен buff/cache, если память и так занята?</summary>
+      <div class="answer">
+        Кэш файлов — <b>не «занятая» память в смысле проблемы</b>. Ядро держит в RAM недавно прочитанные файлы. Если приложению нужна память — ядро мгновенно освободит часть кэша.<br><br>
+        Поэтому в <code>free -h</code> смотрите на колонку <b>available</b>, а не на <b>free</b>. Available показывает реально доступную память (free + освобождаемый cache).
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Может ли приложение использовать больше памяти, чем есть RAM?</summary>
+      <div class="answer">
+        Да, благодаря виртуальной памяти. Программа может «видеть» 8 ГБ, даже если физически стоит 4 ГБ. ОС будет выгружать неиспользуемые страницы в swap.<br><br>
+        Но если программа <b>активно</b> работает со всей памятью — производительность упадёт из-за постоянной подкачки.<br><br>
+        На 64-битных системах виртуальное адресное пространство процесса — до 128 ТБ, что гораздо больше любой физической RAM.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Задание на пару</div>
+      На Linux-машине:
+      <ol>
+        <li>Посмотреть <code>free -h</code> и записать: total, used, free, available</li>
+        <li>Запустить браузер с несколькими вкладками</li>
+        <li>Снова <code>free -h</code> — как изменилось?</li>
+        <li>Найти топ-3 процесса по памяти</li>
+        <li>Открыть виртуальный файл: <code>cat /proc/$$/status | grep Vm</code> — посмотреть память своей оболочки</li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="03-processes.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">3. Процессы и потоки</span>
+  </a>
+  <a href="05-filesystem.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">5. Файловые системы</span>
+  </a>
+</div>
+
+<footer style="padding:30px;text-align:center;color:var(--muted);font-size:13px;">
+  ОП.01 Операционные системы и среды · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>
