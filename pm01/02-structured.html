@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПМ.01 · 2. Структурное программирование · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+<script>window.MathJax={tex:{inlineMath:[['$','$']]}};</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ПМ.01 · Тема 2</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="pm01-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-lifecycle.html">1. ЖЦ ПО</a>
+  <a href="02-structured.html" class="current">2. Структурное</a>
+  <a href="03-oop-basics.html">3. ООП</a>
+  <a href="04-patterns.html">4. Паттерны</a>
+  <a href="05-events.html">5. События</a>
+  <a href="06-refactoring.html">6. Рефакторинг</a>
+  <a href="07-ui.html">7. UI</a>
+  <a href="08-testing.html">8. Тестирование</a>
+  <a href="09-docs.html">9. Документация</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">2</span>Структурное программирование</h2>
+
+    <p><b>Структурное программирование (СП)</b> — парадигма, появившаяся в 1960-70-х как ответ на «спагетти-код». Идея проста: любую программу можно построить из <b>трёх базовых конструкций</b>. Никаких <code>goto</code> и прыжков по всему коду.</p>
+
+    <h3>2.1. Три базовые конструкции</h3>
+
+    <table>
+      <tr><th>Конструкция</th><th>Смысл</th><th>Пример</th></tr>
+      <tr><td><b>Последовательность</b></td><td>Команды выполняются друг за другом</td><td><code>a = 1; b = 2; c = a + b;</code></td></tr>
+      <tr><td><b>Ветвление</b></td><td>Выбор одного из путей</td><td><code>if / else / switch</code></td></tr>
+      <tr><td><b>Цикл</b></td><td>Повторение блока кода</td><td><code>while / for / do-while</code></td></tr>
+    </table>
+
+    <div class="viz">
+      <svg viewBox="0 0 620 220" width="620">
+        <!-- Последовательность -->
+        <g transform="translate(20,20)">
+          <text x="80" y="10" text-anchor="middle" font-size="12" fill="#4f46e5" font-weight="600">Последовательность</text>
+          <rect x="30" y="25" width="100" height="30" fill="#eef0ff" stroke="#4f46e5" rx="4"/>
+          <text x="80" y="45" text-anchor="middle" font-size="11">Блок A</text>
+          <rect x="30" y="65" width="100" height="30" fill="#eef0ff" stroke="#4f46e5" rx="4"/>
+          <text x="80" y="85" text-anchor="middle" font-size="11">Блок B</text>
+          <rect x="30" y="105" width="100" height="30" fill="#eef0ff" stroke="#4f46e5" rx="4"/>
+          <text x="80" y="125" text-anchor="middle" font-size="11">Блок C</text>
+          <defs><marker id="ar1" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8891a6"/></marker></defs>
+          <g stroke="#8891a6" stroke-width="1.4" marker-end="url(#ar1)">
+            <line x1="80" y1="55" x2="80" y2="63"/>
+            <line x1="80" y1="95" x2="80" y2="103"/>
+          </g>
+        </g>
+
+        <!-- Ветвление -->
+        <g transform="translate(210,20)">
+          <text x="100" y="10" text-anchor="middle" font-size="12" fill="#e11d48" font-weight="600">Ветвление</text>
+          <polygon points="100,25 160,55 100,85 40,55" fill="#fff9e6" stroke="#d97706" stroke-width="1.5"/>
+          <text x="100" y="60" text-anchor="middle" font-size="11">Условие?</text>
+          <rect x="10" y="110" width="80" height="30" fill="#ecfdf3" stroke="#16a34a" rx="4"/>
+          <text x="50" y="130" text-anchor="middle" font-size="11">Да</text>
+          <rect x="110" y="110" width="80" height="30" fill="#fff1f4" stroke="#e11d48" rx="4"/>
+          <text x="150" y="130" text-anchor="middle" font-size="11">Нет</text>
+          <g stroke="#8891a6" stroke-width="1.4" marker-end="url(#ar1)">
+            <line x1="60" y1="75" x2="50" y2="107"/>
+            <line x1="140" y1="75" x2="150" y2="107"/>
+          </g>
+        </g>
+
+        <!-- Цикл -->
+        <g transform="translate(420,20)">
+          <text x="90" y="10" text-anchor="middle" font-size="12" fill="#0891b2" font-weight="600">Цикл</text>
+          <polygon points="90,25 150,55 90,85 30,55" fill="#e6f7fb" stroke="#0891b2" stroke-width="1.5"/>
+          <text x="90" y="60" text-anchor="middle" font-size="11">Условие?</text>
+          <rect x="50" y="110" width="80" height="30" fill="#e6f7fb" stroke="#0891b2" rx="4"/>
+          <text x="90" y="130" text-anchor="middle" font-size="11">Тело цикла</text>
+          <g stroke="#8891a6" stroke-width="1.4" marker-end="url(#ar1)">
+            <line x1="90" y1="85" x2="90" y2="107"/>
+          </g>
+          <!-- Обратная стрелка -->
+          <path d="M 130 125 Q 175 125 175 55 Q 175 35 155 40" fill="none" stroke="#8891a6" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#ar1)"/>
+        </g>
+      </svg>
+      <div class="cap">Три базовые конструкции структурного программирования.</div>
+    </div>
+
+    <h3>2.2. Почему отказались от goto</h3>
+
+    <p>До СП программисты свободно использовали оператор <code>goto</code> — «перейти к метке». Это порождало <b>спагетти-код</b>: программу, в которой поток управления прыгает по десяткам меток, и понять логику невозможно.</p>
+
+    <p>Статья Эдсгера Дейкстры 1968 года «О вреде оператора goto» стала манифестом структурного программирования. Доказано: <b>любой алгоритм можно записать без goto</b>, используя только три базовые конструкции.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// Плохо: спагетти с goto
+start:
+  if (x < 0) goto error;
+  if (y == 0) goto skip;
+  x = x / y;
+skip:
+  if (x > 100) goto done;
+  x = x * 2;
+  goto start;
+error:
+  printf(&quot;Error&quot;);
+done:
+  return x;">📋 Копировать</button>
+      <pre><span class="cmt">// Плохо: спагетти с goto</span>
+start:
+  if (x &lt; 0) goto error;
+  if (y == 0) goto skip;
+  x = x / y;
+skip:
+  if (x &gt; 100) goto done;
+  x = x * 2;
+  goto start;
+error:
+  printf("Error");
+done:
+  return x;</pre>
+      <div class="desc">Такой код сложно читать, тестировать и поддерживать. В современном коде goto почти не используется.</div>
+    </div>
+
+    <h3>2.3. Разбиение на модули и функции</h3>
+
+    <p>Второй принцип СП — <b>декомпозиция</b>: большая задача разбивается на маленькие функции. Каждая функция решает одну задачу.</p>
+
+    <p><b>Правила хорошей функции:</b></p>
+    <ul>
+      <li>Делает <b>одно</b> дело, и делает его хорошо</li>
+      <li>Помещается на один экран (~20-30 строк)</li>
+      <li>Понятное имя (<code>calculateTotal</code>, <code>validateEmail</code>)</li>
+      <li>Минимум параметров (идеально — 0-3)</li>
+      <li>Не имеет «побочных эффектов» без необходимости</li>
+    </ul>
+
+    <div class="box example">
+      <div class="label">Пример декомпозиции</div>
+      Плохо — одна большая функция:
+      <pre style="background:#f5f5f5;padding:10px;border-radius:6px;font-size:13px;overflow-x:auto;">function processOrder(order) {
+  // проверка заказа
+  if (!order.items) return null;
+  if (order.items.length === 0) return null;
+  // расчёт суммы
+  let total = 0;
+  for (let i of order.items) total += i.price * i.qty;
+  // скидка
+  if (total &gt; 1000) total *= 0.9;
+  // отправка email
+  sendEmail(order.user, `Заказ на ${total} руб.`);
+  // сохранение в БД
+  saveToDb(order, total);
+  return total;
+}</pre>
+      Хорошо — разбито на функции:
+      <pre style="background:#f5f5f5;padding:10px;border-radius:6px;font-size:13px;overflow-x:auto;">function processOrder(order) {
+  if (!isValidOrder(order)) return null;
+  const total = calculateTotal(order.items);
+  const discounted = applyDiscount(total);
+  sendOrderEmail(order.user, discounted);
+  saveOrder(order, discounted);
+  return discounted;
+}</pre>
+    </div>
+
+    <h3>2.4. Оценка сложности алгоритмов (Big O)</h3>
+
+    <p><b>Big O</b> — оценка того, как время работы алгоритма растёт с увеличением входных данных. Обозначается $O(f(n))$, где $n$ — размер входа.</p>
+
+    <table>
+      <tr><th>Обозначение</th><th>Название</th><th>Пример</th><th>n = 1000</th><th>n = 10⁶</th></tr>
+      <tr><td>$O(1)$</td><td>Константная</td><td>Доступ к массиву по индексу</td><td>1</td><td>1</td></tr>
+      <tr><td>$O(\log n)$</td><td>Логарифмическая</td><td>Бинарный поиск</td><td>10</td><td>20</td></tr>
+      <tr><td>$O(n)$</td><td>Линейная</td><td>Проход по массиву</td><td>1 000</td><td>10⁶</td></tr>
+      <tr><td>$O(n \log n)$</td><td>Линеарифмическая</td><td>Быстрая сортировка</td><td>10 000</td><td>2·10⁷</td></tr>
+      <tr><td>$O(n^2)$</td><td>Квадратичная</td><td>Пузырьковая сортировка, двойной цикл</td><td>10⁶</td><td>10¹²</td></tr>
+      <tr><td>$O(2^n)$</td><td>Экспоненциальная</td><td>Перебор подмножеств</td><td colspan="2">Даже n=50 — вечность</td></tr>
+    </table>
+
+    <div class="viz">
+      <svg viewBox="0 0 480 260" width="480">
+        <!-- Оси -->
+        <line x1="40" y1="220" x2="450" y2="220" stroke="#889" stroke-width="1.4"/>
+        <line x1="40" y1="30" x2="40" y2="230" stroke="#889" stroke-width="1.4"/>
+
+        <!-- O(1) -->
+        <line x1="40" y1="210" x2="440" y2="210" stroke="#16a34a" stroke-width="2.4"/>
+        <!-- O(log n) -->
+        <path d="M 40 200 Q 150 150 300 130 Q 380 120 440 115" fill="none" stroke="#0891b2" stroke-width="2.2"/>
+        <!-- O(n) -->
+        <line x1="40" y1="220" x2="440" y2="40" stroke="#d97706" stroke-width="2.2"/>
+        <!-- O(n²) -->
+        <path d="M 40 220 Q 200 210 280 100 Q 320 60 350 30" fill="none" stroke="#e11d48" stroke-width="2.2"/>
+
+        <text x="430" y="205" font-size="11" fill="#16a34a" text-anchor="end">O(1)</text>
+        <text x="430" y="115" font-size="11" fill="#0891b2" text-anchor="end">O(log n)</text>
+        <text x="430" y="55" font-size="11" fill="#d97706" text-anchor="end">O(n)</text>
+        <text x="350" y="25" font-size="11" fill="#e11d48">O(n²)</text>
+
+        <text x="250" y="245" text-anchor="middle" font-size="11" fill="#889">размер входа n</text>
+      </svg>
+      <div class="cap">Рост времени работы алгоритмов с увеличением n.</div>
+    </div>
+
+    <div class="box note">
+      <div class="label">Правило</div>
+      Разница между $O(n^2)$ и $O(n \log n)$ — это разница между «программа работает за 30 секунд» и «программа работает за 3 дня». При миллионе элементов лучше отсортировать слиянием, чем пузырьком.
+    </div>
+
+    <h4>Пример: три способа найти число в массиве</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// O(n) — линейный поиск
+for (let i = 0; i < arr.length; i++) if (arr[i] === x) return i;
+
+// O(log n) — бинарный поиск (массив отсортирован)
+let lo = 0, hi = arr.length - 1;
+while (lo <= hi) {
+  const mid = Math.floor((lo + hi) / 2);
+  if (arr[mid] === x) return mid;
+  if (arr[mid] < x) lo = mid + 1; else hi = mid - 1;
+}
+
+// O(1) — хеш-таблица (Set / Map)
+const set = new Set(arr);
+return set.has(x);">📋 Копировать</button>
+      <pre><span class="cmt">// O(n) — линейный поиск</span>
+for (let i = 0; i &lt; arr.length; i++) if (arr[i] === x) return i;
+
+<span class="cmt">// O(log n) — бинарный поиск (массив отсортирован)</span>
+let lo = 0, hi = arr.length - 1;
+while (lo &lt;= hi) {
+  const mid = Math.floor((lo + hi) / 2);
+  if (arr[mid] === x) return mid;
+  if (arr[mid] &lt; x) lo = mid + 1; else hi = mid - 1;
+}
+
+<span class="cmt">// O(1) — хеш-таблица (Set / Map)</span>
+const set = new Set(arr);
+return set.has(x);</pre>
+      <div class="desc">Три подхода — разная сложность. Выбор зависит от задачи.</div>
+    </div>
+
+    <h3>2.5. Неразрешимые задачи</h3>
+
+    <p>Есть задачи, для которых <b>невозможно</b> написать алгоритм, работающий за конечное время:</p>
+
+    <ul>
+      <li><b>Проблема остановки</b> (Алан Тьюринг, 1936): по описанию программы и её входным данным определить, завершится ли она когда-нибудь.</li>
+      <li><b>Проблема эквивалентности</b>: определить, делают ли две программы одно и то же.</li>
+      <li><b>Десятая проблема Гильберта</b>: определить, имеет ли диофантово уравнение решение в целых числах.</li>
+    </ul>
+
+    <p>Эти задачи <b>алгоритмически неразрешимы</b>: доказано, что алгоритма не существует. Иногда можно решить частный случай — но общего решения нет.</p>
+
+    <h3>2.6. Блок-схемы (ГОСТ 19.701-90)</h3>
+
+    <p>Блок-схема — графическое представление алгоритма. Основные элементы по ГОСТ:</p>
+
+    <table>
+      <tr><th>Фигура</th><th>Смысл</th></tr>
+      <tr><td>Овал</td><td>Начало / конец</td></tr>
+      <tr><td>Прямоугольник</td><td>Действие / процесс</td></tr>
+      <tr><td>Ромб</td><td>Условие</td></tr>
+      <tr><td>Параллелограмм</td><td>Ввод / вывод</td></tr>
+      <tr><td>Прямоугольник с двойной боковой линией</td><td>Вызов подпрограммы</td></tr>
+    </table>
+
+    <h3>Практические работы</h3>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №1 · Блок-схема алгоритма <span class="badge">30 мин</span></div>
+      <div class="goal"><b>Задача:</b> построить блок-схему для алгоритма «Поиск максимума из трёх чисел».</div>
+      <ol>
+        <li>Начало</li>
+        <li>Ввести a, b, c</li>
+        <li>Если a &gt; b и a &gt; c → max = a</li>
+        <li>Иначе если b &gt; c → max = b</li>
+        <li>Иначе max = c</li>
+        <li>Вывести max</li>
+        <li>Конец</li>
+      </ol>
+      <p>Нарисовать в Word (Вставка → Фигуры) или в draw.io / Figma.</p>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №2 · Оценка сложности сортировок <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> оценить сложность алгоритмов сортировки.</div>
+
+      <h4>Часть 1. Пузырьковая сортировка — O(n²)</h4>
+      <div class="cmd">
+        <button class="copy-btn" data-copy="function bubbleSort(arr) {
+  for (let i = 0; i < arr.length - 1; i++) {
+    for (let j = 0; j < arr.length - i - 1; j++) {
+      if (arr[j] > arr[j + 1]) {
+        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+      }
+    }
+  }
+  return arr;
+}">📋 Копировать</button>
+        <pre>function bubbleSort(arr) {
+  for (let i = 0; i &lt; arr.length - 1; i++) {
+    for (let j = 0; j &lt; arr.length - i - 1; j++) {
+      if (arr[j] &gt; arr[j + 1]) {
+        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+      }
+    }
+  }
+  return arr;
+}</pre>
+      </div>
+      <p>Объясните: почему два вложенных цикла дают $O(n^2)$?</p>
+
+      <h4>Часть 2. Сортировка слиянием — O(n log n)</h4>
+      <p>Массив делится пополам, каждая половина сортируется, потом сливается. Уровней деления: $\log_2 n$. На каждом уровне — проход по n элементам.</p>
+
+      <h4>Часть 3. Эксперимент</h4>
+      <p>Напишите обе сортировки, замерьте время на массивах размера 1000, 5000, 10000. Заполните таблицу и постройте график.</p>
+      <table>
+        <tr><th>Размер</th><th>Bubble (мс)</th><th>Merge (мс)</th></tr>
+        <tr><td>1000</td><td>?</td><td>?</td></tr>
+        <tr><td>5000</td><td>?</td><td>?</td></tr>
+        <tr><td>10000</td><td>?</td><td>?</td></tr>
+      </table>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №3 · Оценка рекурсивных и эвристических алгоритмов <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> понять сложность разных типов алгоритмов.</div>
+
+      <h4>Рекурсивные алгоритмы</h4>
+      <p>Числа Фибоначчи через наивную рекурсию — $O(2^n)$:</p>
+      <div class="cmd">
+        <button class="copy-btn" data-copy="function fib(n) {
+  if (n <= 1) return n;
+  return fib(n - 1) + fib(n - 2);
+}
+
+// С мемоизацией — O(n)
+const memo = {};
+function fibMemo(n) {
+  if (n <= 1) return n;
+  if (memo[n]) return memo[n];
+  return memo[n] = fibMemo(n - 1) + fibMemo(n - 2);
+}">📋 Копировать</button>
+        <pre>function fib(n) {
+  if (n &lt;= 1) return n;
+  return fib(n - 1) + fib(n - 2);
+}
+
+<span class="cmt">// С мемоизацией — O(n)</span>
+const memo = {};
+function fibMemo(n) {
+  if (n &lt;= 1) return n;
+  if (memo[n]) return memo[n];
+  return memo[n] = fibMemo(n - 1) + fibMemo(n - 2);
+}</pre>
+      </div>
+      <p>Проверьте: посчитайте время работы обоих вариантов для n = 35.</p>
+
+      <h4>Эвристические алгоритмы</h4>
+      <p>Не гарантируют точный ответ, но быстро находят «хорошее» решение. Пример — задача коммивояжёра (TSP): точное решение требует $O(n!)$, эвристики (муравьиный алгоритм, метод ближайшего соседа) дают результат за $O(n^2)$.</p>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Почему $O(n \log n)$ лучше $O(n^2)$?</summary>
+      <div class="answer">
+        Разница видна на больших $n$:
+        <ul>
+          <li>При $n = 1000$: $n^2 = 10^6$, $n\log n \approx 10^4$ — разница в 100 раз</li>
+          <li>При $n = 10^6$: $n^2 = 10^{12}$, $n\log n \approx 2\cdot 10^7$ — разница в 50 000 раз</li>
+        </ul>
+        В секундах: $O(n^2)$ при $n=10^6$ — несколько часов. $O(n\log n)$ — меньше секунды.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Что означает «асимптотическая сложность»?</summary>
+      <div class="answer">
+        Это оценка поведения алгоритма при <b>стремлении размера входа к бесконечности</b>. Константы и младшие члены отбрасываются — они неважны на больших $n$.<br><br>
+        Например, алгоритм, работающий за $2n^2 + 100n + 500$, имеет сложность $O(n^2)$: при больших $n$ главный член — $n^2$, остальное — шум.<br><br>
+        Асимптотика не говорит, сколько алгоритм работает <b>сейчас</b> — она говорит, как он будет работать, если данных станет в 10 раз больше.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Может ли алгоритм быть O(1), но работать медленнее, чем O(n)?</summary>
+      <div class="answer">
+        Да, на <b>маленьких</b> данных. Асимптотика описывает поведение при росте $n$, а не абсолютное время.<br><br>
+        Пример: поиск в хеш-таблице $O(1)$, но нужно сначала построить таблицу — это $O(n)$. Если ищем один раз — линейный поиск быстрее. Если ищем 1000 раз — таблица выиграет.<br><br>
+        Это называется «асимптотический разрыв» и учитывается при оптимизации.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 4. Почему проблему остановки нельзя решить?</summary>
+      <div class="answer">
+        Доказательство от противного: предположим, существует программа <code>Halt(P, x)</code>, которая говорит, завершится ли программа P на входе x. Построим программу <code>Loop(P)</code>: «если <code>Halt(P, P)</code> вернёт “завершится” — то зациклиться; иначе — завершиться».<br><br>
+        Теперь спросим: завершится ли <code>Loop(Loop)</code>?<br>
+        — Если завершится, значит <code>Halt(Loop, Loop)</code> сказал «зациклится» — противоречие.<br>
+        — Если зациклится, значит <code>Halt</code> сказал «завершится» — тоже противоречие.<br><br>
+        Единственный выход — <code>Halt</code> не существует. Это доказал Алан Тьюринг в 1936 году.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание по теме</div>
+      Сдать файл <code>practice-structured.docx</code>:
+      <ol>
+        <li>Блок-схема «Поиск максимума из трёх чисел» (рисунок)</li>
+        <li>Таблица сложности: O(1), O(log n), O(n), O(n log n), O(n²) с примерами</li>
+        <li>Два кода сортировки: пузырьковая и слиянием</li>
+        <li>Таблица замеров времени (1000 / 5000 / 10000 элементов)</li>
+        <li>График зависимости времени от размера</li>
+        <li>Ответы на 4 вопроса самопроверки</li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="01-lifecycle.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">1. Жизненный цикл ПО</span>
+  </a>
+  <a href="03-oop-basics.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">3. Объектно-ориентированное программирование</span>
+  </a>
+</div>
+
+<footer>
+  ПМ.01 Разработка модулей ПО · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

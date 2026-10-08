@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПМ.01 · 8. Тестирование и отладка · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ПМ.01 · Тема 8</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="pm01-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-lifecycle.html">1. ЖЦ ПО</a>
+  <a href="02-structured.html">2. Структурное</a>
+  <a href="03-oop-basics.html">3. ООП</a>
+  <a href="04-patterns.html">4. Паттерны</a>
+  <a href="05-events.html">5. События</a>
+  <a href="06-refactoring.html">6. Рефакторинг</a>
+  <a href="07-ui.html">7. UI</a>
+  <a href="08-testing.html" class="current">8. Тестирование</a>
+  <a href="09-docs.html">9. Документация</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">8</span>Тестирование и отладка программного обеспечения</h2>
+
+    <p><b>Тестирование</b> — проверка соответствия программы требованиям. <b>Отладка</b> (debugging) — поиск и исправление причин ошибок. Это разные, но связанные задачи: тестирование <i>находит</i> проблемы, отладка <i>устраняет</i> их.</p>
+
+    <h3>8.1. Зачем тестировать</h3>
+
+    <ul>
+      <li><b>Стоимость ошибки растёт со временем.</b> Баг на этапе разработки — часы. В продакшене — дни, репутация, деньги.</li>
+      <li><b>Один баг в известном проекте (Ariane 5, 1996)</b> стоил $370 млн из-за неправильного преобразования 64-bit в 16-bit.</li>
+      <li><b>Тесты = документация.</b> Хорошо написанные тесты показывают, что программа должна делать.</li>
+      <li><b>Уверенность при рефакторинге.</b> Есть тесты — можно улучшать код, не боясь сломать.</li>
+    </ul>
+
+    <div class="box example">
+      <div class="label">Стоимость исправления бага</div>
+      <table style="margin-top:8px;">
+        <tr><th>Этап</th><th>Стоимость</th></tr>
+        <tr><td>Требования</td><td>1×</td></tr>
+        <tr><td>Проектирование</td><td>5×</td></tr>
+        <tr><td>Разработка</td><td>10×</td></tr>
+        <tr><td>Тестирование</td><td>20×</td></tr>
+        <tr><td>Продакшен</td><td>100×</td></tr>
+      </table>
+      Каждый этап увеличивает стоимость исправления в разы.
+    </div>
+
+    <h3>8.2. Виды тестирования</h3>
+
+    <h4>По уровню (пирамида тестирования)</h4>
+
+    <div class="viz">
+      <svg viewBox="0 0 500 300" width="500">
+        <!-- Пирамида -->
+        <polygon points="250,40 130,140 370,140" fill="#fff1f4" stroke="#e11d48" stroke-width="2"/>
+        <text x="250" y="105" text-anchor="middle" font-size="12" fill="#e11d48" font-weight="600">E2E</text>
+        <text x="250" y="122" text-anchor="middle" font-size="10" fill="#889">(end-to-end)</text>
+        <text x="410" y="100" font-size="11" fill="#e11d48">мало</text>
+
+        <polygon points="130,140 370,140 420,200 80,200" fill="#fff9e6" stroke="#d97706" stroke-width="2"/>
+        <text x="250" y="175" text-anchor="middle" font-size="12" fill="#d97706" font-weight="600">Интеграционные</text>
+        <text x="450" y="180" font-size="11" fill="#d97706">средне</text>
+
+        <polygon points="80,200 420,200 470,270 30,270" fill="#ecfdf3" stroke="#16a34a" stroke-width="2"/>
+        <text x="250" y="240" text-anchor="middle" font-size="12" fill="#16a34a" font-weight="600">Unit-тесты</text>
+        <text x="250" y="258" text-anchor="middle" font-size="10" fill="#889">(модульные)</text>
+        <text x="490" y="250" font-size="11" fill="#16a34a">много</text>
+      </svg>
+      <div class="cap">Пирамида тестирования: много быстрых unit-тестов, меньше интеграционных, ещё меньше E2E.</div>
+    </div>
+
+    <table>
+      <tr><th>Уровень</th><th>Что тестируется</th><th>Скорость</th><th>Сколько</th></tr>
+      <tr><td><b>Unit (модульное)</b></td><td>Отдельная функция или класс</td><td>Милисекунды</td><td>Много (сотни-тысячи)</td></tr>
+      <tr><td><b>Integration (интеграционное)</b></td><td>Взаимодействие модулей</td><td>Секунды</td><td>Средне (десятки)</td></tr>
+      <tr><td><b>E2E (end-to-end)</b></td><td>Весь сценарий от UI до БД</td><td>Минуты</td><td>Мало (единицы-десятки)</td></tr>
+    </table>
+
+    <h4>По доступу к коду</h4>
+
+    <table>
+      <tr><th>Метод</th><th>Что знает тестировщик</th><th>Пример</th></tr>
+      <tr><td><b>White box</b></td><td>Видит исходный код, проверяет все ветвления</td><td>Покрытие кода (code coverage)</td></tr>
+      <tr><td><b>Black box</b></td><td>Только вход и выход, код не важен</td><td>Тестирование по спецификации</td></tr>
+      <tr><td><b>Gray box</b></td><td>Частичное знание архитектуры</td><td>Интеграционные тесты</td></tr>
+    </table>
+
+    <h4>Функциональные и нефункциональные</h4>
+
+    <table>
+      <tr><th>Функциональные</th><th>Нефункциональные</th></tr>
+      <tr><td>Проверка того, <i>что</i> делает программа</td><td>Проверка того, <i>как</i> она это делает</td></tr>
+      <tr><td>«Кнопка отправляет форму»</td><td>«Форма отправляется за 200 мс»</td></tr>
+      <tr><td>Регрессионные</td><td>Производительность, безопасность, юзабилити, доступность</td></tr>
+    </table>
+
+    <h3>8.3. Виды ошибок</h3>
+
+    <table>
+      <tr><th>Тип ошибки</th><th>Пример</th></tr>
+      <tr><td><b>Синтаксическая</b></td><td>Пропущена точка с запятой — не скомпилируется</td></tr>
+      <tr><td><b>Логическая</b></td><td>Компилируется, но результат неверный: <code>x = a + b</code> вместо <code>x = a - b</code></td></tr>
+      <tr><td><b>Ошибка времени выполнения</b></td><td>Деление на ноль, null reference, выход за границу массива</td></tr>
+      <tr><td><b>Ошибка ресурсов</b></td><td>Утечка памяти, незакрытый файл</td></tr>
+      <tr><td><b>Ошибка многопоточности</b></td><td>Race condition, deadlock</td></tr>
+    </table>
+
+    <h3>8.4. Отладка (Debugging)</h3>
+
+    <p>Основные инструменты отладчика в IDE (Visual Studio, Rider, VS Code):</p>
+
+    <table>
+      <tr><th>Инструмент</th><th>Назначение</th><th>Горячая клавиша (VS)</th></tr>
+      <tr><td><b>Breakpoint</b> (точка останова)</td><td>Приостановить программу на строке</td><td><kbd>F9</kbd></td></tr>
+      <tr><td><b>Step Over</b></td><td>Выполнить строку, не заходя в функции</td><td><kbd>F10</kbd></td></tr>
+      <tr><td><b>Step Into</b></td><td>Войти внутрь вызываемой функции</td><td><kbd>F11</kbd></td></tr>
+      <tr><td><b>Step Out</b></td><td>Выйти из текущей функции</td><td><kbd>Shift</kbd>+<kbd>F11</kbd></td></tr>
+      <tr><td><b>Continue</b></td><td>Продолжить до следующего breakpoint</td><td><kbd>F5</kbd></td></tr>
+      <tr><td><b>Watch</b></td><td>Наблюдение за переменной</td><td>окно Watch</td></tr>
+      <tr><td><b>Call Stack</b></td><td>Стек вызовов: откуда пришли</td><td>окно Call Stack</td></tr>
+      <tr><td><b>Immediate Window</b></td><td>Выполнить выражение прямо в отладке</td><td>окно Immediate</td></tr>
+      <tr><td><b>Conditional Breakpoint</b></td><td>Остановка только при условии</td><td>правый клик на breakpoint</td></tr>
+    </table>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// Пример: точка останова с условием
+for (int i = 0; i < 1000; i++) {
+    ProcessItem(items[i]);  // Breakpoint: i == 500
+}
+
+// Условный breakpoint: остановиться только когда i == 500
+// Правый клик на строке → Conditions → i == 500">📋 Копировать</button>
+      <pre><span class="cmt">// Пример: точка останова с условием</span>
+for (int i = 0; i &lt; 1000; i++) {
+    ProcessItem(items[i]);  <span class="cmt">// Breakpoint: i == 500</span>
+}
+
+<span class="cmt">// Условный breakpoint: остановиться только когда i == 500</span>
+<span class="cmt">// Правый клик на строке → Conditions → i == 500</span></pre>
+      <div class="desc">Условные breakpoints экономят часы: не нужно жать «Continue» 500 раз.</div>
+    </div>
+
+    <h3>8.5. Unit-тесты</h3>
+
+    <p><b>Unit-тест</b> — тест, проверяющий одну маленькую единицу кода (функцию, метод) в изоляции. Обычно пишется на том же языке, что и код.</p>
+
+    <h4>Библиотеки для C#</h4>
+    <ul>
+      <li><b>xUnit</b> — современный стандарт</li>
+      <li><b>NUnit</b> — старейшая, гибкая</li>
+      <li><b>MSTest</b> — от Microsoft</li>
+      <li><b>Moq</b> — для моков (заглушек)</li>
+      <li><b>FluentAssertions</b> — читаемые ассерты</li>
+    </ul>
+
+    <h4>Структура теста AAA</h4>
+    <ul>
+      <li><b>Arrange</b> — подготовка (создать данные)</li>
+      <li><b>Act</b> — действие (вызвать метод)</li>
+      <li><b>Assert</b> — проверка (сравнить результат с ожидаемым)</li>
+    </ul>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="using Xunit;
+
+public class CalculatorTests {
+
+    [Fact]
+    public void Add_TwoPositiveNumbers_ReturnsSum() {
+        // Arrange
+        var calc = new Calculator();
+
+        // Act
+        int result = calc.Add(2, 3);
+
+        // Assert
+        Assert.Equal(5, result);
+    }
+
+    [Theory]
+    [InlineData(0, 0, 0)]
+    [InlineData(-1, 1, 0)]
+    [InlineData(100, 200, 300)]
+    public void Add_VariousInputs_ReturnsCorrectSum(int a, int b, int expected) {
+        var calc = new Calculator();
+        Assert.Equal(expected, calc.Add(a, b));
+    }
+
+    [Fact]
+    public void Divide_ByZero_ThrowsException() {
+        var calc = new Calculator();
+        Assert.Throws&lt;DivideByZeroException&gt;(() =&gt; calc.Divide(10, 0));
+    }
+}">📋 Копировать код</button>
+      <pre>using Xunit;
+
+public class CalculatorTests {
+
+    [Fact]
+    public void Add_TwoPositiveNumbers_ReturnsSum() {
+        <span class="cmt">// Arrange</span>
+        var calc = new Calculator();
+
+        <span class="cmt">// Act</span>
+        int result = calc.Add(2, 3);
+
+        <span class="cmt">// Assert</span>
+        Assert.Equal(5, result);
+    }
+
+    [Theory]
+    [InlineData(0, 0, 0)]
+    [InlineData(-1, 1, 0)]
+    [InlineData(100, 200, 300)]
+    public void Add_VariousInputs_ReturnsCorrectSum(int a, int b, int expected) {
+        var calc = new Calculator();
+        Assert.Equal(expected, calc.Add(a, b));
+    }
+
+    [Fact]
+    public void Divide_ByZero_ThrowsException() {
+        var calc = new Calculator();
+        Assert.Throws&lt;DivideByZeroException&gt;(() =&gt; calc.Divide(10, 0));
+    }
+}</pre>
+    </div>
+
+    <h4>Соглашение об именах</h4>
+    <p><code>MethodName_Scenario_ExpectedResult</code></p>
+    <ul>
+      <li><code>Add_TwoPositiveNumbers_ReturnsSum</code></li>
+      <li><code>Divide_ByZero_ThrowsException</code></li>
+      <li><code>Login_WrongPassword_ReturnsFalse</code></li>
+    </ul>
+
+    <h4>Моки и стабы</h4>
+
+    <p><b>Мок (mock)</b> — поддельный объект, который имитирует поведение реального. Нужен, чтобы протестировать класс в изоляции от БД, сети или внешних сервисов.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// Интерфейс
+public interface IEmailService {
+    void Send(string to, string subject, string body);
+}
+
+// Тестируемый класс
+public class UserService {
+    private readonly IEmailService _email;
+    public UserService(IEmailService email) { _email = email; }
+
+    public void Register(string email) {
+        // ... логика регистрации ...
+        _email.Send(email, &quot;Добро пожаловать&quot;, &quot;...&quot;);
+    }
+}
+
+// Тест с моком
+public class UserServiceTests {
+    [Fact]
+    public void Register_SendsWelcomeEmail() {
+        // Arrange
+        var emailMock = new Mock&lt;IEmailService&gt;();
+        var service = new UserService(emailMock.Object);
+
+        // Act
+        service.Register(&quot;test@example.com&quot;);
+
+        // Assert
+        emailMock.Verify(e =&gt; e.Send(
+            &quot;test@example.com&quot;,
+            It.IsAny&lt;string&gt;(),
+            It.IsAny&lt;string&gt;()
+        ), Times.Once);
+    }
+}">📋 Копировать код</button>
+      <pre><span class="cmt">// Интерфейс</span>
+public interface IEmailService {
+    void Send(string to, string subject, string body);
+}
+
+<span class="cmt">// Тестируемый класс</span>
+public class UserService {
+    private readonly IEmailService _email;
+    public UserService(IEmailService email) { _email = email; }
+
+    public void Register(string email) {
+        <span class="cmt">// ... логика регистрации ...</span>
+        _email.Send(email, "Добро пожаловать", "...");
+    }
+}
+
+<span class="cmt">// Тест с моком</span>
+public class UserServiceTests {
+    [Fact]
+    public void Register_SendsWelcomeEmail() {
+        <span class="cmt">// Arrange</span>
+        var emailMock = new Mock&lt;IEmailService&gt;();
+        var service = new UserService(emailMock.Object);
+
+        <span class="cmt">// Act</span>
+        service.Register("test@example.com");
+
+        <span class="cmt">// Assert</span>
+        emailMock.Verify(e =&gt; e.Send(
+            "test@example.com",
+            It.IsAny&lt;string&gt;(),
+            It.IsAny&lt;string&gt;()
+        ), Times.Once);
+    }
+}</pre>
+    </div>
+
+    <h3>8.6. Покрытие кода (Code Coverage)</h3>
+
+    <p><b>Покрытие</b> — процент строк/ветвлений, выполненных при прогоне тестов. Показывает, какие участки кода не протестированы.</p>
+
+    <table>
+      <tr><th>Покрытие</th><th>Оценка</th></tr>
+      <tr><td>0-20%</td><td>Почти не тестируется</td></tr>
+      <tr><td>20-50%</td><td>Начальный уровень</td></tr>
+      <tr><td>50-70%</td><td>Средний уровень, обычно для бизнес-проектов</td></tr>
+      <tr><td>70-90%</td><td>Хорошее покрытие</td></tr>
+      <tr><td>90-100%</td><td>Отличное, но иногда избыточное</td></tr>
+    </table>
+
+    <div class="box note">
+      <div class="label">Правило</div>
+      Покрытие — не цель, а инструмент. 100% покрытия не гарантирует отсутствия багов. Можно покрыть код, который всегда возвращает <code>true</code>, и не протестировать реальный сценарий. Важно <b>качество</b> тестов, а не цифра.
+    </div>
+
+    <h3>8.7. Тестирование производительности</h3>
+
+    <table>
+      <tr><th>Тип</th><th>Что проверяет</th></tr>
+      <tr><td><b>Load testing</b></td><td>Система под ожидаемой нагрузкой (1000 пользователей)</td></tr>
+      <tr><td><b>Stress testing</b></td><td>Предел: сколько выдержит, где сломается</td></tr>
+      <tr><td><b>Volume testing</b></td><td>Большие объёмы данных (10 ГБ)</td></tr>
+      <tr><td><b>Spike testing</b></td><td>Резкий рост нагрузки (с 10 до 10 000 за секунду)</td></tr>
+      <tr><td><b>Endurance testing</b></td><td>Работа в течение долгого времени (24+ часов)</td></tr>
+    </table>
+
+    <p>Инструменты: JMeter, k6, LoadRunner, Locust.</p>
+
+    <h3>8.8. Регрессионное тестирование</h3>
+
+    <p><b>Регрессия</b> — ситуация, когда после изменений что-то сломалось в ранее рабочей части. Регрессионные тесты перепроверяют всё, что раньше работало, после каждого релиза.</p>
+
+    <p>Автоматизация регрессионных тестов — <b>критична</b>: если после каждого коммита запускать 500 тестов, баги находятся сразу, а не через неделю.</p>
+
+    <h3>Практические работы</h3>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №1 · Тестирование «белым ящиком» <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> покрыть unit-тестами класс Calculator.</div>
+      <b>Класс для тестирования:</b>
+      <pre style="background:#f5f5f5;padding:12px;border-radius:6px;font-size:12.5px;overflow-x:auto;">public class Calculator {
+    public int Add(int a, int b) => a + b;
+    public int Sub(int a, int b) => a - b;
+    public int Mul(int a, int b) => a * b;
+    public int Div(int a, int b) {
+        if (b == 0) throw new DivideByZeroException();
+        return a / b;
+    }
+    public bool IsPrime(int n) {
+        if (n &lt; 2) return false;
+        for (int i = 2; i * i &lt;= n; i++)
+            if (n % i == 0) return false;
+        return true;
+    }
+}</pre>
+
+      <p><b>Задания:</b></p>
+      <ol>
+        <li>Создайте проект тестов (xUnit или NUnit).</li>
+        <li>Напишите тесты на каждый метод — по 3-4 сценария на метод.</li>
+        <li>Для <code>Add</code>, <code>Sub</code>, <code>Mul</code>, <code>Div</code> — используйте <code>[Theory]</code> и <code>[InlineData]</code>.</li>
+        <li>Для <code>Div</code> — проверьте выброс исключения при делении на 0.</li>
+        <li>Для <code>IsPrime</code> — проверьте: 2, 3, 4, 17, 25, отрицательные, 0, 1.</li>
+        <li>Запустите покрытие кода. Добейтесь 100%.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №2 · Тестирование «чёрным ящиком» <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> составить тест-кейсы по спецификации.</div>
+
+      <p><b>Спецификация:</b> функция <code>ValidatePassword(string password)</code> возвращает true, если пароль удовлетворяет всем условиям:</p>
+      <ul>
+        <li>Длина от 8 до 30 символов</li>
+        <li>Минимум одна заглавная буква (A-Z)</li>
+        <li>Минимум одна строчная буква (a-z)</li>
+        <li>Минимум одна цифра (0-9)</li>
+        <li>Минимум один спецсимвол (!@#$%^&amp;*)</li>
+        <li>Без пробелов</li>
+      </ul>
+
+      <p><b>Задания:</b></p>
+      <ol>
+        <li>Составьте таблицу тест-кейсов (минимум 12 штук) — как «валидные», так и «невалидные».</li>
+        <li>Используйте технику <b>эквивалентных классов</b>: разбейте входные данные на группы, где результат одинаков.</li>
+        <li>Используйте <b>граничные значения</b>: 7 символов, 8, 30, 31.</li>
+        <li>Формат таблицы:
+          <table style="margin-top:8px;">
+            <tr><th>№</th><th>Вход</th><th>Ожидаемый результат</th><th>Класс</th></tr>
+            <tr><td>1</td><td>"Abcdef1!"</td><td>true</td><td>Валидный</td></tr>
+            <tr><td>2</td><td>"abc"</td><td>false</td><td>Слишком короткий</td></tr>
+            <tr><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+          </table>
+        </li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №3 · Модульное тестирование <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> покрыть тестами класс с зависимостью через мок.</div>
+
+      <p>Класс <code>OrderService</code> зависит от <code>IOrderRepository</code> и <code>IEmailService</code>. Напишите тесты с использованием Moq:</p>
+
+      <ol>
+        <li>Тест: <code>CreateOrder</code> сохраняет заказ в репозиторий (проверить, что метод <code>Save</code> был вызван один раз).</li>
+        <li>Тест: <code>CreateOrder</code> отправляет email клиенту.</li>
+        <li>Тест: <code>CreateOrder</code> с пустым списком товаров выбрасывает исключение.</li>
+        <li>Тест: <code>CreateOrder</code> с отрицательной суммой выбрасывает исключение.</li>
+        <li>Тест: при ошибке репозитория, email не отправляется.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №4 · Интеграционное тестирование <span class="badge">50 мин</span></div>
+      <div class="goal"><b>Задача:</b> протестировать взаимодействие сервиса с базой данных.</div>
+
+      <ol>
+        <li>Создайте простой репозиторий <code>UserRepository</code> с подключением к SQLite (или InMemoryDatabase).</li>
+        <li>Методы: <code>Add</code>, <code>GetById</code>, <code>GetAll</code>, <code>Delete</code>.</li>
+        <li>Напишите интеграционные тесты:
+          <ul>
+            <li>Добавили — прочитали, совпадает ли</li>
+            <li>Добавили 10 — GetAll вернул 10</li>
+            <li>Удалили — GetById вернул null</li>
+            <li>Добавили двух с одинаковым email — ошибка уникальности</li>
+          </ul>
+        </li>
+        <li>Проверьте: тесты не оставляют мусор в БД после себя (используйте транзакции или очистку в <code>TearDown</code>).</li>
+      </ol>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Почему тестов должно быть больше unit, чем E2E?</summary>
+      <div class="answer">
+        Три причины:
+        <ol>
+          <li><b>Скорость.</b> Unit-тест — миллисекунды. E2E — минуты (запуск браузера, БД, сети). 1000 unit-тестов пройдут за секунды, 1000 E2E — за дни.</li>
+          <li><b>Стабильность.</b> E2E часто «flaky» — падают из-за сети, задержек, порядка тестов. Unit детерминированы.</li>
+          <li><b>Точность диагностики.</b> Если упал unit-тест — сразу видно, где. Если E2E — надо копать, где именно сломалось.</li>
+        </ol>
+        Поэтому пирамида: <b>много</b> unit, <b>меньше</b> интеграционных, <b>совсем мало</b> E2E — только на критичные сценарии.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Что такое мок, и зачем он нужен?</summary>
+      <div class="answer">
+        <b>Мок</b> — искусственная замена реальной зависимости для тестирования.<br><br>
+        Пример: класс <code>UserService</code> использует <code>IEmailService</code> для отправки писем. Реальная отправка — медленная, требует SMTP-сервера, может упасть. В тестах подменяем на мок, который:<br>
+        <ul>
+          <li>Не отправляет письма по-настоящему</li>
+          <li>Записывает, что метод был вызван</li>
+          <li>Может вернуть заранее заданный результат</li>
+        </ul>
+        Зачем:
+        <ul>
+          <li>Изоляция — тестируем только свой класс</li>
+          <li>Скорость — не ждём реальных операций</li>
+          <li>Контроль — задаём любые сценарии (в т.ч. ошибки)</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Что означает «flaky test»?</summary>
+      <div class="answer">
+        <b>Flaky test</b> («нестабильный тест») — тест, который то проходит, то падает, <b>без изменений в коде</b>. Это худший вид тестов.<br><br>
+        Причины:
+        <ul>
+          <li><b>Порядок выполнения.</b> Один тест зависит от другого, а JUnit запускает в случайном порядке.</li>
+          <li><b>Общее состояние.</b> Тесты делят БД, файлы, статические переменные.</li>
+          <li><b>Асинхронность.</b> Тест ждёт не того момента (например, 100 мс вместо проверки условия).</li>
+          <li><b>Дата и время.</b> Тест, зависящий от текущей даты, падает 29 февраля или в полночь.</li>
+          <li><b>Сеть.</b> Тест зависит от внешнего сервиса — упал сервис, упал тест.</li>
+        </ul>
+        <b>Решение:</b> изолировать тесты, использовать фиксированное время, ждать события, а не секунды, мокать внешние сервисы.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 4. В чём разница между отладкой и тестированием?</summary>
+      <div class="answer">
+        <b>Тестирование</b> — <i>обнаружение</i> проблем. Вопрос: «Работает ли программа так, как должна?»<br><br>
+        <b>Отладка</b> — <i>устранение</i> проблем. Вопрос: «Почему программа работает не так, как должна?»<br><br>
+        Порядок такой:
+        <ol>
+          <li>Написали тест — он падает.</li>
+          <li>Запустили отладчик, нашли причину.</li>
+          <li>Исправили код.</li>
+          <li>Тест зелёный.</li>
+        </ol>
+        Отладка без тестов = «угадай, где баг». Тестирование без отладки = «знаю, что не работает, но не знаю почему».
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание по теме</div>
+      Сдать проект тестов + <code>practice-testing.docx</code>:
+      <ol>
+        <li>Unit-тесты для класса <code>Calculator</code> (ПР №1)</li>
+        <li>Скриншот покрытия кода (должно быть 100%)</li>
+        <li>Таблица тест-кейсов для <code>ValidatePassword</code> (ПР №2, 12+ кейсов)</li>
+        <li>Тесты с моками для <code>OrderService</code> (ПР №3)</li>
+        <li>Интеграционные тесты для <code>UserRepository</code> (ПР №4)</li>
+        <li>Ответы на 4 вопроса самопроверки</li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="07-ui.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">7. Разработка пользовательского интерфейса</span>
+  </a>
+  <a href="09-docs.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">9. Документирование ПО</span>
+  </a>
+</div>
+
+<footer>
+  ПМ.01 Разработка модулей ПО · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПМ.01 · 9. Документирование ПО · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ПМ.01 · Тема 9</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="pm01-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-lifecycle.html">1. ЖЦ ПО</a>
+  <a href="02-structured.html">2. Структурное</a>
+  <a href="03-oop-basics.html">3. ООП</a>
+  <a href="04-patterns.html">4. Паттерны</a>
+  <a href="05-events.html">5. События</a>
+  <a href="06-refactoring.html">6. Рефакторинг</a>
+  <a href="07-ui.html">7. UI</a>
+  <a href="08-testing.html">8. Тестирование</a>
+  <a href="09-docs.html" class="current">9. Документация</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">9</span>Документирование программного обеспечения</h2>
+
+    <p>Программист пишет код <b>один раз</b>, а читают его <b>много раз</b> — коллеги, тестировщики, он сам через полгода. Хорошая документация экономит недели работы и спасает проекты от провала.</p>
+
+    <h3>9.1. Зачем документировать</h3>
+
+    <ul>
+      <li><b>Передача знаний.</b> Новый разработчик входит в проект за дни, а не за месяцы.</li>
+      <li><b>Сопровождение.</b> Через год никто не помнит, почему сделано именно так.</li>
+      <li><b>Тестирование.</b> QA-инженеры пишут тест-кейсы по спецификации.</li>
+      <li><b>Юридические требования.</b> Для критичных систем документация обязательна.</li>
+      <li><b>Помощь пользователю.</b> README и User Guide — лицо проекта.</li>
+    </ul>
+
+    <div class="box note">
+      <div class="label">Мнение индустрии</div>
+      «Код без документации — это код, который придётся переписывать с нуля». В крупных компаниях документация обязательна в Code Review: PR без обновлённой документации не принимается.
+    </div>
+
+    <h3>9.2. Виды документации</h3>
+
+    <table>
+      <tr><th>Тип</th><th>Кому адресована</th><th>Примеры</th></tr>
+      <tr><td><b>Пользовательская</b></td><td>Конечным пользователям</td><td>User Guide, FAQ, туториалы</td></tr>
+      <tr><td><b>Техническая</b></td><td>Разработчикам</td><td>README, API Reference, Architecture docs</td></tr>
+      <tr><td><b>Внутренняя (комментарии)</b></td><td>Автору и коллегам</td><td>Комментарии, docstrings</td></tr>
+      <tr><td><b>Управленческая</b></td><td>Менеджерам, заказчику</td><td>ТЗ, спецификации, отчёты</td></tr>
+      <tr><td><b>Эксплуатационная</b></td><td>Администраторам, DevOps</td><td>Install Guide, Admin Guide</td></tr>
+    </table>
+
+    <h3>9.3. Комментарии в коде</h3>
+
+    <h4>Хорошие комментарии</h4>
+    <p>Отвечают на вопрос <b>«почему»</b>, а не «что».</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// ХОРОШО — объясняет причину
+// Используем бинарный поиск: массив уже отсортирован,
+// линейный будет в 1000 раз медленнее на 10⁶ элементов
+var index = BinarySearch(arr, value);
+
+// ХОРОШО — предупреждает о подводном камне
+// ВНИМАНИЕ: этот API возвращает 200 OK даже при ошибке валидации
+// Проверяйте поле result.error дополнительно
+var response = await api.Send(data);
+
+// ХОРОШО — ссылка на обсуждение
+// См. issue #4213: обход ограничения в библиотеке XYZ
+if (value > 1000) { ... }">📋 Копировать</button>
+      <pre><span class="cmt">// ХОРОШО — объясняет причину</span>
+<span class="cmt">// Используем бинарный поиск: массив уже отсортирован,</span>
+<span class="cmt">// линейный будет в 1000 раз медленнее на 10⁶ элементов</span>
+var index = BinarySearch(arr, value);
+
+<span class="cmt">// ХОРОШО — предупреждает о подводном камне</span>
+<span class="cmt">// ВНИМАНИЕ: этот API возвращает 200 OK даже при ошибке валидации</span>
+<span class="cmt">// Проверяйте поле result.error дополнительно</span>
+var response = await api.Send(data);
+
+<span class="cmt">// ХОРОШО — ссылка на обсуждение</span>
+<span class="cmt">// См. issue #4213: обход ограничения в библиотеке XYZ</span>
+if (value &gt; 1000) { ... }</pre>
+    </div>
+
+    <h4>Плохие комментарии</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// ПЛОХО — дублирует код
+i++; // увеличить i на 1
+
+// ПЛОХО — устаревший (код изменился, а комментарий нет)
+// Возвращает сумму двух чисел
+return a * b;
+
+// ПЛОХО — закомментированный код
+// var oldValue = CalculateOld();
+// var result = oldValue + 5;
+
+// ПЛОХО — бессмысленный
+// Это метод обработки
+public void Process() { ... }">📋 Копировать</button>
+      <pre><span class="cmt">// ПЛОХО — дублирует код</span>
+i++; <span class="cmt">// увеличить i на 1</span>
+
+<span class="cmt">// ПЛОХО — устаревший (код изменился, а комментарий нет)</span>
+<span class="cmt">// Возвращает сумму двух чисел</span>
+return a * b;
+
+<span class="cmt">// ПЛОХО — закомментированный код</span>
+<span class="cmt">// var oldValue = CalculateOld();</span>
+<span class="cmt">// var result = oldValue + 5;</span>
+
+<span class="cmt">// ПЛОХО — бессмысленный</span>
+<span class="cmt">// Это метод обработки</span>
+public void Process() { ... }</pre>
+    </div>
+
+    <div class="box note">
+      <div class="label">Правило</div>
+      Если код настолько непонятен, что требует комментария — сначала попробуйте его <b>переписать</b>. Хорошие имена переменных и функций часто устраняют необходимость в комментариях.
+    </div>
+
+    <h3>9.4. Docstrings — документация методов</h3>
+
+    <p><b>Docstring</b> — специальный комментарий перед классом или методом, описывающий его назначение, параметры и возвращаемое значение. Автоматически собирается в API-документацию.</p>
+
+    <h4>C# (XML Doc Comments)</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="/// &lt;summary&gt;
+/// Вычисляет сумму двух чисел.
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;a&quot;&gt;Первое слагаемое.&lt;/param&gt;
+/// &lt;param name=&quot;b&quot;&gt;Второе слагаемое.&lt;/param&gt;
+/// &lt;returns&gt;Сумма a и b.&lt;/returns&gt;
+/// &lt;exception cref=&quot;OverflowException&quot;&gt;
+/// Если результат превышает int.MaxValue.
+/// &lt;/exception&gt;
+public int Add(int a, int b) {
+    return checked(a + b);
+}">📋 Копировать</button>
+      <pre>/// &lt;summary&gt;
+/// Вычисляет сумму двух чисел.
+/// &lt;/summary&gt;
+/// &lt;param name="a"&gt;Первое слагаемое.&lt;/param&gt;
+/// &lt;param name="b"&gt;Второе слагаемое.&lt;/param&gt;
+/// &lt;returns&gt;Сумма a и b.&lt;/returns&gt;
+/// &lt;exception cref="OverflowException"&gt;
+/// Если результат превышает int.MaxValue.
+/// &lt;/exception&gt;
+public int Add(int a, int b) {
+    return checked(a + b);
+}</pre>
+      <div class="desc">При наведении на метод в IDE показывается подсказка. Инструменты вроде Sandcastle / DocFX генерируют HTML-документацию.</div>
+    </div>
+
+    <h4>Python (Google Style)</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="def calculate_discount(price: float, percent: float) -> float:
+    &quot;&quot;&quot;Рассчитывает цену со скидкой.
+
+    Args:
+        price: Исходная цена в рублях.
+        percent: Скидка в процентах (0-100).
+
+    Returns:
+        Цена после скидки.
+
+    Raises:
+        ValueError: Если percent &lt; 0 или &gt; 100.
+
+    Examples:
+        &gt;&gt;&gt; calculate_discount(1000, 10)
+        900.0
+    &quot;&quot;&quot;
+    if not 0 &lt;= percent &lt;= 100:
+        raise ValueError(&quot;percent must be 0-100&quot;)
+    return price * (1 - percent / 100)">📋 Копировать</button>
+      <pre>def calculate_discount(price: float, percent: float) -&gt; float:
+    """Рассчитывает цену со скидкой.
+
+    Args:
+        price: Исходная цена в рублях.
+        percent: Скидка в процентах (0-100).
+
+    Returns:
+        Цена после скидки.
+
+    Raises:
+        ValueError: Если percent &lt; 0 или &gt; 100.
+
+    Examples:
+        &gt;&gt;&gt; calculate_discount(1000, 10)
+        900.0
+    """
+    if not 0 &lt;= percent &lt;= 100:
+        raise ValueError("percent must be 0-100")
+    return price * (1 - percent / 100)</pre>
+    </div>
+
+    <h3>9.5. README — лицо проекта</h3>
+
+    <p><b>README.md</b> — первый файл, который видит человек в репозитории. От него зависит, поймут ли проект или уйдут.</p>
+
+    <h4>Структура хорошего README</h4>
+
+    <table>
+      <tr><th>Раздел</th><th>Что писать</th></tr>
+      <tr><td><b>Название + бейдж</b></td><td>Название проекта, статус сборки, версия, лицензия</td></tr>
+      <tr><td><b>Краткое описание</b></td><td>Что делает проект, для кого (1-2 предложения)</td></tr>
+      <tr><td><b>Скриншоты</b></td><td>Визуальное представление — обязательно</td></tr>
+      <tr><td><b>Установка</b></td><td>Как развернуть: <code>git clone</code>, зависимости, команды</td></tr>
+      <tr><td><b>Использование</b></td><td>Примеры запуска, базовые команды</td></tr>
+      <tr><td><b>Стек технологий</b></td><td>Языки, фреймворки, БД</td></tr>
+      <tr><td><b>Структура проекта</b></td><td>Что где лежит</td></tr>
+      <tr><td><b>Contributing</b></td><td>Как помочь проекту (если open-source)</td></tr>
+      <tr><td><b>Лицензия</b></td><td>MIT, Apache 2.0, GPL и т.д.</td></tr>
+      <tr><td><b>Контакты</b></td><td>Автор, email, ссылки</td></tr>
+    </table>
+
+    <h4>Пример README</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="# NotesApp
+
+![Build](https://img.shields.io/badge/build-passing-green)
+![Version](https://img.shields.io/badge/version-1.2.0-blue)
+
+Простое приложение для заметок на C# (Windows Forms).
+
+## Возможности
+
+- Создание / редактирование / удаление заметок
+- Поиск по тексту
+- Автосохранение каждые 30 секунд
+- Экспорт в PDF и TXT
+
+## Скриншоты
+
+![Главное окно](docs/screenshots/main.png)
+
+## Установка
+
+```bash
+git clone https://github.com/user/notes-app.git
+cd notes-app
+dotnet restore
+dotnet build
+dotnet run

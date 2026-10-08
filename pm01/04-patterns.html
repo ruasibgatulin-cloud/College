@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПМ.01 · 4. Паттерны проектирования · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ПМ.01 · Тема 4</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="pm01-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-lifecycle.html">1. ЖЦ ПО</a>
+  <a href="02-structured.html">2. Структурное</a>
+  <a href="03-oop-basics.html">3. ООП</a>
+  <a href="04-patterns.html" class="current">4. Паттерны</a>
+  <a href="05-events.html">5. События</a>
+  <a href="06-refactoring.html">6. Рефакторинг</a>
+  <a href="07-ui.html">7. UI</a>
+  <a href="08-testing.html">8. Тестирование</a>
+  <a href="09-docs.html">9. Документация</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">4</span>Паттерны проектирования</h2>
+
+    <p><b>Паттерн проектирования</b> — это типовое решение типовой задачи. Не кусок кода, а <b>идея</b>, которую можно применить в разных проектах. Паттерны не изобретают — их <b>обнаруживают</b> в успешных проектах.</p>
+
+    <div class="box note">
+      <div class="label">Откуда взялись паттерны</div>
+      В 1994 году четыре автора (Эрих Гамма, Ричард Хелм, Ральф Джонсон, Джон Влиссидес) выпустили книгу «Design Patterns» — в ней описали 23 классических паттерна. Их называют «банда четырёх» (Gang of Four, GoF).
+    </div>
+
+    <h3>4.1. Три категории паттернов</h3>
+
+    <table>
+      <tr><th>Категория</th><th>Отвечает за</th><th>Примеры</th></tr>
+      <tr><td><b>Порождающие (Creational)</b></td><td>Создание объектов</td><td>Singleton, Factory Method, Builder, Prototype</td></tr>
+      <tr><td><b>Структурные (Structural)</b></td><td>Композиция классов и объектов</td><td>Adapter, Decorator, Facade, Proxy, Composite</td></tr>
+      <tr><td><b>Поведенческие (Behavioral)</b></td><td>Взаимодействие между объектами</td><td>Observer, Strategy, Command, State, Iterator</td></tr>
+    </table>
+
+    <h3>4.2. Порождающие паттерны</h3>
+
+    <h4>Singleton (Одиночка)</h4>
+    <p>Гарантирует, что у класса есть <b>единственный экземпляр</b>, и предоставляет к нему глобальную точку доступа.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="public class Config {
+    private static Config _instance;
+    private Config() { }  // приватный конструктор
+    public static Config Instance => _instance ??= new Config();
+    public string DbConnection { get; set; }
+}
+
+// Использование:
+Config.Instance.DbConnection = &quot;...&quot;;">📋 Копировать</button>
+      <pre>public class Config {
+    private static Config _instance;
+    private Config() { }  <span class="cmt">// приватный конструктор</span>
+    public static Config Instance =&gt; _instance ??= new Config();
+    public string DbConnection { get; set; }
+}
+
+<span class="cmt">// Использование:</span>
+Config.Instance.DbConnection = "...";</pre>
+      <div class="desc">Классическая реализация на C# через свойство.</div>
+    </div>
+
+    <p><b>Когда использовать:</b> конфигурация приложения, логгер, кэш, подключение к БД.<br>
+    <b>Осторожно:</b> Singleton мешает тестированию (глобальное состояние). В современном коде часто заменяется на Dependency Injection.</p>
+
+    <h4>Factory Method (Фабричный метод)</h4>
+    <p>Определяет интерфейс для создания объекта, но позволяет подклассам решать, какой класс создавать.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="interface ILogger { void Log(string msg); }
+
+class FileLogger : ILogger { public void Log(string msg) { /* в файл */ } }
+class ConsoleLogger : ILogger { public void Log(string msg) { /* в консоль */ } }
+
+class LoggerFactory {
+    public static ILogger Create(string type) => type switch {
+        &quot;file&quot;    => new FileLogger(),
+        &quot;console&quot; => new ConsoleLogger(),
+        _          => throw new ArgumentException()
+    };
+}
+
+var logger = LoggerFactory.Create(&quot;file&quot;);">📋 Копировать</button>
+      <pre>interface ILogger { void Log(string msg); }
+
+class FileLogger : ILogger { public void Log(string msg) { <span class="cmt">/* в файл */</span> } }
+class ConsoleLogger : ILogger { public void Log(string msg) { <span class="cmt">/* в консоль */</span> } }
+
+class LoggerFactory {
+    public static ILogger Create(string type) =&gt; type switch {
+        "file"    =&gt; new FileLogger(),
+        "console" =&gt; new ConsoleLogger(),
+        _         =&gt; throw new ArgumentException()
+    };
+}
+
+var logger = LoggerFactory.Create("file");</pre>
+    </div>
+
+    <h4>Builder (Строитель)</h4>
+    <p>Пошаговое создание сложного объекта. Позволяет строить объект с разными конфигурациями, не создавая конструктор с 20 параметрами.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="var pizza = new PizzaBuilder()
+    .WithSize(&quot;Large&quot;)
+    .WithCheese()
+    .WithPepperoni()
+    .WithMushrooms()
+    .Build();">📋 Копировать</button>
+      <pre>var pizza = new PizzaBuilder()
+    .WithSize("Large")
+    .WithCheese()
+    .WithPepperoni()
+    .WithMushrooms()
+    .Build();</pre>
+      <div class="desc">Читается как естественный язык. Идеально для сложных объектов.</div>
+    </div>
+
+    <h4>Prototype (Прототип)</h4>
+    <p>Создание нового объекта через клонирование существующего. Полезно, когда создание «с нуля» дорого.</p>
+
+    <h3>4.3. Структурные паттерны</h3>
+
+    <h4>Adapter (Адаптер)</h4>
+    <p>Позволяет объектам с несовместимыми интерфейсами работать вместе. Как переходник для розетки.</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 500 180" width="500">
+        <rect x="20" y="50" width="100" height="60" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5" rx="6"/>
+        <text x="70" y="85" text-anchor="middle" font-size="12">OldService</text>
+        <text x="70" y="100" text-anchor="middle" font-size="10" fill="#889">DoOldThing()</text>
+
+        <rect x="200" y="40" width="100" height="80" fill="#fff9e6" stroke="#d97706" stroke-width="2" rx="6"/>
+        <text x="250" y="70" text-anchor="middle" font-size="12" fill="#d97706" font-weight="600">Adapter</text>
+        <text x="250" y="88" text-anchor="middle" font-size="10" fill="#889">DoNewThing()</text>
+        <text x="250" y="104" text-anchor="middle" font-size="10" fill="#889">→ DoOldThing()</text>
+
+        <rect x="380" y="50" width="100" height="60" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.5" rx="6"/>
+        <text x="430" y="85" text-anchor="middle" font-size="12">App</text>
+
+        <g stroke="#8891a6" stroke-width="1.4" marker-end="url(#ar3)">
+          <defs><marker id="ar3" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8891a6"/></marker></defs>
+          <line x1="120" y1="80" x2="195" y2="80"/>
+          <line x1="300" y1="80" x2="375" y2="80"/>
+        </g>
+        <text x="155" y="75" font-size="10" fill="#889">вызов</text>
+        <text x="335" y="75" font-size="10" fill="#889">использует</text>
+      </svg>
+      <div class="cap">Adapter превращает старый интерфейс в новый, ожидаемый приложением.</div>
+    </div>
+
+    <h4>Decorator (Декоратор)</h4>
+    <p>Добавляет объекту новую функциональность, оборачивая его. Можно накладывать «слоями».</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="IBeverage coffee = new Espresso();
+coffee = new MilkDecorator(coffee);      // + молоко
+coffee = new SugarDecorator(coffee);     // + сахар
+coffee = new CreamDecorator(coffee);     // + сливки
+Console.WriteLine(coffee.Cost());        // сумма всех добавок">📋 Копировать</button>
+      <pre>IBeverage coffee = new Espresso();
+coffee = new MilkDecorator(coffee);      <span class="cmt">// + молоко</span>
+coffee = new SugarDecorator(coffee);     <span class="cmt">// + сахар</span>
+coffee = new CreamDecorator(coffee);     <span class="cmt">// + сливки</span>
+Console.WriteLine(coffee.Cost());        <span class="cmt">// сумма всех добавок</span></pre>
+    </div>
+
+    <h4>Facade (Фасад)</h4>
+    <p>Предоставляет простой интерфейс к сложной подсистеме. Пользователь не знает про 20 классов внутри — работает с одним.</p>
+
+    <h4>Proxy (Заместитель)</h4>
+    <p>Подменяет реальный объект, контролируя доступ к нему. Используется для ленивой загрузки, кэширования, проверки прав.</p>
+
+    <h4>Composite (Компоновщик)</h4>
+    <p>Позволяет работать с деревом объектов как с одним объектом. Пример — файловая система: папка и файл обрабатываются одинаково.</p>
+
+    <h3>4.4. Поведенческие паттерны</h3>
+
+    <h4>Observer (Наблюдатель)</h4>
+    <p>Один объект (Subject) уведомляет других (Observers) об изменениях своего состояния. Основа event-driven систем.</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 500 240" width="500">
+        <circle cx="250" cy="60" r="40" fill="#eef0ff" stroke="#4f46e5" stroke-width="2"/>
+        <text x="250" y="65" text-anchor="middle" font-size="12" fill="#4f46e5" font-weight="600">Subject</text>
+
+        <g stroke="#8891a6" stroke-width="1.4" marker-end="url(#ar3)">
+          <line x1="220" y1="95" x2="100" y2="160"/>
+          <line x1="250" y1="100" x2="250" y2="160"/>
+          <line x1="280" y1="95" x2="400" y2="160"/>
+        </g>
+
+        <circle cx="100" cy="190" r="30" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="100" y="195" text-anchor="middle" font-size="11">Obs 1</text>
+
+        <circle cx="250" cy="190" r="30" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="250" y="195" text-anchor="middle" font-size="11">Obs 2</text>
+
+        <circle cx="400" cy="190" r="30" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="400" y="195" text-anchor="middle" font-size="11">Obs 3</text>
+
+        <text x="250" y="35" text-anchor="middle" font-size="11" fill="#889">notify() → все наблюдатели</text>
+      </svg>
+      <div class="cap">Subject при изменении уведомляет всех подписчиков через notify().</div>
+    </div>
+
+    <p><b>Где применять:</b> события в UI, модель MVC/MVVM, подписки, новостные каналы, реактивное программирование.</p>
+
+    <h4>Strategy (Стратегия)</h4>
+    <p>Определяет семейство взаимозаменяемых алгоритмов. Позволяет менять поведение объекта без наследования.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="interface IPaymentStrategy {
+    void Pay(decimal amount);
+}
+
+class CardPayment : IPaymentStrategy { ... }
+class CashPayment : IPaymentStrategy { ... }
+class CryptoPayment : IPaymentStrategy { ... }
+
+class Order {
+    private IPaymentStrategy _strategy;
+    public void SetPayment(IPaymentStrategy s) => _strategy = s;
+    public void Checkout(decimal sum) => _strategy.Pay(sum);
+}">📋 Копировать</button>
+      <pre>interface IPaymentStrategy {
+    void Pay(decimal amount);
+}
+
+class CardPayment : IPaymentStrategy { ... }
+class CashPayment : IPaymentStrategy { ... }
+class CryptoPayment : IPaymentStrategy { ... }
+
+class Order {
+    private IPaymentStrategy _strategy;
+    public void SetPayment(IPaymentStrategy s) =&gt; _strategy = s;
+    public void Checkout(decimal sum) =&gt; _strategy.Pay(sum);
+}</pre>
+    </div>
+
+    <p><b>Где применять:</b> разные способы оплаты, сортировки, валидации, сжатия данных.</p>
+
+    <h4>Command (Команда)</h4>
+    <p>Инкапсулирует запрос как объект. Позволяет откладывать выполнение, ставить в очередь, поддерживать отмену (undo).</p>
+
+    <h4>State (Состояние)</h4>
+    <p>Объект меняет своё поведение при изменении внутреннего состояния. Вместо большого <code>switch</code> — отдельные классы состояний.</p>
+
+    <h4>Iterator (Итератор)</h4>
+    <p>Даёт последовательный доступ к элементам коллекции, не раскрывая её внутреннее устройство.</p>
+
+    <h3>4.5. Таблица «паттерн → задача»</h3>
+
+    <table>
+      <tr><th>Задача</th><th>Подходящий паттерн</th></tr>
+      <tr><td>Нужен единственный экземпляр класса</td><td>Singleton</td></tr>
+      <tr><td>Много вариантов создания объекта</td><td>Factory Method / Abstract Factory</td></tr>
+      <tr><td>Объект с 15 параметрами</td><td>Builder</td></tr>
+      <tr><td>Совместить несовместимые интерфейсы</td><td>Adapter</td></tr>
+      <tr><td>Добавить функциональность без наследования</td><td>Decorator</td></tr>
+      <tr><td>Упростить сложный API</td><td>Facade</td></tr>
+      <tr><td>Уведомлять подписчиков об изменениях</td><td>Observer</td></tr>
+      <tr><td>Менять алгоритм на лету</td><td>Strategy</td></tr>
+      <tr><td>Поддержать undo/redo</td><td>Command</td></tr>
+      <tr><td>Объект меняет поведение по состоянию</td><td>State</td></tr>
+    </table>
+
+    <div class="box note">
+      <div class="label">Осторожно с паттернами</div>
+      Паттерны — не серебряная пуля. Если задача решается просто и понятно без паттерна — не тащите паттерн. «Overengineering» (переусложнение) хуже, чем отсутствие паттерна. Паттерн должен <b>упрощать</b>, а не <b>усложнять</b>.
+    </div>
+
+    <h3>Практические работы</h3>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №1 · Основные шаблоны <span class="badge">40 мин</span></div>
+      <div class="goal"><b>Задача:</b> реализовать Singleton и Factory Method.</div>
+
+      <h4>Часть 1. Singleton</h4>
+      <p>Создайте класс <code>AppSettings</code>, который хранит настройки приложения (тема, язык, размер шрифта). Добейтесь, чтобы во всей программе существовал <b>только один</b> экземпляр.</p>
+
+      <h4>Часть 2. Factory Method</h4>
+      <p>Создайте интерфейс <code>IVehicle</code> с методами <code>Drive()</code> и <code>GetInfo()</code>. Реализуйте <code>Car</code>, <code>Bike</code>, <code>Truck</code>. Создайте фабрику, которая возвращает нужный объект по строке.</p>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №2 · Порождающие паттерны <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> реализовать Builder для сложного объекта.</div>
+      <p>Создайте класс <code>Pizza</code> с полями: размер, сыр, пепперони, грибы, оливки, соус. Реализуйте <code>PizzaBuilder</code> с цепочкой методов:</p>
+      <div class="cmd">
+        <button class="copy-btn" data-copy="var pizza = new PizzaBuilder()
+    .Size(&quot;L&quot;)
+    .AddCheese()
+    .AddPepperoni()
+    .AddMushrooms()
+    .Build();">📋 Копировать</button>
+        <pre>var pizza = new PizzaBuilder()
+    .Size("L")
+    .AddCheese()
+    .AddPepperoni()
+    .AddMushrooms()
+    .Build();</pre>
+      </div>
+      <p>Добавьте метод <code>Print()</code>, который выводит состав пиццы.</p>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №3 · Структурные паттерны <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> реализовать Decorator для кофе.</div>
+      <p>Есть базовый интерфейс <code>IBeverage</code> с методами <code>Cost()</code> и <code>Description()</code>. Реализуйте:</p>
+      <ul>
+        <li><code>Espresso</code> — базовый кофе (100 руб.)</li>
+        <li><code>MilkDecorator</code> — +30 руб.</li>
+        <li><code>SugarDecorator</code> — +10 руб.</li>
+        <li><code>CreamDecorator</code> — +40 руб.</li>
+        <li><code>SyrupDecorator</code> — +50 руб.</li>
+      </ul>
+      <p>Продемонстрируйте: один и тот же кофе с разными комбинациями добавок.</p>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №4 · Поведенческие паттерны <span class="badge">50 мин</span></div>
+      <div class="goal"><b>Задача:</b> реализовать Observer и Strategy.</div>
+
+      <h4>Часть 1. Observer</h4>
+      <p>Создайте класс <code>NewsAgency</code> (Subject). Подписчики: <code>EmailSubscriber</code>, <code>SmsSubscriber</code>, <code>PushSubscriber</code>. При публикации новости все получают уведомление.</p>
+
+      <h4>Часть 2. Strategy</h4>
+      <p>Создайте систему расчёта скидок:</p>
+      <ul>
+        <li><code>NoDiscount</code> — без скидки</li>
+        <li><code>PercentDiscount(10)</code> — 10%</li>
+        <li><code>FixedDiscount(500)</code> — минус 500 руб.</li>
+        <li><code>SeasonalDiscount</code> — сезонная (например, зимой 15%)</li>
+      </ul>
+      <p>Класс <code>Order</code> принимает стратегию и применяет к сумме.</p>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Почему Singleton критикуют?</summary>
+      <div class="answer">
+        Три причины:
+        <ul>
+          <li><b>Глобальное состояние.</b> Любой код может изменить Singleton — трудно отследить, кто и когда.</li>
+          <li><b>Проблемы с тестированием.</b> Нельзя подменить зависимость на mock — Singleton всегда настоящий.</li>
+          <li><b>Скрытые зависимости.</b> Класс использует Singleton, но это не видно в его конструкторе.</li>
+        </ul>
+        <b>Современная альтернатива:</b> Dependency Injection (DI). Вы регистрируете сервис как «Singletone scope» в контейнере, но получаете его через параметр конструктора — то же поведение, но без глобального состояния.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Чем Adapter отличается от Decorator?</summary>
+      <div class="answer">
+        <b>Adapter</b> — <i>меняет интерфейс</i> объекта, чтобы его можно было использовать там, где ожидается другой интерфейс. Не добавляет функциональности, только переводит один вызов в другой.<br><br>
+        <b>Decorator</b> — <i>добавляет функциональность</i>, сохраняя интерфейс. Оборачивает объект и делает что-то дополнительное.<br><br>
+        Пример: Adapter — переходник с USB-C на USB-A. Decorator — чехол для телефона (тот же телефон, но с дополнительной защитой).
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Почему не стоит использовать паттерны везде?</summary>
+      <div class="answer">
+        Паттерн — это <b>усложнение</b> кода ради <b>гибкости</b>. Если гибкость не нужна — усложнение вредит.
+        <ul>
+          <li>Класс с одним методом не нуждается в Strategy — достаточно if/else.</li>
+          <li>Объект без изменений не нуждается в Builder — хватит конструктора.</li>
+          <li>Менеджер с одним типом не нуждается в Factory — можно создавать напрямую.</li>
+        </ul>
+        Правило: <b>сначала просто, потом паттерн</b>. Когда код «запахнет» — добавьте паттерн. Не проектируйте «на будущее», которого может не быть.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 4. Какой паттерн используется в событийной модели C#?</summary>
+      <div class="answer">
+        <b>Observer.</b> Когда вы пишете:
+        <pre style="background:#f5f5f5;padding:10px;border-radius:6px;font-size:13px;margin-top:6px;">button.Click += OnButtonClick;</pre>
+        — вы подписываетесь на событие. Кнопка — Subject, ваш метод — Observer. При клике кнопка вызывает <code>Notify()</code>, и все подписчики получают уведомление.<br><br>
+        В .NET это реализовано через делегаты и события. В Java — через интерфейс <code>EventListener</code>. В JS — через <code>addEventListener</code>.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание по теме</div>
+      Сдать проект-решение (код + <code>practice-patterns.docx</code>):
+      <ol>
+        <li><b>Singleton</b>: класс <code>AppSettings</code></li>
+        <li><b>Factory</b>: интерфейс <code>IVehicle</code> + 3 реализации + фабрика</li>
+        <li><b>Builder</b>: класс <code>Pizza</code> со строителем и 3 варианта пиццы</li>
+        <li><b>Decorator</b>: система кофе с 4 добавками</li>
+        <li><b>Observer</b>: новостное агентство с 3 типами подписчиков</li>
+        <li><b>Strategy</b>: система скидок с 4 стратегиями</li>
+        <li>Письменный ответ на 4 вопроса самопроверки</li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="03-oop-basics.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">3. Объектно-ориентированное программирование</span>
+  </a>
+  <a href="05-events.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">5. Событийно-управляемое программирование</span>
+  </a>
+</div>
+
+<footer>
+  ПМ.01 Разработка модулей ПО · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

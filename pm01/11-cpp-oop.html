@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПМ.01 · 11. C++ — ООП · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ПМ.01 · Тема 11</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="pm01-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-lifecycle.html">1. ЖЦ ПО</a>
+  <a href="02-structured.html">2. Структурное</a>
+  <a href="03-oop-basics.html">3. ООП</a>
+  <a href="04-patterns.html">4. Паттерны</a>
+  <a href="05-events.html">5. События</a>
+  <a href="06-refactoring.html">6. Рефакторинг</a>
+  <a href="07-ui.html">7. UI</a>
+  <a href="08-testing.html">8. Тестирование</a>
+  <a href="09-docs.html">9. Документация</a>
+  <a href="10-cpp-basics.html">10. C++</a>
+  <a href="11-cpp-oop.html" class="current">11. C++ ООП</a>
+  <a href="12-databases.html">12. БД</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">11</span>Объектно-ориентированное программирование на C++</h2>
+
+    <p>C++ был одним из первых языков, где ООП стало основной парадигмой. Здесь классы — не надстройка, а <b>основа языка</b>. В C++ ООП работает с ручным управлением памятью и строгой типизацией.</p>
+
+    <h3>11.1. Классы и объекты</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class Student {
+public:                    // доступ для всех
+    std::string name;
+    int age;
+    double average;
+
+    // Конструктор
+    Student(std::string n, int a, double avg)
+        : name(n), age(a), average(avg) { }
+
+    // Метод
+    void print() const {
+        std::cout &lt;&lt; name &lt;&lt; &quot;, &quot; &lt;&lt; age &lt;&lt; &quot; лет, средний балл &quot; &lt;&lt; average &lt;&lt; std::endl;
+    }
+
+private:                   // доступ только внутри класса
+    std::string internalId = &quot;STU-001&quot;;
+};
+
+int main() {
+    Student s(&quot;Ivan&quot;, 18, 4.5);
+    s.print();
+    return 0;
+}">📋 Копировать</button>
+      <pre>#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class Student {
+public:                    <span class="cmt">// доступ для всех</span>
+    std::string name;
+    int age;
+    double average;
+
+    <span class="cmt">// Конструктор</span>
+    Student(std::string n, int a, double avg)
+        : name(n), age(a), average(avg) { }
+
+    <span class="cmt">// Метод</span>
+    void print() const {
+        std::cout &lt;&lt; name &lt;&lt; ", " &lt;&lt; age &lt;&lt; " лет, средний балл " &lt;&lt; average &lt;&lt; std::endl;
+    }
+
+private:                   <span class="cmt">// доступ только внутри класса</span>
+    std::string internalId = "STU-001";
+};
+
+int main() {
+    Student s("Ivan", 18, 4.5);
+    s.print();
+    return 0;
+}</pre>
+    </div>
+
+    <h3>11.2. Спецификаторы доступа</h3>
+
+    <table>
+      <tr><th>Спецификатор</th><th>Доступ</th><th>Когда использовать</th></tr>
+      <tr><td><code>public</code></td><td>Всем</td><td>Публичный API класса</td></tr>
+      <tr><td><code>private</code></td><td>Только внутри класса и его friend'ов</td><td>Поля, вспомогательные методы (по умолчанию в <code>class</code>)</td></tr>
+      <tr><td><code>protected</code></td><td>Класс + наследники</td><td>Методы для переопределения</td></tr>
+    </table>
+
+    <div class="box note">
+      <div class="label">class vs struct</div>
+      <b>Разница только в дефолтном доступе:</b>
+      <ul>
+        <li><code>class</code> — по умолчанию <b>private</b></li>
+        <li><code>struct</code> — по умолчанию <b>public</b></li>
+      </ul>
+      Все остальные возможности одинаковы. В C++ struct тоже может иметь конструкторы, методы, наследование. Традиция: <code>struct</code> — для маленьких DTO (данные), <code>class</code> — для полноценных объектов.
+    </div>
+
+    <h3>11.3. Конструкторы и деструкторы</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="class Buffer {
+private:
+    int* data;
+    int size;
+public:
+    // Обычный конструктор
+    Buffer(int n) : size(n) {
+        data = new int[n];
+        std::cout &lt;&lt; &quot;Выделено &quot; &lt;&lt; n &lt;&lt; &quot; элементов\n&quot;;
+    }
+
+    // Конструктор по умолчанию (делегирует)
+    Buffer() : Buffer(10) { }
+
+    // Конструктор копирования
+    Buffer(const Buffer&amp; other) : size(other.size) {
+        data = new int[size];
+        for (int i = 0; i &lt; size; i++) data[i] = other.data[i];
+    }
+
+    // Деструктор — вызывается автоматически
+    ~Buffer() {
+        delete[] data;
+        std::cout &lt;&lt; &quot;Память освобождена\n&quot;;
+    }
+};">📋 Копировать</button>
+      <pre>class Buffer {
+private:
+    int* data;
+    int size;
+public:
+    <span class="cmt">// Обычный конструктор</span>
+    Buffer(int n) : size(n) {
+        data = new int[n];
+        std::cout &lt;&lt; "Выделено " &lt;&lt; n &lt;&lt; " элементов\n";
+    }
+
+    <span class="cmt">// Конструктор по умолчанию (делегирует)</span>
+    Buffer() : Buffer(10) { }
+
+    <span class="cmt">// Конструктор копирования</span>
+    Buffer(const Buffer&amp; other) : size(other.size) {
+        data = new int[size];
+        for (int i = 0; i &lt; size; i++) data[i] = other.data[i];
+    }
+
+    <span class="cmt">// Деструктор — вызывается автоматически</span>
+    ~Buffer() {
+        delete[] data;
+        std::cout &lt;&lt; "Память освобождена\n";
+    }
+};</pre>
+    </div>
+
+    <h4>Список инициализации</h4>
+
+    <p>Всё, что после <code>:</code> перед телом конструктора, — <b>список инициализации</b>. Это правильный способ инициализации полей.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// ПЛОХО (присваивание в теле)
+Student(std::string n) {
+    name = n;  // сначала default-конструктор, потом присваивание
+}
+
+// ХОРОШО (список инициализации)
+Student(std::string n) : name(n) { }">📋 Копировать</button>
+      <pre><span class="cmt">// ПЛОХО (присваивание в теле)</span>
+Student(std::string n) {
+    name = n;  <span class="cmt">// сначала default-конструктор, потом присваивание</span>
+}
+
+<span class="cmt">// ХОРОШО (список инициализации)</span>
+Student(std::string n) : name(n) { }</pre>
+      <div class="desc">Список инициализации эффективнее: не создаётся временный объект.</div>
+    </div>
+
+    <h3>11.4. Статические члены класса</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="class Counter {
+private:
+    static int totalCount;   // общий для всех объектов
+    int id;
+public:
+    Counter() {
+        id = ++totalCount;   // увеличивает общий счётчик
+    }
+    int getId() const { return id; }
+    static int getTotal() { return totalCount; }
+};
+
+// Определение статической переменной (в .cpp файле)
+int Counter::totalCount = 0;
+
+// Использование
+Counter a, b, c;
+std::cout &lt;&lt; Counter::getTotal();  // 3
+std::cout &lt;&lt; c.getId();           // 3">📋 Копировать</button>
+      <pre>class Counter {
+private:
+    static int totalCount;   <span class="cmt">// общий для всех объектов</span>
+    int id;
+public:
+    Counter() {
+        id = ++totalCount;   <span class="cmt">// увеличивает общий счётчик</span>
+    }
+    int getId() const { return id; }
+    static int getTotal() { return totalCount; }
+};
+
+<span class="cmt">// Определение статической переменной (в .cpp файле)</span>
+int Counter::totalCount = 0;
+
+<span class="cmt">// Использование</span>
+Counter a, b, c;
+std::cout &lt;&lt; Counter::getTotal();  <span class="cmt">// 3</span>
+std::cout &lt;&lt; c.getId();           <span class="cmt">// 3</span></pre>
+    </div>
+
+    <h3>11.5. Указатель this</h3>
+
+    <p><code>this</code> — указатель на текущий объект. Используется, когда имя параметра совпадает с полем:</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="class Student {
+    std::string name;
+    int age;
+public:
+    Student(std::string name, int age) {
+        this-&gt;name = name;  // this-&gt;name — поле класса
+        this-&gt;age = age;    // age — параметр
+    }
+
+    // Возврат *this для цепочки методов
+    Student&amp; setName(std::string n) {
+        this-&gt;name = n;
+        return *this;
+    }
+};
+
+// Цепочка
+Student s(&quot;&quot;, 0);
+s.setName(&quot;Ivan&quot;).setName(&quot;Ivanov&quot;);">📋 Копировать</button>
+      <pre>class Student {
+    std::string name;
+    int age;
+public:
+    Student(std::string name, int age) {
+        this-&gt;name = name;  <span class="cmt">// this-&gt;name — поле класса</span>
+        this-&gt;age = age;    <span class="cmt">// age — параметр</span>
+    }
+
+    <span class="cmt">// Возврат *this для цепочки методов</span>
+    Student&amp; setName(std::string n) {
+        this-&gt;name = n;
+        return *this;
+    }
+};
+
+<span class="cmt">// Цепочка</span>
+Student s("", 0);
+s.setName("Ivan").setName("Ivanov");</pre>
+    </div>
+
+    <h3>11.6. Перегрузка операторов</h3>
+
+    <p>C++ позволяет задать поведение операторов для своих классов.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="class Vector2D {
+public:
+    double x, y;
+    Vector2D(double x, double y) : x(x), y(y) { }
+
+    // Сложение: v1 + v2
+    Vector2D operator+(const Vector2D&amp; other) const {
+        return Vector2D(x + other.x, y + other.y);
+    }
+
+    // Умножение на число: v * 2
+    Vector2D operator*(double k) const {
+        return Vector2D(x * k, y * k);
+    }
+
+    // Сравнение: v1 == v2
+    bool operator==(const Vector2D&amp; other) const {
+        return x == other.x &amp;&amp; y == other.y;
+    }
+
+    // Вывод в поток: std::cout &lt;&lt; v
+    friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; os, const Vector2D&amp; v) {
+        os &lt;&lt; &quot;(&quot; &lt;&lt; v.x &lt;&lt; &quot;, &quot; &lt;&lt; v.y &lt;&lt; &quot;)&quot;;
+        return os;
+    }
+};
+
+Vector2D a(1, 2), b(3, 4);
+Vector2D c = a + b;     // (4, 6)
+Vector2D d = a * 2;     // (2, 4)
+std::cout &lt;&lt; c;         // (4, 6)">📋 Копировать</button>
+      <pre>class Vector2D {
+public:
+    double x, y;
+    Vector2D(double x, double y) : x(x), y(y) { }
+
+    <span class="cmt">// Сложение: v1 + v2</span>
+    Vector2D operator+(const Vector2D&amp; other) const {
+        return Vector2D(x + other.x, y + other.y);
+    }
+
+    <span class="cmt">// Умножение на число: v * 2</span>
+    Vector2D operator*(double k) const {
+        return Vector2D(x * k, y * k);
+    }
+
+    <span class="cmt">// Сравнение: v1 == v2</span>
+    bool operator==(const Vector2D&amp; other) const {
+        return x == other.x &amp;&amp; y == other.y;
+    }
+
+    <span class="cmt">// Вывод в поток: std::cout &lt;&lt; v</span>
+    friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; os, const Vector2D&amp; v) {
+        os &lt;&lt; "(" &lt;&lt; v.x &lt;&lt; ", " &lt;&lt; v.y &lt;&lt; ")";
+        return os;
+    }
+};
+
+Vector2D a(1, 2), b(3, 4);
+Vector2D c = a + b;     <span class="cmt">// (4, 6)</span>
+Vector2D d = a * 2;     <span class="cmt">// (2, 4)</span>
+std::cout &lt;&lt; c;         <span class="cmt">// (4, 6)</span></pre>
+    </div>
+
+    <h3>11.7. Шаблоны (templates)</h3>
+
+    <p><b>Шаблон</b> — обобщённый код, работающий с любым типом. Это C++-версия дженериков.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// Шаблонная функция
+template &lt;typename T&gt;
+T max(T a, T b) {
+    return a &gt; b ? a : b;
+}
+
+max(5, 10);          // T = int
+max(3.14, 2.71);     // T = double
+max(std::string(&quot;a&quot;), std::string(&quot;b&quot;));  // T = std::string
+
+// Шаблонный класс
+template &lt;typename T&gt;
+class Box {
+    T value;
+public:
+    Box(T v) : value(v) { }
+    T getValue() const { return value; }
+    void setValue(T v) { value = v; }
+};
+
+Box&lt;int&gt; ibox(42);
+Box&lt;std::string&gt; sbox(&quot;Hello&quot;);">📋 Копировать</button>
+      <pre><span class="cmt">// Шаблонная функция</span>
+template &lt;typename T&gt;
+T max(T a, T b) {
+    return a &gt; b ? a : b;
+}
+
+max(5, 10);          <span class="cmt">// T = int</span>
+max(3.14, 2.71);     <span class="cmt">// T = double</span>
+max(std::string("a"), std::string("b"));  <span class="cmt">// T = std::string</span>
+
+<span class="cmt">// Шаблонный класс</span>
+template &lt;typename T&gt;
+class Box {
+    T value;
+public:
+    Box(T v) : value(v) { }
+    T getValue() const { return value; }
+    void setValue(T v) { value = v; }
+};
+
+Box&lt;int&gt; ibox(42);
+Box&lt;std::string&gt; sbox("Hello");</pre>
+    </div>
+
+    <h3>11.8. STL — стандартная библиотека шаблонов</h3>
+
+    <p><b>STL</b> — набор готовых контейнеров, алгоритмов и итераторов. Основа продуктивного C++.</p>
+
+    <h4>Основные контейнеры</h4>
+
+    <table>
+      <tr><th>Контейнер</th><th>Описание</th><th>Сложность доступа</th></tr>
+      <tr><td><code>vector</code></td><td>Динамический массив</td><td>O(1) по индексу</td></tr>
+      <tr><td><code>string</code></td><td>Строка</td><td>O(1) по индексу</td></tr>
+      <tr><td><code>list</code></td><td>Двусвязный список</td><td>O(n) поиск, O(1) вставка</td></tr>
+      <tr><td><code>deque</code></td><td>Двусторонняя очередь</td><td>O(1) с обоих концов</td></tr>
+      <tr><td><code>map</code></td><td>Упорядоченный словарь (красно-чёрное дерево)</td><td>O(log n)</td></tr>
+      <tr><td><code>unordered_map</code></td><td>Хеш-таблица</td><td>O(1) в среднем</td></tr>
+      <tr><td><code>set</code></td><td>Множество (без повторов)</td><td>O(log n)</td></tr>
+      <tr><td><code>queue</code></td><td>Очередь FIFO</td><td>O(1)</td></tr>
+      <tr><td><code>stack</code></td><td>Стек LIFO</td><td>O(1)</td></tr>
+    </table>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="#include &lt;vector&gt;
+#include &lt;map&gt;
+#include &lt;set&gt;
+#include &lt;algorithm&gt;
+#include &lt;string&gt;
+
+// Vector
+std::vector&lt;int&gt; v = {3, 1, 4, 1, 5};
+v.push_back(9);
+v[0] = 10;
+std::sort(v.begin(), v.end());   // 1 1 3 4 5 9
+
+// Map
+std::map&lt;std::string, int&gt; ages;
+ages[&quot;Alice&quot;] = 25;
+ages[&quot;Bob&quot;] = 30;
+for (const auto&amp; [name, age] : ages) {
+    std::cout &lt;&lt; name &lt;&lt; &quot;: &quot; &lt;&lt; age &lt;&lt; std::endl;
+}
+
+// Set
+std::set&lt;int&gt; unique = {1, 2, 2, 3, 3, 3};
+// size == 3
+
+// Алгоритмы
+auto it = std::find(v.begin(), v.end(), 5);
+if (it != v.end()) std::cout &lt;&lt; &quot;Нашли 5&quot;;
+
+std::reverse(v.begin(), v.end());
+std::count(v.begin(), v.end(), 1);  // сколько единиц">📋 Копировать</button>
+      <pre>#include &lt;vector&gt;
+#include &lt;map&gt;
+#include &lt;set&gt;
+#include &lt;algorithm&gt;
+#include &lt;string&gt;
+
+<span class="cmt">// Vector</span>
+std::vector&lt;int&gt; v = {3, 1, 4, 1, 5};
+v.push_back(9);
+v[0] = 10;
+std::sort(v.begin(), v.end());   <span class="cmt">// 1 1 3 4 5 9</span>
+
+<span class="cmt">// Map</span>
+std::map&lt;std::string, int&gt; ages;
+ages["Alice"] = 25;
+ages["Bob"] = 30;
+for (const auto&amp; [name, age] : ages) {
+    std::cout &lt;&lt; name &lt;&lt; ": " &lt;&lt; age &lt;&lt; std::endl;
+}
+
+<span class="cmt">// Set</span>
+std::set&lt;int&gt; unique = {1, 2, 2, 3, 3, 3};
+<span class="cmt">// size == 3</span>
+
+<span class="cmt">// Алгоритмы</span>
+auto it = std::find(v.begin(), v.end(), 5);
+if (it != v.end()) std::cout &lt;&lt; "Нашли 5";
+
+std::reverse(v.begin(), v.end());
+std::count(v.begin(), v.end(), 1);  <span class="cmt">// сколько единиц</span></pre>
+    </div>
+
+    <h3>11.9. Наследование и полиморфизм</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="class Animal {
+public:
+    virtual void sound() const {     // virtual — для переопределения
+        std::cout &lt;&lt; &quot;Some sound&quot; &lt;&lt; std::endl;
+    }
+    virtual ~Animal() { }            // ВАЖНО: виртуальный деструктор
+};
+
+class Dog : public Animal {
+public:
+    void sound() const override {    // override — проверка компилятором
+        std::cout &lt;&lt; &quot;Woof!&quot; &lt;&lt; std::endl;
+    }
+};
+
+class Cat : public Animal {
+public:
+    void sound() const override {
+        std::cout &lt;&lt; &quot;Meow&quot; &lt;&lt; std::endl;
+    }
+};
+
+// Полиморфизм
+std::vector&lt;std::unique_ptr&lt;Animal&gt;&gt; zoo;
+zoo.push_back(std::make_unique&lt;Dog&gt;());
+zoo.push_back(std::make_unique&lt;Cat&gt;());
+
+for (const auto&amp; a : zoo) {
+    a-&gt;sound();  // Woof, Meow — разное поведение
+}">📋 Копировать</button>
+      <pre>class Animal {
+public:
+    virtual void sound() const {     <span class="cmt">// virtual — для переопределения</span>
+        std::cout &lt;&lt; "Some sound" &lt;&lt; std::endl;
+    }
+    virtual ~Animal() { }            <span class="cmt">// ВАЖНО: виртуальный деструктор</span>
+};
+
+class Dog : public Animal {
+public:
+    void sound() const override {    <span class="cmt">// override — проверка компилятором</span>
+        std::cout &lt;&lt; "Woof!" &lt;&lt; std::endl;
+    }
+};
+
+class Cat : public Animal {
+public:
+    void sound() const override {
+        std::cout &lt;&lt; "Meow" &lt;&lt; std::endl;
+    }
+};
+
+<span class="cmt">// Полиморфизм</span>
+std::vector&lt;std::unique_ptr&lt;Animal&gt;&gt; zoo;
+zoo.push_back(std::make_unique&lt;Dog&gt;());
+zoo.push_back(std::make_unique&lt;Cat&gt;());
+
+for (const auto&amp; a : zoo) {
+    a-&gt;sound();  <span class="cmt">// Woof, Meow — разное поведение</span>
+}</pre>
+    </div>
+
+    <h4>Виртуальные vs невиртуальные методы</h4>
+
+    <table>
+      <tr><th>Тип</th><th>Когда вызывается</th><th>Цена</th></tr>
+      <tr><td><b>Невиртуальный</b></td><td>По типу переменной (статическая привязка)</td><td>Быстро, прямой вызов</td></tr>
+      <tr><td><b>Виртуальный</b></td><td>По реальному типу объекта (динамическая привязка)</td><td>Через vtable — чуть медленнее</td></tr>
+    </table>
+
+    <div class="box note">
+      <div class="label">Правило виртуального деструктора</div>
+      Если у класса есть хотя бы один виртуальный метод — деструктор тоже должен быть виртуальным. Иначе при удалении через указатель базового класса деструктор наследника не вызовется → утечка ресурсов.
+    </div>
+
+    <h3>11.10. Обработка исключений</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="#include &lt;stdexcept&gt;
+
+double divide(double a, double b) {
+    if (b == 0) {
+        throw std::invalid_argument(&quot;Деление на ноль&quot;);
+    }
+    return a / b;
+}
+
+try {
+    double result = divide(10, 0);
+    std::cout &lt;&lt; result;
+}
+catch (const std::invalid_argument&amp; e) {
+    std::cerr &lt;&lt; &quot;Ошибка: &quot; &lt;&lt; e.what() &lt;&lt; std::endl;
+}
+catch (const std::exception&amp; e) {
+    std::cerr &lt;&lt; &quot;Общая ошибка: &quot; &lt;&lt; e.what() &lt;&lt; std::endl;
+}
+
+// Свои исключения
+class MyException : public std::exception {
+public:
+    const char* what() const noexcept override {
+        return &quot;Моё исключение&quot;;
+    }
+};">📋 Копировать</button>
+      <pre>#include &lt;stdexcept&gt;
+
+double divide(double a, double b) {
+    if (b == 0) {
+        throw std::invalid_argument("Деление на ноль");
+    }
+    return a / b;
+}
+
+try {
+    double result = divide(10, 0);
+    std::cout &lt;&lt; result;
+}
+catch (const std::invalid_argument&amp; e) {
+    std::cerr &lt;&lt; "Ошибка: " &lt;&lt; e.what() &lt;&lt; std::endl;
+}
+catch (const std::exception&amp; e) {
+    std::cerr &lt;&lt; "Общая ошибка: " &lt;&lt; e.what() &lt;&lt; std::endl;
+}
+
+<span class="cmt">// Свои исключения</span>
+class MyException : public std::exception {
+public:
+    const char* what() const noexcept override {
+        return "Моё исключение";
+    }
+};</pre>
+    </div>
+
+    <h3>11.11. Умные указатели (C++11+)</h3>
+
+    <p>Решают проблему ручного управления памятью. Автоматически вызывают <code>delete</code>.</p>
+
+    <table>
+      <tr><th>Указатель</th><th>Владельцев</th><th>Когда использовать</th></tr>
+      <tr><td><code>unique_ptr</code></td><td>Один</td><td>Единственный владелец ресурса</td></tr>
+      <tr><td><code>shared_ptr</code></td><td>Много (счётчик ссылок)</td><td>Ресурс делится между объектами</td></tr>
+      <tr><td><code>weak_ptr</code></td><td>Слабый, без владения</td><td>Разорвать цикл shared_ptr</td></tr>
+    </table>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="#include &lt;memory&gt;
+
+// unique_ptr — единственный владелец
+std::unique_ptr&lt;Student&gt; s = std::make_unique&lt;Student&gt;(&quot;Ivan&quot;, 18, 4.5);
+s-&gt;print();
+
+// Передача владения
+std::unique_ptr&lt;Student&gt; s2 = std::move(s);
+// s теперь nullptr, s2 владеет объектом
+
+// shared_ptr — несколько владельцев
+std::shared_ptr&lt;Student&gt; shared = std::make_shared&lt;Student&gt;(&quot;Bob&quot;, 19, 4.2);
+std::shared_ptr&lt;Student&gt; shared2 = shared;  // счётчик = 2
+shared.reset();                              // счётчик = 1
+// Память освободится, когда счётчик = 0
+
+// Утечка не возможна — деструктор вызовется автоматически
+// При выходе из функции, при исключении, при любом сценарии">📋 Копировать</button>
+      <pre>#include &lt;memory&gt;
+
+<span class="cmt">// unique_ptr — единственный владелец</span>
+std::unique_ptr&lt;Student&gt; s = std::make_unique&lt;Student&gt;("Ivan", 18, 4.5);
+s-&gt;print();
+
+<span class="cmt">// Передача владения</span>
+std::unique_ptr&lt;Student&gt; s2 = std::move(s);
+<span class="cmt">// s теперь nullptr, s2 владеет объектом</span>
+
+<span class="cmt">// shared_ptr — несколько владельцев</span>
+std::shared_ptr&lt;Student&gt; shared = std::make_shared&lt;Student&gt;("Bob", 19, 4.2);
+std::shared_ptr&lt;Student&gt; shared2 = shared;  <span class="cmt">// счётчик = 2</span>
+shared.reset();                              <span class="cmt">// счётчик = 1</span>
+<span class="cmt">// Память освободится, когда счётчик = 0</span>
+
+<span class="cmt">// Утечка не возможна — деструктор вызовется автоматически</span>
+<span class="cmt">// При выходе из функции, при исключении, при любом сценарии</span></pre>
+    </div>
+
+    <div class="box note">
+      <div class="label">Современное правило</div>
+      В C++11+ <b>почти не используют</b> сырые <code>new</code>/<code>delete</code>. Используйте:
+      <ul>
+        <li><code>std::make_unique&lt;T&gt;(args)</code> — для одного владельца</li>
+        <li><code>std::make_shared&lt;T&gt;(args)</code> — для нескольких</li>
+        <li>Контейнеры STL (<code>vector</code>, <code>string</code>, <code>map</code>) — сами управляют памятью</li>
+      </ul>
+      Это современный, безопасный и эффективный C++.
+    </div>
+
+    <h3>11.12. Лямбда-функции</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// Простая лямбда
+auto add = [](int a, int b) { return a + b; };
+std::cout &lt;&lt; add(2, 3);  // 5
+
+// С захватом переменных
+int factor = 10;
+auto multiply = [factor](int x) { return x * factor; };
+std::cout &lt;&lt; multiply(5);  // 50
+
+// Захват по ссылке
+int counter = 0;
+auto increment = [&amp;counter]() { counter++; };
+increment();
+std::cout &lt;&lt; counter;  // 1
+
+// Захват всего
+auto lambda = [=]() { return factor; };  // по значению
+auto lambda2 = [&amp;]() { return counter; }; // по ссылке
+
+// Сортировка с лямбдой
+std::vector&lt;int&gt; v = {3, 1, 4, 1, 5};
+std::sort(v.begin(), v.end(), [](int a, int b) {
+    return a &gt; b;  // по убыванию
+});">📋 Копировать</button>
+      <pre><span class="cmt">// Простая лямбда</span>
+auto add = [](int a, int b) { return a + b; };
+std::cout &lt;&lt; add(2, 3);  <span class="cmt">// 5</span>
+
+<span class="cmt">// С захватом переменных</span>
+int factor = 10;
+auto multiply = [factor](int x) { return x * factor; };
+std::cout &lt;&lt; multiply(5);  <span class="cmt">// 50</span>
+
+<span class="cmt">// Захват по ссылке</span>
+int counter = 0;
+auto increment = [&amp;counter]() { counter++; };
+increment();
+std::cout &lt;&lt; counter;  <span class="cmt">// 1</span>
+
+<span class="cmt">// Захват всего</span>
+auto lambda = [=]() { return factor; };  <span class="cmt">// по значению</span>
+auto lambda2 = [&amp;]() { return counter; }; <span class="cmt">// по ссылке</span>
+
+<span class="cmt">// Сортировка с лямбдой</span>
+std::vector&lt;int&gt; v = {3, 1, 4, 1, 5};
+std::sort(v.begin(), v.end(), [](int a, int b) {
+    return a &gt; b;  <span class="cmt">// по убыванию</span>
+});</pre>
+    </div>
+
+    <h3>11.13. Итоговый проект</h3>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №1 · Класс «Студент» <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> создать класс с конструктором, методами и инкапсуляцией.</div>
+      <ol>
+        <li>Класс <code>Student</code>: поля <code>name</code>, <code>age</code>, <code>average</code> (private).</li>
+        <li>Конструктор с параметрами + список инициализации.</li>
+        <li>Геттеры и сеттеры с валидацией (возраст 14-100, балл 0-5).</li>
+        <li>Метод <code>print()</code> для вывода.</li>
+        <li>Метод <code>isExcellent()</code> — балл ≥ 4.5.</li>
+        <li>Проверьте в <code>main</code>: создайте 3 студента, выведите их, найдите отличника.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №2 · Наследование и полиморфизм <span class="badge">60 мин</span></div>
+      <div class="goal"><b>Задача:</b> построить иерархию фигур с полиморфизмом.</div>
+      <ol>
+        <li>Абстрактный класс <code>Shape</code> с чисто виртуальными <code>area()</code> и <code>perimeter()</code>, виртуальный деструктор.</li>
+        <li>Наследники: <code>Circle</code>, <code>Rectangle</code>, <code>Triangle</code>.</li>
+        <li>Сохраните все фигуры в <code>std::vector&lt;std::unique_ptr&lt;Shape&gt;&gt;</code>.</li>
+        <li>В цикле выведите для каждой: тип, площадь, периметр.</li>
+        <li>Найдите фигуру с максимальной площадью.</li>
+        <li>Сортируйте вектор по площади через лямбду.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №3 · Шаблоны и STL <span class="badge">60 мин</span></div>
+      <div class="goal"><b>Задача:</b> использовать шаблоны и контейнеры STL.</div>
+      <ol>
+        <li>Напишите шаблонный класс <code>Stack&lt;T&gt;</code> с методами <code>push</code>, <code>pop</code>, <code>top</code>, <code>isEmpty</code>, <code>size</code>.</li>
+        <li>Протестируйте на <code>int</code>, <code>double</code>, <code>std::string</code>.</li>
+        <li>Используйте <code>std::map&lt;std::string, int&gt;</code> для подсчёта слов в тексте.</li>
+        <li>Сортируйте <code>std::vector</code> по разным критериям через лямбды.</li>
+        <li>Реализуйте <code>std::set</code> для удаления дубликатов из массива.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №4 · Мини-проект: библиотека <span class="badge">90 мин</span></div>
+      <div class="goal"><b>Задача:</b> разработать консольное приложение «Библиотека».</div>
+
+      <h4>Классы</h4>
+      <ul>
+        <li><code>Book</code> — название, автор, год, ISBN</li>
+        <li><code>Reader</code> — имя, номер билета, список взятых книг</li>
+        <li><code>Library</code> — список книг, список читателей, методы управления</li>
+      </ul>
+
+      <h4>Функционал</h4>
+      <ul>
+        <li>Добавить книгу / читателя</li>
+        <li>Выдать книгу читателю (проверка: книга не выдана, читатель существует)</li>
+        <li>Принять книгу обратно</li>
+        <li>Найти все книги автора</li>
+        <li>Найти все книги, которые на руках у читателя</li>
+        <li>Сохранить / загрузить состояние в файл</li>
+      </ul>
+
+      <h4>Требования</h4>
+      <ul>
+        <li>Используйте <code>std::vector</code> и <code>std::map</code> вместо массивов</li>
+        <li>Умные указатели для книг и читателей</li>
+        <li>Обработка исключений для некорректных операций</li>
+        <li>Меню для интерактивной работы</li>
+        <li>Разделение на заголовочные файлы (<code>.h</code>) и реализации (<code>.cpp</code>)</li>
+      </ul>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Зачем нужен виртуальный деструктор?</summary>
+      <div class="answer">
+        Представьте иерархию: <code>Animal</code> (базовый) и <code>Dog</code> (наследник, у которого есть поле <code>std::string* favoriteToy</code> с выделенной памятью).<br><br>
+        <b>Без виртуального деструктора:</b>
+        <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:6px;">Animal* a = new Dog();
+delete a;  // вызовется только ~Animal(), память favoriteToy утечёт!</pre>
+        <b>С виртуальным:</b>
+        <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:6px;">class Animal {
+public:
+    virtual ~Animal() { }  // гарантирует вызов ~Dog()
+};</pre>
+        Правило: если класс имеет хотя бы один виртуальный метод — деструктор тоже виртуальный.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Чем unique_ptr лучше сырого указателя?</summary>
+      <div class="answer">
+        <b>Автоматическое освобождение.</b> <code>unique_ptr</code> вызывает <code>delete</code> при выходе из области видимости:
+        <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:6px;">{
+    std::unique_ptr&lt;Student&gt; s = std::make_unique&lt;Student&gt;();
+    // ...
+}  // s автоматически вызывает delete</pre>
+        <b>Безопасность при исключениях.</b> Если брошено исключение — память всё равно освободится.
+        <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:6px;">void f() {
+    Student* raw = new Student();
+    mayThrow();  // если бросит — raw утечёт
+    delete raw;
+}
+
+void g() {
+    auto safe = std::make_unique&lt;Student&gt;();
+    mayThrow();  // если бросит — safe освободит память
+}</pre>
+        <b>Нулевые накладные расходы.</b> unique_ptr того же размера, что и сырой указатель.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Что такое RAII?</summary>
+      <div class="answer">
+        <b>RAII</b> (Resource Acquisition Is Initialization) — ключевая идиома C++:
+        <ul>
+          <li>Ресурс захватывается в конструкторе</li>
+          <li>Освобождается в деструкторе</li>
+          <li>Живёт ровно столько, сколько живёт объект</li>
+        </ul>
+        <b>Примеры:</b>
+        <ul>
+          <li><code>std::unique_ptr</code> — управляет памятью</li>
+          <li><code>std::fstream</code> — управляет файлом (закрывается в деструкторе)</li>
+          <li><code>std::lock_guard</code> — управляет мьютексом (освобождает при выходе из блока)</li>
+        </ul>
+        RAII — основа безопасного C++: не нужно помнить о <code>delete</code>, <code>close</code>, <code>unlock</code>. Всё происходит автоматически.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание</div>
+      Сдать проект «Библиотека» (ПР №4) + <code>practice-cpp-oop.docx</code> с описанием архитектуры, диаграммой классов и листингами.
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="10-cpp-basics.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">10. C++ — основы</span>
+  </a>
+  <a href="12-databases.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">12. Базы данных</span>
+  </a>
+</div>
+
+<footer>
+  ПМ.01 Разработка модулей ПО · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

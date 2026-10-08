@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПМ.01 · 12. Базы данных · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ПМ.01 · Тема 12</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="pm01-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-lifecycle.html">1. ЖЦ ПО</a>
+  <a href="02-structured.html">2. Структурное</a>
+  <a href="03-oop-basics.html">3. ООП</a>
+  <a href="04-patterns.html">4. Паттерны</a>
+  <a href="05-events.html">5. События</a>
+  <a href="06-refactoring.html">6. Рефакторинг</a>
+  <a href="07-ui.html">7. UI</a>
+  <a href="08-testing.html">8. Тестирование</a>
+  <a href="09-docs.html">9. Документация</a>
+  <a href="10-cpp-basics.html">10. C++</a>
+  <a href="11-cpp-oop.html">11. C++ ООП</a>
+  <a href="12-databases.html" class="current">12. БД</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">12</span>Теория баз данных и программирование MS SQL Server</h2>
+
+    <p><b>База данных (БД)</b> — организованное хранилище структурированных данных. <b>СУБД</b> (система управления базами данных) — программа, которая этими данными управляет. <b>SQL</b> — язык запросов, стандарт для работы с реляционными БД.</p>
+
+    <h3>12.1. Виды баз данных</h3>
+
+    <table>
+      <tr><th>Тип</th><th>Модель</th><th>Примеры</th></tr>
+      <tr><td><b>Реляционные (SQL)</b></td><td>Таблицы с фиксированной схемой</td><td>MS SQL Server, PostgreSQL, MySQL, Oracle</td></tr>
+      <tr><td><b>Документные (NoSQL)</b></td><td>JSON-подобные документы</td><td>MongoDB, CouchDB</td></tr>
+      <tr><td><b>Ключ-значение</b></td><td>Пары ключ → значение</td><td>Redis, Memcached</td></tr>
+      <tr><td><b>Колоночные</b></td><td>Данные по столбцам</td><td>ClickHouse, Cassandra</td></tr>
+      <tr><td><b>Графовые</b></td><td>Узлы и связи</td><td>Neo4j</td></tr>
+    </table>
+
+    <p>В этом курсе — классическая реляционная модель на примере <b>MS SQL Server</b>.</p>
+
+    <h3>12.2. Реляционная модель</h3>
+
+    <p><b>Таблица</b> — основной объект. Состоит из строк (записей) и столбцов (полей).</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 600 220" width="600">
+        <!-- Таблица Users -->
+        <text x="130" y="20" text-anchor="middle" font-size="13" fill="#4f46e5" font-weight="600">Users</text>
+        <rect x="30" y="30" width="200" height="150" fill="#fff" stroke="#4f46e5" stroke-width="1.5"/>
+        <rect x="30" y="30" width="200" height="30" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.5"/>
+        <text x="80" y="50" text-anchor="middle" font-size="11" fill="#4f46e5" font-weight="600">id (PK)</text>
+        <text x="160" y="50" text-anchor="middle" font-size="11" fill="#4f46e5" font-weight="600">name</text>
+
+        <g font-size="11" fill="#1c2331" text-anchor="middle">
+          <text x="80" y="80">1</text><text x="160" y="80">Alice</text>
+          <text x="80" y="105">2</text><text x="160" y="105">Bob</text>
+          <text x="80" y="130">3</text><text x="160" y="130">Carol</text>
+        </g>
+        <line x1="30" y1="60" x2="230" y2="60" stroke="#cbd5e1"/>
+        <line x1="30" y1="90" x2="230" y2="90" stroke="#cbd5e1"/>
+        <line x1="30" y1="115" x2="230" y2="115" stroke="#cbd5e1"/>
+        <line x1="30" y1="140" x2="230" y2="140" stroke="#cbd5e1"/>
+        <line x1="130" y1="30" x2="130" y2="180" stroke="#cbd5e1"/>
+
+        <!-- Таблица Orders -->
+        <text x="450" y="20" text-anchor="middle" font-size="13" fill="#16a34a" font-weight="600">Orders</text>
+        <rect x="350" y="30" width="200" height="150" fill="#fff" stroke="#16a34a" stroke-width="1.5"/>
+        <rect x="350" y="30" width="200" height="30" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="390" y="50" text-anchor="middle" font-size="11" fill="#16a34a" font-weight="600">id</text>
+        <text x="450" y="50" text-anchor="middle" font-size="11" fill="#16a34a" font-weight="600">user_id (FK)</text>
+        <text x="520" y="50" text-anchor="middle" font-size="11" fill="#16a34a" font-weight="600">sum</text>
+
+        <g font-size="11" fill="#1c2331" text-anchor="middle">
+          <text x="390" y="80">101</text><text x="450" y="80">1</text><text x="520" y="80">500</text>
+          <text x="390" y="105">102</text><text x="450" y="105">2</text><text x="520" y="105">300</text>
+          <text x="390" y="130">103</text><text x="450" y="130">1</text><text x="520" y="130">1200</text>
+        </g>
+        <line x1="350" y1="60" x2="550" y2="60" stroke="#cbd5e1"/>
+        <line x1="350" y1="90" x2="550" y2="90" stroke="#cbd5e1"/>
+        <line x1="350" y1="115" x2="550" y2="115" stroke="#cbd5e1"/>
+        <line x1="350" y1="140" x2="550" y2="140" stroke="#cbd5e1"/>
+        <line x1="420" y1="30" x2="420" y2="180" stroke="#cbd5e1"/>
+        <line x1="485" y1="30" x2="485" y2="180" stroke="#cbd5e1"/>
+
+        <!-- Связь -->
+        <line x1="230" y1="105" x2="350" y2="105" stroke="#e11d48" stroke-width="2" stroke-dasharray="6 3"/>
+        <text x="290" y="98" text-anchor="middle" font-size="11" fill="#e11d48">1 → M</text>
+      </svg>
+      <div class="cap">Связь «один ко многим»: у одного пользователя много заказов (user_id ссылается на Users.id).</div>
+    </div>
+
+    <h4>Ключевые понятия</h4>
+
+    <table>
+      <tr><th>Понятие</th><th>Что это</th></tr>
+      <tr><td><b>Первичный ключ (PK)</b></td><td>Уникальный идентификатор строки. Не может быть NULL, не повторяется.</td></tr>
+      <tr><td><b>Внешний ключ (FK)</b></td><td>Ссылка на PK другой таблицы. Обеспечивает ссылочную целостность.</td></tr>
+      <tr><td><b>Индекс</b></td><td>Структура для ускорения поиска (как оглавление в книге).</td></tr>
+      <tr><td><b>Нормализация</b></td><td>Устранение дублирования данных через разделение на таблицы.</td></tr>
+      <tr><td><b>Транзакция</b></td><td>Набор операций, которые выполняются «всё или ничего» (ACID).</td></tr>
+    </table>
+
+    <h3>12.3. Основные типы данных MS SQL Server</h3>
+
+    <table>
+      <tr><th>Категория</th><th>Типы</th><th>Когда использовать</th></tr>
+      <tr><td>Целые</td><td><code>INT</code>, <code>BIGINT</code>, <code>SMALLINT</code>, <code>TINYINT</code></td><td>ID, количество, возраст</td></tr>
+      <tr><td>Дробные</td><td><code>DECIMAL(p,s)</code>, <code>FLOAT</code>, <code>REAL</code></td><td>Деньги — DECIMAL, наука — FLOAT</td></tr>
+      <tr><td>Строки</td><td><code>VARCHAR(n)</code>, <code>NVARCHAR(n)</code>, <code>CHAR</code>, <code>TEXT</code></td><td>Имена, адреса. NVARCHAR — Unicode</td></tr>
+      <tr><td>Дата/время</td><td><code>DATE</code>, <code>TIME</code>, <code>DATETIME</code>, <code>DATETIME2</code></td><td>Заказы, события</td></tr>
+      <tr><td>Логический</td><td><code>BIT</code></td><td>true/false (1/0)</td></tr>
+      <tr><td>Уникальный ID</td><td><code>UNIQUEIDENTIFIER</code></td><td>GUID вместо автоинкремента</td></tr>
+    </table>
+
+    <h3>12.4. Базовые SQL-запросы</h3>
+
+    <h4>SELECT — выборка</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="-- Все столбцы, все строки
+SELECT * FROM Users;
+
+-- Конкретные столбцы
+SELECT id, name FROM Users;
+
+-- С условием
+SELECT * FROM Users WHERE age &gt;= 18;
+
+-- С сортировкой (ASC — по возрастанию, DESC — по убыванию)
+SELECT * FROM Users ORDER BY name ASC;
+
+-- С ограничением количества
+SELECT TOP 10 * FROM Users ORDER BY registered_at DESC;
+
+-- С уникальными значениями
+SELECT DISTINCT city FROM Users;
+
+-- С псевдонимами
+SELECT name AS user_name, age AS user_age FROM Users;
+
+-- Комбинированное условие
+SELECT * FROM Users
+WHERE age &gt;= 18 AND city = 'Москва'
+ORDER BY name;">📋 Копировать</button>
+      <pre><span class="cmt">-- Все столбцы, все строки</span>
+SELECT * FROM Users;
+
+<span class="cmt">-- Конкретные столбцы</span>
+SELECT id, name FROM Users;
+
+<span class="cmt">-- С условием</span>
+SELECT * FROM Users WHERE age &gt;= 18;
+
+<span class="cmt">-- С сортировкой (ASC — по возрастанию, DESC — по убыванию)</span>
+SELECT * FROM Users ORDER BY name ASC;
+
+<span class="cmt">-- С ограничением количества</span>
+SELECT TOP 10 * FROM Users ORDER BY registered_at DESC;
+
+<span class="cmt">-- С уникальными значениями</span>
+SELECT DISTINCT city FROM Users;
+
+<span class="cmt">-- С псевдонимами</span>
+SELECT name AS user_name, age AS user_age FROM Users;
+
+<span class="cmt">-- Комбинированное условие</span>
+SELECT * FROM Users
+WHERE age &gt;= 18 AND city = 'Москва'
+ORDER BY name;</pre>
+    </div>
+
+    <h4>INSERT, UPDATE, DELETE</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="-- Вставка одной строки
+INSERT INTO Users (name, age, email)
+VALUES ('Alice', 25, 'alice@example.com');
+
+-- Вставка нескольких строк
+INSERT INTO Users (name, age, email) VALUES
+    ('Bob', 30, 'bob@example.com'),
+    ('Carol', 22, 'carol@example.com');
+
+-- Обновление
+UPDATE Users
+SET age = 26, city = 'СПб'
+WHERE name = 'Alice';
+
+-- Удаление
+DELETE FROM Users WHERE age &lt; 18;
+
+-- Осторожно! Без WHERE удалит всё
+-- DELETE FROM Users;
+
+-- Безопаснее — сначала проверить через SELECT
+SELECT * FROM Users WHERE age &lt; 18;">📋 Копировать</button>
+      <pre><span class="cmt">-- Вставка одной строки</span>
+INSERT INTO Users (name, age, email)
+VALUES ('Alice', 25, 'alice@example.com');
+
+<span class="cmt">-- Вставка нескольких строк</span>
+INSERT INTO Users (name, age, email) VALUES
+    ('Bob', 30, 'bob@example.com'),
+    ('Carol', 22, 'carol@example.com');
+
+<span class="cmt">-- Обновление</span>
+UPDATE Users
+SET age = 26, city = 'СПб'
+WHERE name = 'Alice';
+
+<span class="cmt">-- Удаление</span>
+DELETE FROM Users WHERE age &lt; 18;
+
+<span class="cmt">-- Осторожно! Без WHERE удалит всё</span>
+<span class="cmt">-- DELETE FROM Users;</span>
+
+<span class="cmt">-- Безопаснее — сначала проверить через SELECT</span>
+SELECT * FROM Users WHERE age &lt; 18;</pre>
+    </div>
+
+    <div class="box danger">
+      <div class="label">⚠ Всегда с WHERE</div>
+      <code>UPDATE</code> и <code>DELETE</code> без <code>WHERE</code> затронут <b>все строки таблицы</b>. Всегда пишите WHERE. Привычка: сначала SELECT с тем же WHERE, посмотреть, что попадает под условие, потом заменить на UPDATE/DELETE.
+    </div>
+
+    <h3>12.5. JOIN — соединение таблиц</h3>
+
+    <p>Главная сила SQL — соединение данных из разных таблиц по ключам.</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 500 200" width="500">
+        <circle cx="150" cy="100" r="70" fill="#eef0ff" stroke="#4f46e5" stroke-width="2" opacity=".8"/>
+        <circle cx="260" cy="100" r="70" fill="#ecfdf3" stroke="#16a34a" stroke-width="2" opacity=".8"/>
+        <text x="110" y="105" text-anchor="middle" font-size="12" fill="#4f46e5" font-weight="600">Users</text>
+        <text x="300" y="105" text-anchor="middle" font-size="12" fill="#16a34a" font-weight="600">Orders</text>
+        <text x="205" y="105" text-anchor="middle" font-size="11" fill="#e11d48" font-weight="600">INNER</text>
+        <text x="205" y="120" text-anchor="middle" font-size="10" fill="#e11d48">пересечение</text>
+      </svg>
+      <div class="cap">INNER JOIN возвращает только совпадающие строки из обеих таблиц.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="-- INNER JOIN: только совпадения
+SELECT u.name, o.sum
+FROM Users u
+INNER JOIN Orders o ON o.user_id = u.id;
+
+-- LEFT JOIN: все из левой + совпадения из правой
+SELECT u.name, o.sum
+FROM Users u
+LEFT JOIN Orders o ON o.user_id = u.id;
+-- Пользователи без заказов тоже попадут (с NULL в sum)
+
+-- RIGHT JOIN: все из правой
+SELECT u.name, o.sum
+FROM Users u
+RIGHT JOIN Orders o ON o.user_id = u.id;
+
+-- FULL OUTER JOIN: все из обеих
+SELECT u.name, o.sum
+FROM Users u
+FULL OUTER JOIN Orders o ON o.user_id = u.id;
+
+-- JOIN трёх таблиц
+SELECT u.name, o.id AS order_id, p.title
+FROM Users u
+JOIN Orders o ON o.user_id = u.id
+JOIN Products p ON p.id = o.product_id;">📋 Копировать</button>
+      <pre><span class="cmt">-- INNER JOIN: только совпадения</span>
+SELECT u.name, o.sum
+FROM Users u
+INNER JOIN Orders o ON o.user_id = u.id;
+
+<span class="cmt">-- LEFT JOIN: все из левой + совпадения из правой</span>
+SELECT u.name, o.sum
+FROM Users u
+LEFT JOIN Orders o ON o.user_id = u.id;
+<span class="cmt">-- Пользователи без заказов тоже попадут (с NULL в sum)</span>
+
+<span class="cmt">-- RIGHT JOIN: все из правой</span>
+SELECT u.name, o.sum
+FROM Users u
+RIGHT JOIN Orders o ON o.user_id = u.id;
+
+<span class="cmt">-- FULL OUTER JOIN: все из обеих</span>
+SELECT u.name, o.sum
+FROM Users u
+FULL OUTER JOIN Orders o ON o.user_id = u.id;
+
+<span class="cmt">-- JOIN трёх таблиц</span>
+SELECT u.name, o.id AS order_id, p.title
+FROM Users u
+JOIN Orders o ON o.user_id = u.id
+JOIN Products p ON p.id = o.product_id;</pre>
+    </div>
+
+    <h3>12.6. Агрегатные функции и GROUP BY</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="-- Агрегаты
+SELECT COUNT(*) FROM Users;              -- количество строк
+SELECT AVG(age) FROM Users;              -- среднее
+SELECT MIN(age), MAX(age) FROM Users;    -- мин и макс
+SELECT SUM(sum) FROM Orders;             -- сумма
+
+-- GROUP BY: агрегация по группам
+SELECT city, COUNT(*) AS user_count
+FROM Users
+GROUP BY city;
+
+SELECT user_id, SUM(sum) AS total_spent
+FROM Orders
+GROUP BY user_id
+ORDER BY total_spent DESC;
+
+-- HAVING: фильтр ПОСЛЕ группировки
+SELECT city, COUNT(*) AS user_count
+FROM Users
+GROUP BY city
+HAVING COUNT(*) &gt; 10;   -- только города с &gt;10 юзерами
+
+-- Разница: WHERE фильтрует ДО группировки, HAVING — после
+SELECT city, COUNT(*) AS cnt
+FROM Users
+WHERE age &gt;= 18
+GROUP BY city
+HAVING COUNT(*) &gt; 5;">📋 Копировать</button>
+      <pre><span class="cmt">-- Агрегаты</span>
+SELECT COUNT(*) FROM Users;              <span class="cmt">-- количество строк</span>
+SELECT AVG(age) FROM Users;              <span class="cmt">-- среднее</span>
+SELECT MIN(age), MAX(age) FROM Users;    <span class="cmt">-- мин и макс</span>
+SELECT SUM(sum) FROM Orders;             <span class="cmt">-- сумма</span>
+
+<span class="cmt">-- GROUP BY: агрегация по группам</span>
+SELECT city, COUNT(*) AS user_count
+FROM Users
+GROUP BY city;
+
+SELECT user_id, SUM(sum) AS total_spent
+FROM Orders
+GROUP BY user_id
+ORDER BY total_spent DESC;
+
+<span class="cmt">-- HAVING: фильтр ПОСЛЕ группировки</span>
+SELECT city, COUNT(*) AS user_count
+FROM Users
+GROUP BY city
+HAVING COUNT(*) &gt; 10;   <span class="cmt">-- только города с &gt;10 юзерами</span>
+
+<span class="cmt">-- Разница: WHERE фильтрует ДО группировки, HAVING — после</span>
+SELECT city, COUNT(*) AS cnt
+FROM Users
+WHERE age &gt;= 18
+GROUP BY city
+HAVING COUNT(*) &gt; 5;</pre>
+    </div>
+
+    <h3>12.7. Создание таблиц (DDL)</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="-- Создание таблицы
+CREATE TABLE Users (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    name NVARCHAR(100) NOT NULL,
+    email NVARCHAR(200) UNIQUE NOT NULL,
+    age INT CHECK (age &gt;= 0 AND age &lt;= 150),
+    city NVARCHAR(100),
+    registered_at DATETIME2 DEFAULT GETDATE()
+);
+
+CREATE TABLE Orders (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    user_id INT NOT NULL,
+    sum DECIMAL(10, 2) NOT NULL,
+    created_at DATETIME2 DEFAULT GETDATE(),
+    CONSTRAINT FK_Orders_Users
+        FOREIGN KEY (user_id)
+        REFERENCES Users(id)
+        ON DELETE CASCADE
+);
+
+-- Индексы для ускорения поиска
+CREATE INDEX IX_Users_Email ON Users(email);
+CREATE INDEX IX_Orders_UserId ON Orders(user_id);
+
+-- Изменение структуры
+ALTER TABLE Users ADD phone NVARCHAR(20);
+ALTER TABLE Users DROP COLUMN city;
+
+-- Удаление
+DROP TABLE Orders;
+DROP TABLE Users;   -- сначала зависимые таблицы!">📋 Копировать</button>
+      <pre><span class="cmt">-- Создание таблицы</span>
+CREATE TABLE Users (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    name NVARCHAR(100) NOT NULL,
+    email NVARCHAR(200) UNIQUE NOT NULL,
+    age INT CHECK (age &gt;= 0 AND age &lt;= 150),
+    city NVARCHAR(100),
+    registered_at DATETIME2 DEFAULT GETDATE()
+);
+
+CREATE TABLE Orders (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    user_id INT NOT NULL,
+    sum DECIMAL(10, 2) NOT NULL,
+    created_at DATETIME2 DEFAULT GETDATE(),
+    CONSTRAINT FK_Orders_Users
+        FOREIGN KEY (user_id)
+        REFERENCES Users(id)
+        ON DELETE CASCADE
+);
+
+<span class="cmt">-- Индексы для ускорения поиска</span>
+CREATE INDEX IX_Users_Email ON Users(email);
+CREATE INDEX IX_Orders_UserId ON Orders(user_id);
+
+<span class="cmt">-- Изменение структуры</span>
+ALTER TABLE Users ADD phone NVARCHAR(20);
+ALTER TABLE Users DROP COLUMN city;
+
+<span class="cmt">-- Удаление</span>
+DROP TABLE Orders;
+DROP TABLE Users;   <span class="cmt">-- сначала зависимые таблицы!</span></pre>
+    </div>
+
+    <h3>12.8. Хранимые процедуры и функции</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="-- Хранимая процедура: добавить пользователя
+CREATE PROCEDURE AddUser
+    @name NVARCHAR(100),
+    @email NVARCHAR(200),
+    @age INT
+AS
+BEGIN
+    IF EXISTS (SELECT 1 FROM Users WHERE email = @email)
+    BEGIN
+        THROW 50000, 'Email уже существует', 1;
+    END
+
+    INSERT INTO Users (name, email, age)
+    VALUES (@name, @email, @age);
+
+    SELECT SCOPE_IDENTITY() AS new_id;
+END;
+
+-- Вызов
+EXEC AddUser @name = 'Alice', @email = 'a@b.com', @age = 25;
+
+-- Функция: подсчёт заказов пользователя
+CREATE FUNCTION GetUserOrderCount(@userId INT)
+RETURNS INT
+AS
+BEGIN
+    DECLARE @count INT;
+    SELECT @count = COUNT(*) FROM Orders WHERE user_id = @userId;
+    RETURN @count;
+END;
+
+-- Использование
+SELECT dbo.GetUserOrderCount(1);">📋 Копировать</button>
+      <pre><span class="cmt">-- Хранимая процедура: добавить пользователя</span>
+CREATE PROCEDURE AddUser
+    @name NVARCHAR(100),
+    @email NVARCHAR(200),
+    @age INT
+AS
+BEGIN
+    IF EXISTS (SELECT 1 FROM Users WHERE email = @email)
+    BEGIN
+        THROW 50000, 'Email уже существует', 1;
+    END
+
+    INSERT INTO Users (name, email, age)
+    VALUES (@name, @email, @age);
+
+    SELECT SCOPE_IDENTITY() AS new_id;
+END;
+
+<span class="cmt">-- Вызов</span>
+EXEC AddUser @name = 'Alice', @email = 'a@b.com', @age = 25;
+
+<span class="cmt">-- Функция: подсчёт заказов пользователя</span>
+CREATE FUNCTION GetUserOrderCount(@userId INT)
+RETURNS INT
+AS
+BEGIN
+    DECLARE @count INT;
+    SELECT @count = COUNT(*) FROM Orders WHERE user_id = @userId;
+    RETURN @count;
+END;
+
+<span class="cmt">-- Использование</span>
+SELECT dbo.GetUserOrderCount(1);</pre>
+    </div>
+
+    <h3>12.9. Триггеры</h3>
+
+    <p><b>Триггер</b> — процедура, которая автоматически выполняется при INSERT/UPDATE/DELETE.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="-- Триггер: логировать изменение цены
+CREATE TABLE PriceLog (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    product_id INT,
+    old_price DECIMAL(10,2),
+    new_price DECIMAL(10,2),
+    changed_at DATETIME2 DEFAULT GETDATE()
+);
+
+CREATE TRIGGER trg_Products_PriceChange
+ON Products
+AFTER UPDATE
+AS
+BEGIN
+    INSERT INTO PriceLog (product_id, old_price, new_price)
+    SELECT d.id, d.price, i.price
+    FROM deleted d
+    JOIN inserted i ON d.id = i.id
+    WHERE d.price &lt;&gt; i.price;
+END;">📋 Копировать</button>
+      <pre><span class="cmt">-- Триггер: логировать изменение цены</span>
+CREATE TABLE PriceLog (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    product_id INT,
+    old_price DECIMAL(10,2),
+    new_price DECIMAL(10,2),
+    changed_at DATETIME2 DEFAULT GETDATE()
+);
+
+CREATE TRIGGER trg_Products_PriceChange
+ON Products
+AFTER UPDATE
+AS
+BEGIN
+    INSERT INTO PriceLog (product_id, old_price, new_price)
+    SELECT d.id, d.price, i.price
+    FROM deleted d
+    JOIN inserted i ON d.id = i.id
+    WHERE d.price &lt;&gt; i.price;
+END;</pre>
+    </div>
+
+    <h3>12.10. Транзакции</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="-- Транзакция: перевод денег между счетами
+BEGIN TRANSACTION;
+
+BEGIN TRY
+    -- Списать с одного
+    UPDATE Accounts SET balance = balance - 1000 WHERE id = 1;
+
+    -- Проверка: не ушли ли в минус
+    IF (SELECT balance FROM Accounts WHERE id = 1) &lt; 0
+        THROW 50000, 'Недостаточно средств', 1;
+
+    -- Зачислить другому
+    UPDATE Accounts SET balance = balance + 1000 WHERE id = 2;
+
+    COMMIT TRANSACTION;
+END TRY
+BEGIN CATCH
+    ROLLBACK TRANSACTION;
+    THROW;
+END CATCH;
+
+-- Уровни изоляции (важно для многопользовательских систем)
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;  -- по умолчанию
+-- READ UNCOMMITTED — читает «грязные» данные
+-- REPEATABLE READ — блокирует строки до конца транзакции
+-- SERIALIZABLE — полная изоляция, медленно">📋 Копировать</button>
+      <pre><span class="cmt">-- Транзакция: перевод денег между счетами</span>
+BEGIN TRANSACTION;
+
+BEGIN TRY
+    <span class="cmt">-- Списать с одного</span>
+    UPDATE Accounts SET balance = balance - 1000 WHERE id = 1;
+
+    <span class="cmt">-- Проверка: не ушли ли в минус</span>
+    IF (SELECT balance FROM Accounts WHERE id = 1) &lt; 0
+        THROW 50000, 'Недостаточно средств', 1;
+
+    <span class="cmt">-- Зачислить другому</span>
+    UPDATE Accounts SET balance = balance + 1000 WHERE id = 2;
+
+    COMMIT TRANSACTION;
+END TRY
+BEGIN CATCH
+    ROLLBACK TRANSACTION;
+    THROW;
+END CATCH;
+
+<span class="cmt">-- Уровни изоляции (важно для многопользовательских систем)</span>
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;  <span class="cmt">-- по умолчанию</span>
+<span class="cmt">-- READ UNCOMMITTED — читает «грязные» данные</span>
+<span class="cmt">-- REPEATABLE READ — блокирует строки до конца транзакции</span>
+<span class="cmt">-- SERIALIZABLE — полная изоляция, медленно</span></pre>
+    </div>
+
+    <h3>12.11. Нормализация</h3>
+
+    <p><b>Нормализация</b> — процесс устранения избыточности и аномалий в схеме БД. Три основные нормальные формы:</p>
+
+    <table>
+      <tr><th>Форма</th><th>Требование</th></tr>
+      <tr><td><b>1NF</b></td><td>Все значения атомарны (не списки, не множества)</td></tr>
+      <tr><td><b>2NF</b></td><td>1NF + нет частичных зависимостей от составного ключа</td></tr>
+      <tr><td><b>3NF</b></td><td>2NF + нет транзитивных зависимостей (не-ключ → не-ключ)</td></tr>
+    </table>
+
+    <div class="box example">
+      <div class="label">Пример нормализации</div>
+      <b>Плохо (1 таблица):</b>
+      <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:6px;">Orders: id | user_name | user_email | product_title | product_price | quantity</pre>
+      Проблемы: дублирование данных о пользователе и товаре; при изменении email — обновлять во всех заказах.<br><br>
+      <b>Хорошо (3 таблицы, 3NF):</b>
+      <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:6px;">Users:    id | name | email
+Products: id | title | price
+Orders:   id | user_id | product_id | quantity | created_at</pre>
+      Нет дублирования, есть ссылочная целостность.
+    </div>
+
+    <h3>12.12. Программирование: работа с БД из C#</h3>
+
+    <h4>ADO.NET — низкоуровневый доступ</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="using System.Data.SqlClient;
+
+const string connectionString = 
+    &quot;Server=localhost;Database=ShopDb;Trusted_Connection=True;&quot;;
+
+// SELECT
+using (var connection = new SqlConnection(connectionString))
+{
+    connection.Open();
+    var cmd = new SqlCommand(&quot;SELECT id, name FROM Users WHERE age &gt; @age&quot;, connection);
+    cmd.Parameters.AddWithValue(&quot;@age&quot;, 18);
+
+    using (var reader = cmd.ExecuteReader())
+    {
+        while (reader.Read())
+        {
+            int id = reader.GetInt32(0);
+            string name = reader.GetString(1);
+            Console.WriteLine($&quot;{id}: {name}&quot;);
+        }
+    }
+}
+
+// INSERT с параметрами (защита от SQL-инъекций!)
+using (var connection = new SqlConnection(connectionString))
+{
+    connection.Open();
+    var cmd = new SqlCommand(
+        &quot;INSERT INTO Users (name, email) VALUES (@name, @email)&quot;, connection);
+    cmd.Parameters.AddWithValue(&quot;@name&quot;, userInput.Name);
+    cmd.Parameters.AddWithValue(&quot;@email&quot;, userInput.Email);
+    int rows = cmd.ExecuteNonQuery();
+}">📋 Копировать код</button>
+      <pre>using System.Data.SqlClient;
+
+const string connectionString = 
+    "Server=localhost;Database=ShopDb;Trusted_Connection=True;";
+
+<span class="cmt">// SELECT</span>
+using (var connection = new SqlConnection(connectionString))
+{
+    connection.Open();
+    var cmd = new SqlCommand("SELECT id, name FROM Users WHERE age &gt; @age", connection);
+    cmd.Parameters.AddWithValue("@age", 18);
+
+    using (var reader = cmd.ExecuteReader())
+    {
+        while (reader.Read())
+        {
+            int id = reader.GetInt32(0);
+            string name = reader.GetString(1);
+            Console.WriteLine($"{id}: {name}");
+        }
+    }
+}
+
+<span class="cmt">// INSERT с параметрами (защита от SQL-инъекций!)</span>
+using (var connection = new SqlConnection(connectionString))
+{
+    connection.Open();
+    var cmd = new SqlCommand(
+        "INSERT INTO Users (name, email) VALUES (@name, @email)", connection);
+    cmd.Parameters.AddWithValue("@name", userInput.Name);
+    cmd.Parameters.AddWithValue("@email", userInput.Email);
+    int rows = cmd.ExecuteNonQuery();
+}</pre>
+    </div>
+
+    <div class="box danger">
+      <div class="label">⚠ SQL-инъекция</div>
+      <b>Никогда</b> не склеивайте SQL-строку из пользовательского ввода:
+      <pre style="background:#fef2f2;padding:8px;border-radius:6px;font-size:12px;margin-top:6px;">// ПЛОХО — дыра в безопасности!
+var sql = "SELECT * FROM Users WHERE name = '" + userInput + "'";
+// Если userInput = "'; DROP TABLE Users; --" — прощай, таблица</pre>
+      <b>Всегда</b> используйте параметры:
+      <pre style="background:#f0fdf4;padding:8px;border-radius:6px;font-size:12px;margin-top:6px;">cmd.Parameters.AddWithValue("@name", userInput);</pre>
+    </div>
+
+    <h4>Entity Framework — ORM</h4>
+
+    <p><b>ORM</b> (Object-Relational Mapping) — библиотека, которая превращает таблицы БД в C#-классы.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// Модели
+public class User {
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Email { get; set; }
+    public List&lt;Order&gt; Orders { get; set; }
+}
+
+public class Order {
+    public int Id { get; set; }
+    public int UserId { get; set; }
+    public User User { get; set; }
+    public decimal Sum { get; set; }
+}
+
+// DbContext
+public class ShopContext : DbContext {
+    public DbSet&lt;User&gt; Users { get; set; }
+    public DbSet&lt;Order&gt; Orders { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder options) {
+        options.UseSqlServer(&quot;Server=localhost;Database=ShopDb;Trusted_Connection=True;&quot;);
+    }
+}
+
+// Использование
+using var db = new ShopContext();
+
+// SELECT с LINQ
+var adults = db.Users.Where(u =&gt; u.Age &gt;= 18).ToList();
+var bigOrders = db.Orders.Where(o =&gt; o.Sum &gt; 1000).OrderByDescending(o =&gt; o.Sum).ToList();
+
+// JOIN через навигационные свойства
+var usersWithOrders = db.Users
+    .Include(u =&gt; u.Orders)
+    .Where(u =&gt; u.Orders.Any())
+    .ToList();
+
+// INSERT
+db.Users.Add(new User { Name = &quot;Alice&quot;, Email = &quot;alice@example.com&quot; });
+db.SaveChanges();
+
+// UPDATE
+var user = db.Users.Find(1);
+user.Name = &quot;New Name&quot;;
+db.SaveChanges();
+
+// DELETE
+db.Users.Remove(user);
+db.SaveChanges();">📋 Копировать код</button>
+      <pre><span class="cmt">// Модели</span>
+public class User {
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Email { get; set; }
+    public List&lt;Order&gt; Orders { get; set; }
+}
+
+public class Order {
+    public int Id { get; set; }
+    public int UserId { get; set; }
+    public User User { get; set; }
+    public decimal Sum { get; set; }
+}
+
+<span class="cmt">// DbContext</span>
+public class ShopContext : DbContext {
+    public DbSet&lt;User&gt; Users { get; set; }
+    public DbSet&lt;Order&gt; Orders { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder options) {
+        options.UseSqlServer("Server=localhost;Database=ShopDb;Trusted_Connection=True;");
+    }
+}
+
+<span class="cmt">// Использование</span>
+using var db = new ShopContext();
+
+<span class="cmt">// SELECT с LINQ</span>
+var adults = db.Users.Where(u =&gt; u.Age &gt;= 18).ToList();
+var bigOrders = db.Orders.Where(o =&gt; o.Sum &gt; 1000).OrderByDescending(o =&gt; o.Sum).ToList();
+
+<span class="cmt">// JOIN через навигационные свойства</span>
+var usersWithOrders = db.Users
+    .Include(u =&gt; u.Orders)
+    .Where(u =&gt; u.Orders.Any())
+    .ToList();
+
+<span class="cmt">// INSERT</span>
+db.Users.Add(new User { Name = "Alice", Email = "alice@example.com" });
+db.SaveChanges();
+
+<span class="cmt">// UPDATE</span>
+var user = db.Users.Find(1);
+user.Name = "New Name";
+db.SaveChanges();
+
+<span class="cmt">// DELETE</span>
+db.Users.Remove(user);
+db.SaveChanges();</pre>
+    </div>
+
+    <h3>12.13. Сравнение подходов</h3>
+
+    <table>
+      <tr><th>Подход</th><th>Плюсы</th><th>Минусы</th></tr>
+      <tr><td><b>ADO.NET</b></td><td>Полный контроль, максимальная скорость</td><td>Много кода, ручные SQL-запросы</td></tr>
+      <tr><td><b>Dapper</b></td><td>Простой, быстрый, тонкая обёртка над ADO.NET</td><td>Нужно писать SQL</td></tr>
+      <tr><td><b>Entity Framework</b></td><td>Лучший для сложных доменных моделей, LINQ, миграции</td><td>Тяжеловеснее, «магические» SQL-запросы</td></tr>
+      <tr><td><b>Dapper + EF</b></td><td>EF для сложных операций, Dapper для быстрых read-only</td><td>Два инструмента</td></tr>
+    </table>
+
+    <h3>Практические работы</h3>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №1 · Создание БД <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> создать базу данных «Магазин» с 4 таблицами.</div>
+
+      <ol>
+        <li>Установите SQL Server + SQL Server Management Studio (SSMS) или Azure Data Studio.</li>
+        <li>Создайте базу: <code>CREATE DATABASE ShopDb;</code></li>
+        <li>Создайте таблицы:
+          <ul>
+            <li><b>Categories</b> — id, name</li>
+            <li><b>Products</b> — id, category_id (FK), title, price, stock</li>
+            <li><b>Customers</b> — id, name, email, phone, city</li>
+            <li><b>Orders</b> — id, customer_id (FK), product_id (FK), quantity, created_at</li>
+          </ul>
+        </li>
+        <li>Настройте связи через FOREIGN KEY.</li>
+        <li>Заполните данными: 5 категорий, 20 товаров, 10 клиентов, 30 заказов.</li>
+        <li>Сделайте схему БД через «Database Diagrams» и сохраните как картинку.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №2 · SELECT-запросы <span class="badge">60 мин</span></div>
+      <div class="goal"><b>Задача:</b> написать 15 запросов на выборку.</div>
+
+      <ol>
+        <li>Все товары с ценой &gt; 1000.</li>
+        <li>Все клиенты из Москвы, отсортированные по имени.</li>
+        <li>Топ-5 самых дорогих товаров.</li>
+        <li>Товары, которых на складе меньше 5 штук.</li>
+        <li>Количество клиентов по городам (<code>GROUP BY</code>).</li>
+        <li>Средняя цена товаров по категориям.</li>
+        <li>Сумма всех заказов за последний месяц.</li>
+        <li>Клиенты, у которых больше 3 заказов.</li>
+        <li>Все заказы с именем клиента и названием товара (<code>JOIN</code>).</li>
+        <li>Категории, в которых нет товаров (<code>LEFT JOIN + IS NULL</code>).</li>
+        <li>Топ-3 клиента по сумме покупок.</li>
+        <li>Города, где больше 2 клиентов (<code>HAVING</code>).</li>
+        <li>Самый популярный товар (по количеству заказов).</li>
+        <li>Товары, которые никто не заказывал.</li>
+        <li>Средний чек по каждому клиенту.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №3 · Хранимые процедуры и триггеры <span class="badge">60 мин</span></div>
+      <div class="goal"><b>Задача:</b> написать 4 процедуры и 2 триггера.</div>
+
+      <h4>Процедуры</h4>
+      <ol>
+        <li><code>AddProduct</code> — добавить товар с проверкой (цена &gt; 0, категория существует).</li>
+        <li><code>GetOrdersByCustomer</code> — все заказы конкретного клиента.</li>
+        <li><code>GetTopProducts</code> — топ-N товаров по продажам за период (параметры: N, дата_от, дата_до).</li>
+        <li><code>CreateOrder</code> — создать заказ с проверкой наличия на складе и уменьшением остатка.</li>
+      </ol>
+
+      <h4>Триггеры</h4>
+      <ol>
+        <li>При изменении цены товара — логировать в <code>PriceLog</code> (старая и новая цена).</li>
+        <li>При удалении клиента — запретить, если у него есть активные заказы.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №4 · Приложение с БД на C# <span class="badge">90 мин</span></div>
+      <div class="goal"><b>Задача:</b> разработать Windows Forms приложение для работы с БД «Магазин».</div>
+
+      <ol>
+        <li>Создайте проект Windows Forms.</li>
+        <li>Подключите ADO.NET или Entity Framework к <code>ShopDb</code>.</li>
+        <li>Реализуйте формы:
+          <ul>
+            <li><b>Список товаров</b> — DataGridView, кнопки «Добавить», «Редактировать», «Удалить».</li>
+            <li><b>Список клиентов</b> — с фильтром по городу.</li>
+            <li><b>Список заказов</b> — с JOIN клиентов и товаров.</li>
+            <li><b>Форма оформления заказа</b> — выбор клиента, товара, количества.</li>
+          </ul>
+        </li>
+        <li>Валидация: цена &gt; 0, обязательные поля, количество на складе.</li>
+        <li>Обработка исключений: показать пользователю понятное сообщение при ошибке БД.</li>
+        <li>Используйте параметризованные запросы (защита от SQL-инъекций).</li>
+      </ol>
+
+      <div class="goal"><b>Результат:</b> рабочее приложение + скриншоты всех форм.</div>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Что такое SQL-инъекция и как от неё защититься?</summary>
+      <div class="answer">
+        <b>SQL-инъекция</b> — атака, когда злоумышленник вставляет SQL-код через пользовательский ввод.<br><br>
+        <b>Пример атаки:</b>
+        <pre style="background:#fef2f2;padding:8px;border-radius:6px;font-size:12px;margin-top:6px;">// Код приложения:
+var sql = "SELECT * FROM Users WHERE name = '" + input + "'";
+
+// Пользователь вводит:
+// ' OR '1'='1
+// Итоговый запрос:
+// SELECT * FROM Users WHERE name = '' OR '1'='1'
+// Возвращает ВСЕ строки!</pre>
+        Ещё опаснее:
+        <pre style="background:#fef2f2;padding:8px;border-radius:6px;font-size:12px;margin-top:6px;">// Пользователь вводит: '; DROP TABLE Users; --
+// Удаляется вся таблица</pre>
+        <b>Защита:</b> параметризованные запросы:
+        <pre style="background:#f0fdf4;padding:8px;border-radius:6px;font-size:12px;margin-top:6px;">cmd.CommandText = "SELECT * FROM Users WHERE name = @name";
+cmd.Parameters.AddWithValue("@name", userInput);</pre>
+        Параметры передаются отдельно от SQL-кода, поэтому никогда не интерпретируются как SQL.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Чем WHERE отличается от HAVING?</summary>
+      <div class="answer">
+        <b>WHERE</b> — фильтрует строки <b>до</b> группировки.<br>
+        <b>HAVING</b> — фильтрует группы <b>после</b> группировки.<br><br>
+        Порядок выполнения запроса:
+        <ol>
+          <li><code>FROM</code> — берём таблицу</li>
+          <li><code>WHERE</code> — фильтруем строки</li>
+          <li><code>GROUP BY</code> — группируем</li>
+          <li><code>HAVING</code> — фильтруем группы</li>
+          <li><code>SELECT</code> — выбираем столбцы</li>
+          <li><code>ORDER BY</code> — сортируем</li>
+        </ol>
+        Пример:
+        <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:6px;">SELECT city, COUNT(*) AS cnt
+FROM Users
+WHERE age &gt;= 18          -- фильтр строк (до группировки)
+GROUP BY city
+HAVING COUNT(*) &gt; 5;     -- фильтр групп (после)</pre>
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Зачем нужны транзакции?</summary>
+      <div class="answer">
+        Транзакция гарантирует <b>атомарность</b>: либо все операции выполняются, либо ни одна.<br><br>
+        Классический пример — перевод денег:
+        <ol>
+          <li>Списать 1000 руб. со счёта A</li>
+          <li>Зачислить 1000 руб. на счёт B</li>
+        </ol>
+        Если между шагами 1 и 2 упадёт сервер — деньги исчезнут. Транзакция гарантирует: если что-то упало, откат к исходному состоянию.<br><br>
+        Свойства <b>ACID</b>:
+        <ul>
+          <li><b>A</b>tomicity — всё или ничего</li>
+          <li><b>C</b>onsistency — данные не нарушают правила (FK, CHECK)</li>
+          <li><b>I</b>solation — параллельные транзакции не мешают друг другу</li>
+          <li><b>D</b>urability — после COMMIT данные сохранены, даже если отключится питание</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 4. Что выбрать: EF, Dapper или ADO.NET?</summary>
+      <div class="answer">
+        <b>ADO.NET</b> — когда:
+        <ul>
+          <li>Нужен максимальный контроль над SQL</li>
+          <li>Критична производительность (миллионы запросов в секунду)</li>
+          <li>Простые сценарии, не хочется тащить ORM</li>
+        </ul>
+        <b>Dapper</b> — когда:
+        <ul>
+          <li>Есть готовые SQL-запросы, нужен маппинг в объекты</li>
+          <li>Read-heavy проекты (аналитика, отчёты)</li>
+          <li>Хотите скорость ADO.NET + удобство</li>
+        </ul>
+        <b>Entity Framework</b> — когда:
+        <ul>
+          <li>Сложная доменная модель (много сущностей, связей)</li>
+          <li>Нужны миграции схемы</li>
+          <li>Команда знает LINQ</li>
+          <li>Хочется избежать ручного SQL</li>
+        </ul>
+        В реальных проектах часто <b>комбинируют</b>: EF для CRUD, Dapper для отчётов.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание по теме</div>
+      Сдать:
+      <ol>
+        <li>Проект БД «Магазин» (SQL-скрипт создания + данные)</li>
+        <li>Схему БД (картинка)</li>
+        <li>15 SELECT-запросов с результатами (скриншоты из SSMS)</li>
+        <li>4 хранимые процедуры + 2 триггера (SQL-код)</li>
+        <li>WinForms-приложение с БД (проект + скриншоты)</li>
+        <li>Файл <code>practice-databases.docx</code> с пояснениями и ответами на 4 вопроса</li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="11-cpp-oop.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">11. C++ — ООП</span>
+  </a>
+  <a href="pm01-index.html" class="next">
+    <span class="dir">К оглавлению →</span>
+    <span class="title">ПМ.01 — все темы</span>
+  </a>
+</div>
+
+<footer>
+  ПМ.01 Разработка модулей ПО · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

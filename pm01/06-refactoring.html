@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПМ.01 · 6. Рефакторинг · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ПМ.01 · Тема 6</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="pm01-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-lifecycle.html">1. ЖЦ ПО</a>
+  <a href="02-structured.html">2. Структурное</a>
+  <a href="03-oop-basics.html">3. ООП</a>
+  <a href="04-patterns.html">4. Паттерны</a>
+  <a href="05-events.html">5. События</a>
+  <a href="06-refactoring.html" class="current">6. Рефакторинг</a>
+  <a href="07-ui.html">7. UI</a>
+  <a href="08-testing.html">8. Тестирование</a>
+  <a href="09-docs.html">9. Документация</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">6</span>Оптимизация и рефакторинг кода</h2>
+
+    <p>Программисты пишут код не для компьютера, а для <b>других программистов</b> — включая себя через полгода. Рефакторинг и оптимизация — два инструмента, которые делают код понятным и быстрым.</p>
+
+    <h3>6.1. Что такое рефакторинг</h3>
+
+    <p><b>Рефакторинг</b> — изменение структуры кода <b>без изменения поведения</b>. После рефакторинга программа работает так же, но код становится чище.</p>
+
+    <div class="box note">
+      <div class="label">Метафора</div>
+      Рефакторинг — это уборка в комнате. Вещи те же, но найти нужное легко. Если через полгода открыть код и не понимать, что там — пора рефакторить.
+    </div>
+
+    <h3>6.2. Признаки плохого кода (Code smells)</h3>
+
+    <table>
+      <tr><th>Запах</th><th>Что это</th><th>Что делать</th></tr>
+      <tr><td><b>Длинный метод</b></td><td>Функция на 200 строк</td><td>Извлечь подфункции</td></tr>
+      <tr><td><b>Дублирование кода</b></td><td>Один и тот же код в разных местах</td><td>Вынести в общий метод</td></tr>
+      <tr><td><b>Магические числа</b></td><td><code>if (x &gt; 86400)</code></td><td>Заменить на константу <code>SECONDS_IN_DAY</code></td></tr>
+      <tr><td><b>Длинный список параметров</b></td><td><code>func(a,b,c,d,e,f,g)</code></td><td>Объединить в объект-параметр</td></tr>
+      <tr><td><b>Большой класс</b></td><td>Класс на 2000 строк</td><td>Разбить по ответственности</td></tr>
+      <tr><td><b>Комментарии вместо кода</b></td><td><code>// увеличить x на 1</code> перед <code>x++</code></td><td>Удалить очевидные комментарии</td></tr>
+      <tr><td><b>Мёртвый код</b></td><td>Функции, которые никто не вызывает</td><td>Удалить</td></tr>
+      <tr><td><b>Вложенные условия</b></td><td>5 уровней if внутри if</td><td>Early return или guard clauses</td></tr>
+    </table>
+
+    <h3>6.3. Техники рефакторинга</h3>
+
+    <h4>1. Extract Method (извлечь метод)</h4>
+    <p>Длинный код разбиваем на методы с понятными именами.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// БЫЛО
+void PrintInvoice(Order order) {
+    Console.WriteLine(&quot;Счёт №&quot; + order.Id);
+    Console.WriteLine(&quot;Дата: &quot; + order.Date);
+    decimal total = 0;
+    foreach (var item in order.Items) total += item.Price * item.Quantity;
+    Console.WriteLine(&quot;Итого: &quot; + total);
+}
+
+// СТАЛО
+void PrintInvoice(Order order) {
+    PrintHeader(order);
+    PrintTotal(order);
+}
+void PrintHeader(Order order) { ... }
+void PrintTotal(Order order) { ... }">📋 Копировать</button>
+      <pre><span class="cmt">// БЫЛО</span>
+void PrintInvoice(Order order) {
+    Console.WriteLine("Счёт №" + order.Id);
+    Console.WriteLine("Дата: " + order.Date);
+    decimal total = 0;
+    foreach (var item in order.Items) total += item.Price * item.Quantity;
+    Console.WriteLine("Итого: " + total);
+}
+
+<span class="cmt">// СТАЛО</span>
+void PrintInvoice(Order order) {
+    PrintHeader(order);
+    PrintTotal(order);
+}
+void PrintHeader(Order order) { ... }
+void PrintTotal(Order order) { ... }</pre>
+    </div>
+
+    <h4>2. Rename (переименовать)</h4>
+    <p>Понятные имена — половина читаемости.</p>
+
+    <table>
+      <tr><th>Плохо</th><th>Хорошо</th></tr>
+      <tr><td><code>d</code></td><td><code>daysUntilDeadline</code></td></tr>
+      <tr><td><code>calc()</code></td><td><code>calculateTotalPrice()</code></td></tr>
+      <tr><td><code>flag</code></td><td><code>isEmailVerified</code></td></tr>
+      <tr><td><code>temp</code></td><td><code>userInput</code></td></tr>
+      <tr><td><code>x1, x2, x3</code></td><td><code>width, height, depth</code></td></tr>
+    </table>
+
+    <h4>3. Guard Clauses (ранний выход)</h4>
+    <p>Вместо вложенных условий — проверки в начале и ранние <code>return</code>.</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// БЫЛО
+decimal GetDiscount(User user) {
+    if (user != null) {
+        if (user.IsActive) {
+            if (user.OrdersCount > 10) {
+                return 0.15m;
+            } else {
+                return 0.05m;
+            }
+        } else {
+            return 0m;
+        }
+    }
+    return 0m;
+}
+
+// СТАЛО
+decimal GetDiscount(User user) {
+    if (user == null) return 0m;
+    if (!user.IsActive) return 0m;
+    if (user.OrdersCount > 10) return 0.15m;
+    return 0.05m;
+}">📋 Копировать</button>
+      <pre><span class="cmt">// БЫЛО</span>
+decimal GetDiscount(User user) {
+    if (user != null) {
+        if (user.IsActive) {
+            if (user.OrdersCount &gt; 10) {
+                return 0.15m;
+            } else {
+                return 0.05m;
+            }
+        } else {
+            return 0m;
+        }
+    }
+    return 0m;
+}
+
+<span class="cmt">// СТАЛО</span>
+decimal GetDiscount(User user) {
+    if (user == null) return 0m;
+    if (!user.IsActive) return 0m;
+    if (user.OrdersCount &gt; 10) return 0.15m;
+    return 0.05m;
+}</pre>
+    </div>
+
+    <h4>4. Replace Magic Number with Constant (замена магического числа)</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// БЫЛО
+if (order.Total > 10000) discount = 0.1m;
+
+// СТАЛО
+private const decimal VIP_THRESHOLD = 10000m;
+private const decimal VIP_DISCOUNT = 0.1m;
+
+if (order.Total > VIP_THRESHOLD) discount = VIP_DISCOUNT;">📋 Копировать</button>
+      <pre><span class="cmt">// БЫЛО</span>
+if (order.Total &gt; 10000) discount = 0.1m;
+
+<span class="cmt">// СТАЛО</span>
+private const decimal VIP_THRESHOLD = 10000m;
+private const decimal VIP_DISCOUNT = 0.1m;
+
+if (order.Total &gt; VIP_THRESHOLD) discount = VIP_DISCOUNT;</pre>
+    </div>
+
+    <h4>5. Удаление дубликатов (DRY — Don't Repeat Yourself)</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// БЫЛО — три похожих метода
+void SaveUserToFile(User u) { /* ... 20 строк ... */ }
+void SaveOrderToFile(Order o) { /* ... 20 строк ... */ }
+void SaveProductToFile(Product p) { /* ... 20 строк ... */ }
+
+// СТАЛО — обобщённый метод
+void SaveToFile<T>(T entity, string path) {
+    var json = JsonSerializer.Serialize(entity);
+    File.WriteAllText(path, json);
+}">📋 Копировать</button>
+      <pre><span class="cmt">// БЫЛО — три похожих метода</span>
+void SaveUserToFile(User u) { <span class="cmt">/* ... 20 строк ... */</span> }
+void SaveOrderToFile(Order o) { <span class="cmt">/* ... 20 строк ... */</span> }
+void SaveProductToFile(Product p) { <span class="cmt">/* ... 20 строк ... */</span> }
+
+<span class="cmt">// СТАЛО — обобщённый метод</span>
+void SaveToFile&lt;T&gt;(T entity, string path) {
+    var json = JsonSerializer.Serialize(entity);
+    File.WriteAllText(path, json);
+}</pre>
+    </div>
+
+    <h3>6.4. Критерии качества кода</h3>
+
+    <table>
+      <tr><th>Критерий</th><th>Что значит</th></tr>
+      <tr><td><b>Читаемость</b></td><td>Код понимается без комментариев и без автора</td></tr>
+      <tr><td><b>Простота</b></td><td>Нет лишних абстракций, всё делается по делу</td></tr>
+      <tr><td><b>Тестируемость</b></td><td>Каждый метод можно протестировать в изоляции</td></tr>
+      <tr><td><b>Расширяемость</b></td><td>Добавить новую функцию — не переписывать всё</td></tr>
+      <tr><td><b>Производительность</b></td><td>Работает за приемлемое время</td></tr>
+      <tr><td><b>Безопасность</b></td><td>Нет SQL-инъекций, XSS, утечек памяти</td></tr>
+      <tr><td><b>Согласованность</b></td><td>Один стиль: имена, отступы, архитектура</td></tr>
+    </table>
+
+    <h3>6.5. Оптимизация производительности</h3>
+
+    <p>Оптимизация — это не «сделать код короче», а <b>ускорить работу</b>. Правило: <b>не оптимизируйте преждевременно</b>.</p>
+
+    <div class="box note">
+      <div class="label">Правило Кнута</div>
+      «Преждевременная оптимизация — корень всех зол». Сначала измерьте, где узкое место (профилирование), и оптимизируйте только его. 90% времени программа проводит в 10% кода.
+    </div>
+
+    <h4>Основные техники</h4>
+
+    <table>
+      <tr><th>Проблема</th><th>Что делать</th></tr>
+      <tr><td>Много итераций поиска в массиве</td><td>Заменить массив на HashSet/Dictionary (O(n) → O(1))</td></tr>
+      <tr><td>Часто вызывается тяжёлая функция с одинаковыми аргументами</td><td>Кэширование (мемоизация)</td></tr>
+      <tr><td>Много строковых конкатенаций в цикле</td><td>StringBuilder вместо + (O(n²) → O(n))</td></tr>
+      <tr><td>Постоянные обращения к БД в цикле</td><td>Batch-запрос (один SELECT вместо 1000)</td></tr>
+      <tr><td>Много лишних выделений памяти</td><td>Переиспользовать объекты (пул), избегать аллокаций в горячих циклах</td></tr>
+      <tr><td>Ожидание I/O блокирует CPU</td><td>Асинхронность (async/await)</td></tr>
+    </table>
+
+    <h4>Пример: StringBuilder vs конкатенация</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// ПЛОХО: O(n²)
+string result = &quot;&quot;;
+for (int i = 0; i < 10000; i++) {
+    result += i.ToString() + &quot;,&quot;;
+}
+
+// ХОРОШО: O(n)
+var sb = new StringBuilder();
+for (int i = 0; i < 10000; i++) {
+    sb.Append(i).Append(&quot;,&quot;);
+}
+string result = sb.ToString();">📋 Копировать</button>
+      <pre><span class="cmt">// ПЛОХО: O(n²)</span>
+string result = "";
+for (int i = 0; i &lt; 10000; i++) {
+    result += i.ToString() + ",";
+}
+
+<span class="cmt">// ХОРОШО: O(n)</span>
+var sb = new StringBuilder();
+for (int i = 0; i &lt; 10000; i++) {
+    sb.Append(i).Append(",");
+}
+string result = sb.ToString();</pre>
+      <div class="desc">Каждое <code>+=</code> создаёт новую строку. Для 10 000 итераций — миллионы операций. StringBuilder добавляет в буфер.</div>
+    </div>
+
+    <h4>Пример: Dictionary вместо List для поиска</h4>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// ПЛОХО: O(n) на каждый поиск
+var users = new List&lt;User&gt;();
+User FindById(int id) {
+    foreach (var u in users) if (u.Id == id) return u;
+    return null;
+}
+
+// ХОРОШО: O(1) на каждый поиск
+var usersById = new Dictionary&lt;int, User&gt;();
+User FindById(int id) => usersById.TryGetValue(id, out var u) ? u : null;">📋 Копировать</button>
+      <pre><span class="cmt">// ПЛОХО: O(n) на каждый поиск</span>
+var users = new List&lt;User&gt;();
+User FindById(int id) {
+    foreach (var u in users) if (u.Id == id) return u;
+    return null;
+}
+
+<span class="cmt">// ХОРОШО: O(1) на каждый поиск</span>
+var usersById = new Dictionary&lt;int, User&gt;();
+User FindById(int id) =&gt; usersById.TryGetValue(id, out var u) ? u : null;</pre>
+      <div class="desc">Для 10 000 пользователей и 10 000 запросов: список — 100 миллионов операций, словарь — 10 000.</div>
+    </div>
+
+    <h3>6.6. Инструменты</h3>
+
+    <table>
+      <tr><th>Инструмент</th><th>Для чего</th></tr>
+      <tr><td><b>Rider / Visual Studio</b></td><td>Встроенные рефакторинги: Extract Method, Rename, Inline</td></tr>
+      <tr><td><b>ReSharper</b></td><td>Плагин для VS: подсказывает code smells</td></tr>
+      <tr><td><b>SonarQube</b></td><td>Анализ качества кода, метрики</td></tr>
+      <tr><td><b>dotnet-counters</b></td><td>Профилирование .NET приложений</td></tr>
+      <tr><td><b>BenchmarkDotNet</b></td><td>Замеры производительности методов</td></tr>
+      <tr><td><b>dotMemory</b></td><td>Анализ памяти</td></tr>
+    </table>
+
+    <h3>Практические работы</h3>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №1 · Рефакторинг метода <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> отрефакторить «плохой» метод по техникам из урока.</div>
+      <b>Исходный код</b>:
+      <pre style="background:#f5f5f5;padding:12px;border-radius:6px;font-size:12.5px;overflow-x:auto;">public void ProcessUser(string name, int age, string email, string phone, string city, string street, string zip) {
+    if (name != null &amp;&amp; name.Length &gt; 2 &amp;&amp; age &gt; 0 &amp;&amp; age &lt; 120 &amp;&amp; email.Contains(&quot;@&quot;)) {
+        var user = new User();
+        user.Name = name;
+        user.Age = age;
+        user.Email = email;
+        user.Phone = phone;
+        user.Address = city + &quot;, &quot; + street + &quot;, &quot; + zip;
+        if (age &gt;= 18) {
+            user.IsAdult = true;
+            if (age &gt;= 65) {
+                user.Category = &quot;Senior&quot;;
+            } else {
+                user.Category = &quot;Adult&quot;;
+            }
+        } else {
+            user.IsAdult = false;
+            user.Category = &quot;Minor&quot;;
+        }
+        db.Save(user);
+        SendWelcomeEmail(email, name);
+        logger.Info($&quot;User {name} created at {DateTime.Now}&quot;);
+    } else {
+        throw new Exception(&quot;Invalid data&quot;);
+    }
+}</pre>
+
+      <p><b>Задания:</b></p>
+      <ol>
+        <li>Найдите все code smells в методе.</li>
+        <li>Примените <b>Extract Method</b> — вынесите валидацию в отдельный метод.</li>
+        <li>Примените <b>Guard Clauses</b> — избавьтесь от вложенности.</li>
+        <li>Создайте класс <code>UserData</code> для параметров (Parameter Object).</li>
+        <li>Вынесите определение категории в отдельный метод.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №2 · Оптимизация алгоритма <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> ускорить программу, замерить результат.</div>
+
+      <h4>Задача 1. Поиск дубликатов</h4>
+      <p>Напишите метод, который находит все дубликаты в массиве из 100 000 строк:</p>
+      <ol>
+        <li><b>Плохая версия:</b> два вложенных цикла, O(n²).</li>
+        <li><b>Хорошая версия:</b> через HashSet, O(n).</li>
+        <li>Замерьте время обоих вариантов через <code>Stopwatch</code>.</li>
+        <li>Во сколько раз ускорили?</li>
+      </ol>
+
+      <h4>Задача 2. Сумма чисел</h4>
+      <p>Есть List&lt;int&gt; из 1 000 000 чисел. Посчитайте сумму тремя способами:</p>
+      <ol>
+        <li>Обычный foreach</li>
+        <li>LINQ Sum()</li>
+        <li>Параллельно через Parallel.For</li>
+      </ol>
+      <p>Сравните время. Какой быстрее?</p>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №3 · Использование инструментов <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> применить IDE-рефакторинги.</div>
+      <ol>
+        <li>Откройте проект в Visual Studio / Rider.</li>
+        <li>Найдите метод длиннее 50 строк.</li>
+        <li>Примените встроенный рефакторинг <b>Extract Method</b> (Ctrl+R, Ctrl+M в VS).</li>
+        <li>Переименуйте все короткие переменные (<code>a</code>, <code>d</code>, <code>x</code>) через <b>Rename</b> (F2).</li>
+        <li>Удалите мёртвый код (неиспользуемые функции).</li>
+        <li>Запустите анализатор: <code>Analyze → Run Code Analysis</code>. Исправьте предупреждения.</li>
+      </ol>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Чем рефакторинг отличается от оптимизации?</summary>
+      <div class="answer">
+        <b>Рефакторинг</b> — улучшение <i>структуры</i> кода без изменения поведения. Результат: код понятнее, легче поддерживать.<br><br>
+        <b>Оптимизация</b> — улучшение <i>производительности</i>. Результат: код работает быстрее или использует меньше памяти.<br><br>
+        Иногда их путают: «оптимизировать код» часто означает «причесать, почистить». Но с точки зрения профессионала — это разные задачи. Рефакторинг делают всегда, оптимизацию — только когда нужно.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Почему нельзя рефакторить без тестов?</summary>
+      <div class="answer">
+        Рефакторинг по определению не меняет поведение. Но как проверить, что вы не сломали ничего? Только <b>тестами</b>. Если после рефакторинга все тесты зелёные — поведение сохранено.<br><br>
+        Без тестов рефакторинг превращается в «переписывание кода с надеждой, что работает». Ошибки обнаруживаются на продакшене — через дни или недели.<br><br>
+        Правило: <b>сначала покрой тестами, потом рефакторь</b>. Это как страховка.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Что означает принцип DRY?</summary>
+      <div class="answer">
+        <b>DRY = Don't Repeat Yourself</b> («не повторяйся»). Каждое знание в системе должно иметь <b>единственное</b> представление.<br><br>
+        Плохо: формула расчёта НДС скопирована в 5 местах. Если ставка изменится — надо править 5 файлов, можно забыть один.<br><br>
+        Хорошо: одна функция <code>CalculateVAT()</code>, вызывается из всех мест. Меняем в одном — работает везде.<br><br>
+        Но: DRY не означает «избегай любого повтора». Иногда два похожих куска кода — это <b>случайное совпадение</b>, и объединять их не стоит. Главное — избегать повтора <i>логики</i>, а не букв.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 4. Когда НЕ нужно оптимизировать?</summary>
+      <div class="answer">
+        <ul>
+          <li><b>Когда код работает достаточно быстро.</b> Если программа отвечает за 50 мс — незачем тратить недели на 10 мс.</li>
+          <li><b>Когда оптимизация усложняет код.</b> Если ради +20% скорости код станет нечитаемым — не стоит.</li>
+          <li><b>Когда неясно, где узкое место.</b> Оптимизация «на глаз» часто мимо цели. Сначала — профилирование.</li>
+          <li><b>На раннем этапе.</b> Преждевременная оптимизация — зло. Сначала рабочая версия, потом замеры, потом улучшения.</li>
+        </ul>
+        Правило: <b>measure, don't guess</b> («измеряй, а не гадай»).
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание по теме</div>
+      Сдать проект + <code>practice-refactoring.docx</code>:
+      <ol>
+        <li>Рефакторинг метода <code>ProcessUser</code> (до / после)</li>
+        <li>Список найденных code smells</li>
+        <li>Оптимизация поиска дубликатов — исходный и оптимизированный код + замеры времени</li>
+        <li>Скриншот профилировщика или замеров</li>
+        <li>Ответы на 4 вопроса самопроверки</li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="05-events.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">5. Событийно-управляемое программирование</span>
+  </a>
+  <a href="07-ui.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">7. Разработка пользовательского интерфейса</span>
+  </a>
+</div>
+
+<footer>
+  ПМ.01 Разработка модулей ПО · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

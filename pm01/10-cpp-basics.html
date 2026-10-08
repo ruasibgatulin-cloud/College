@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПМ.01 · 10. C++ — основы · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ПМ.01 · Тема 10</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="pm01-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-lifecycle.html">1. ЖЦ ПО</a>
+  <a href="02-structured.html">2. Структурное</a>
+  <a href="03-oop-basics.html">3. ООП</a>
+  <a href="04-patterns.html">4. Паттерны</a>
+  <a href="05-events.html">5. События</a>
+  <a href="06-refactoring.html">6. Рефакторинг</a>
+  <a href="07-ui.html">7. UI</a>
+  <a href="08-testing.html">8. Тестирование</a>
+  <a href="09-docs.html">9. Документация</a>
+  <a href="10-cpp-basics.html" class="current">10. C++</a>
+  <a href="11-cpp-oop.html">11. C++ ООП</a>
+  <a href="12-databases.html">12. БД</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">10</span>Основы программирования на языке C++</h2>
+
+    <p><b>C++</b> — компилируемый язык высокого уровня, созданный Бьёрном Страуструпом в 1979-1983 годах. Используется для системного программирования, игр, встраиваемых систем, высоконагруженных серверов. Один из немногих языков, где программист управляет памятью вручную.</p>
+
+    <h3>10.1. Первая программа</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="#include &lt;iostream&gt;
+
+int main() {
+    std::cout &lt;&lt; &quot;Hello, world!&quot; &lt;&lt; std::endl;
+    return 0;
+}">📋 Копировать</button>
+      <pre>#include &lt;iostream&gt;
+
+int main() {
+    std::cout &lt;&lt; "Hello, world!" &lt;&lt; std::endl;
+    return 0;
+}</pre>
+      <div class="desc">Каждая C++ программа начинается с функции <code>main</code>. <code>return 0</code> — успешное завершение.</div>
+    </div>
+
+    <h3>10.2. Переменные и типы данных</h3>
+
+    <table>
+      <tr><th>Тип</th><th>Размер</th><th>Диапазон</th><th>Пример</th></tr>
+      <tr><td><code>int</code></td><td>4 байта</td><td>±2,1·10⁹</td><td><code>int age = 25;</code></td></tr>
+      <tr><td><code>long long</code></td><td>8 байт</td><td>±9,2·10¹⁸</td><td><code>long long big = 9999999999LL;</code></td></tr>
+      <tr><td><code>float</code></td><td>4 байта</td><td>~7 знаков</td><td><code>float pi = 3.14f;</code></td></tr>
+      <tr><td><code>double</code></td><td>8 байт</td><td>~15 знаков</td><td><code>double pi = 3.14159;</code></td></tr>
+      <tr><td><code>char</code></td><td>1 байт</td><td>-128..127</td><td><code>char letter = 'A';</code></td></tr>
+      <tr><td><code>bool</code></td><td>1 байт</td><td>true/false</td><td><code>bool ok = true;</code></td></tr>
+    </table>
+
+    <div class="box note">
+      <div class="label">Строгий контроль типов</div>
+      C++ — <b>строго типизированный</b> язык. Нельзя просто так присвоить <code>double</code> в <code>int</code> без явного приведения:
+      <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:13px;margin-top:6px;">int x = 3.14;       // предупреждение, x = 3
+int y = (int)3.14;  // явное приведение, ОК</pre>
+    </div>
+
+    <h3>10.3. Операторы</h3>
+
+    <table>
+      <tr><th>Категория</th><th>Операторы</th></tr>
+      <tr><td>Арифметические</td><td><code>+ - * / %</code></td></tr>
+      <tr><td>Сравнения</td><td><code>== != &lt; &gt; &lt;= &gt;=</code></td></tr>
+      <tr><td>Логические</td><td><code>&amp;&amp; || !</code></td></tr>
+      <tr><td>Присваивания</td><td><code>= += -= *= /= %=</code></td></tr>
+      <tr><td>Инкремент/декремент</td><td><code>++ --</code></td></tr>
+      <tr><td>Побитовые</td><td><code>&amp; | ^ ~ &lt;&lt; &gt;&gt;</code></td></tr>
+      <tr><td>Тернарный</td><td><code>условие ? да : нет</code></td></tr>
+    </table>
+
+    <h3>10.4. Ветвления и циклы</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// if-else
+int age = 18;
+if (age &gt;= 18) {
+    std::cout &lt;&lt; &quot;Совершеннолетний&quot;;
+} else {
+    std::cout &lt;&lt; &quot;Несовершеннолетний&quot;;
+}
+
+// switch
+switch (day) {
+    case 1: std::cout &lt;&lt; &quot;Пн&quot;; break;
+    case 2: std::cout &lt;&lt; &quot;Вт&quot;; break;
+    default: std::cout &lt;&lt; &quot;Другой&quot;;
+}
+
+// for
+for (int i = 0; i &lt; 10; i++) {
+    std::cout &lt;&lt; i &lt;&lt; &quot; &quot;;
+}
+
+// while
+int n = 5;
+while (n &gt; 0) {
+    std::cout &lt;&lt; n-- &lt;&lt; &quot; &quot;;
+}
+
+// do-while — выполнится хотя бы раз
+int x;
+do {
+    std::cin &gt;&gt; x;
+} while (x &lt;= 0);
+
+// range-based for (C++11)
+int arr[] = {1, 2, 3, 4, 5};
+for (int v : arr) {
+    std::cout &lt;&lt; v &lt;&lt; &quot; &quot;;
+}">📋 Копировать</button>
+      <pre><span class="cmt">// if-else</span>
+int age = 18;
+if (age &gt;= 18) {
+    std::cout &lt;&lt; "Совершеннолетний";
+} else {
+    std::cout &lt;&lt; "Несовершеннолетний";
+}
+
+<span class="cmt">// switch</span>
+switch (day) {
+    case 1: std::cout &lt;&lt; "Пн"; break;
+    case 2: std::cout &lt;&lt; "Вт"; break;
+    default: std::cout &lt;&lt; "Другой";
+}
+
+<span class="cmt">// for</span>
+for (int i = 0; i &lt; 10; i++) {
+    std::cout &lt;&lt; i &lt;&lt; " ";
+}
+
+<span class="cmt">// while</span>
+int n = 5;
+while (n &gt; 0) {
+    std::cout &lt;&lt; n-- &lt;&lt; " ";
+}
+
+<span class="cmt">// do-while — выполнится хотя бы раз</span>
+int x;
+do {
+    std::cin &gt;&gt; x;
+} while (x &lt;= 0);
+
+<span class="cmt">// range-based for (C++11)</span>
+int arr[] = {1, 2, 3, 4, 5};
+for (int v : arr) {
+    std::cout &lt;&lt; v &lt;&lt; " ";
+}</pre>
+    </div>
+
+    <h3>10.5. Массивы</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// Одномерный массив
+int numbers[5] = {10, 20, 30, 40, 50};
+std::cout &lt;&lt; numbers[0];   // 10
+std::cout &lt;&lt; numbers[4];   // 50
+
+// Размер массива
+int size = sizeof(numbers) / sizeof(numbers[0]);  // 5
+
+// Двумерный массив
+int matrix[3][3] = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+std::cout &lt;&lt; matrix[1][2];  // 6
+
+// Динамический массив (C++11 — vector)
+#include &lt;vector&gt;
+std::vector&lt;int&gt; v = {1, 2, 3};
+v.push_back(4);            // добавить в конец
+v.size();                  // 4
+v[0];                      // 1
+v.pop_back();              // удалить последний">📋 Копировать</button>
+      <pre><span class="cmt">// Одномерный массив</span>
+int numbers[5] = {10, 20, 30, 40, 50};
+std::cout &lt;&lt; numbers[0];   <span class="cmt">// 10</span>
+std::cout &lt;&lt; numbers[4];   <span class="cmt">// 50</span>
+
+<span class="cmt">// Размер массива</span>
+int size = sizeof(numbers) / sizeof(numbers[0]);  <span class="cmt">// 5</span>
+
+<span class="cmt">// Двумерный массив</span>
+int matrix[3][3] = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+std::cout &lt;&lt; matrix[1][2];  <span class="cmt">// 6</span>
+
+<span class="cmt">// Динамический массив (C++11 — vector)</span>
+#include &lt;vector&gt;
+std::vector&lt;int&gt; v = {1, 2, 3};
+v.push_back(4);            <span class="cmt">// добавить в конец</span>
+v.size();                  <span class="cmt">// 4</span>
+v[0];                      <span class="cmt">// 1</span>
+v.pop_back();              <span class="cmt">// удалить последний</span></pre>
+    </div>
+
+    <h3>10.6. Функции</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// Объявление (прототип)
+int add(int a, int b);
+
+// Определение
+int add(int a, int b) {
+    return a + b;
+}
+
+// Передача по значению (копия)
+void incrementCopy(int x) { x++; }      // не изменит оригинал
+
+// Передача по ссылке (изменит)
+void incrementRef(int&amp; x) { x++; }
+
+// Передача по указателю
+void incrementPtr(int* x) { (*x)++; }
+
+// Значение по умолчанию
+double power(double base, int exp = 2) {
+    double result = 1;
+    for (int i = 0; i &lt; exp; i++) result *= base;
+    return result;
+}
+power(5);      // 25
+power(2, 10);  // 1024
+
+// Перегрузка (overloading)
+int max(int a, int b) { return a &gt; b ? a : b; }
+double max(double a, double b) { return a &gt; b ? a : b; }">📋 Копировать</button>
+      <pre><span class="cmt">// Объявление (прототип)</span>
+int add(int a, int b);
+
+<span class="cmt">// Определение</span>
+int add(int a, int b) {
+    return a + b;
+}
+
+<span class="cmt">// Передача по значению (копия)</span>
+void incrementCopy(int x) { x++; }      <span class="cmt">// не изменит оригинал</span>
+
+<span class="cmt">// Передача по ссылке (изменит)</span>
+void incrementRef(int&amp; x) { x++; }
+
+<span class="cmt">// Передача по указателю</span>
+void incrementPtr(int* x) { (*x)++; }
+
+<span class="cmt">// Значение по умолчанию</span>
+double power(double base, int exp = 2) {
+    double result = 1;
+    for (int i = 0; i &lt; exp; i++) result *= base;
+    return result;
+}
+power(5);      <span class="cmt">// 25</span>
+power(2, 10);  <span class="cmt">// 1024</span>
+
+<span class="cmt">// Перегрузка (overloading)</span>
+int max(int a, int b) { return a &gt; b ? a : b; }
+double max(double a, double b) { return a &gt; b ? a : b; }</pre>
+    </div>
+
+    <h3>10.7. Указатели — сердце C++</h3>
+
+    <div class="viz">
+      <svg viewBox="0 0 500 180" width="500">
+        <text x="250" y="20" text-anchor="middle" font-size="13" fill="#4f46e5" font-weight="600">Указатель хранит адрес памяти</text>
+
+        <!-- Переменная -->
+        <rect x="30" y="60" width="120" height="60" fill="#eef0ff" stroke="#4f46e5" stroke-width="2" rx="6"/>
+        <text x="90" y="82" text-anchor="middle" font-size="12" fill="#4f46e5" font-weight="600">int a = 5</text>
+        <text x="90" y="102" text-anchor="middle" font-size="11" fill="#889">адрес: 0x7ffe8</text>
+
+        <!-- Указатель -->
+        <rect x="330" y="60" width="140" height="60" fill="#fff9e6" stroke="#d97706" stroke-width="2" rx="6"/>
+        <text x="400" y="82" text-anchor="middle" font-size="12" fill="#d97706" font-weight="600">int* p = &amp;a</text>
+        <text x="400" y="102" text-anchor="middle" font-size="11" fill="#889">хранит: 0x7ffe8</text>
+
+        <!-- Стрелка -->
+        <defs><marker id="ar-p" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8891a6"/></marker></defs>
+        <path d="M 330 90 Q 240 40 155 90" fill="none" stroke="#8891a6" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#ar-p)"/>
+        <text x="240" y="45" text-anchor="middle" font-size="11" fill="#889">*p указывает на a</text>
+      </svg>
+      <div class="cap">Указатель <code>p</code> хранит адрес переменной <code>a</code>. Операция <code>*p</code> даёт значение по адресу.</div>
+    </div>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="int a = 5;
+int* p = &amp;a;       // p хранит адрес a
+
+std::cout &lt;&lt; a;    // 5
+std::cout &lt;&lt; &amp;a;   // адрес: 0x7ffe8abc
+std::cout &lt;&lt; p;    // тот же адрес
+std::cout &lt;&lt; *p;   // 5 — значение по адресу
+
+*p = 10;           // теперь a == 10
+
+// Динамическое выделение памяти
+int* arr = new int[10];   // массив из 10 int
+arr[0] = 42;
+delete[] arr;             // освободить память!
+
+// nullptr (C++11) вместо NULL
+int* ptr = nullptr;
+
+// Проверка на nullptr
+if (ptr != nullptr) {
+    std::cout &lt;&lt; *ptr;
+}">📋 Копировать</button>
+      <pre>int a = 5;
+int* p = &amp;a;       <span class="cmt">// p хранит адрес a</span>
+
+std::cout &lt;&lt; a;    <span class="cmt">// 5</span>
+std::cout &lt;&lt; &amp;a;   <span class="cmt">// адрес: 0x7ffe8abc</span>
+std::cout &lt;&lt; p;    <span class="cmt">// тот же адрес</span>
+std::cout &lt;&lt; *p;   <span class="cmt">// 5 — значение по адресу</span>
+
+*p = 10;           <span class="cmt">// теперь a == 10</span>
+
+<span class="cmt">// Динамическое выделение памяти</span>
+int* arr = new int[10];   <span class="cmt">// массив из 10 int</span>
+arr[0] = 42;
+delete[] arr;             <span class="cmt">// освободить память!</span>
+
+<span class="cmt">// nullptr (C++11) вместо NULL</span>
+int* ptr = nullptr;
+
+<span class="cmt">// Проверка на nullptr</span>
+if (ptr != nullptr) {
+    std::cout &lt;&lt; *ptr;
+}</pre>
+    </div>
+
+    <div class="box danger">
+      <div class="label">⚠ Утечка памяти</div>
+      Каждый <code>new</code> должен иметь парный <code>delete</code>. Если забыть — память не вернётся системе до закрытия программы. В долгоживущих серверах это фатально.<br><br>
+      <b>Современное решение:</b> умные указатели (<code>unique_ptr</code>, <code>shared_ptr</code>) из C++11 — они освобождают память автоматически.
+    </div>
+
+    <h3>10.8. Строки</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="#include &lt;string&gt;
+
+// C-style строка (массив char)
+char name1[] = &quot;Alice&quot;;
+
+// std::string — удобная обёртка (C++)
+std::string name = &quot;Alice&quot;;
+name.length();              // 5
+name += &quot; Smith&quot;;           // конкатенация
+name.substr(0, 5);          // &quot;Alice&quot;
+name.find(&quot;Smith&quot;);         // 6
+name.empty();               // false
+name[0];                    // 'A'
+
+// Сравнение
+if (name == &quot;Alice Smith&quot;) { /* ... */ }
+
+// Ввод строки с пробелами
+std::getline(std::cin, name);">📋 Копировать</button>
+      <pre>#include &lt;string&gt;
+
+<span class="cmt">// C-style строка (массив char)</span>
+char name1[] = "Alice";
+
+<span class="cmt">// std::string — удобная обёртка (C++)</span>
+std::string name = "Alice";
+name.length();              <span class="cmt">// 5</span>
+name += " Smith";           <span class="cmt">// конкатенация</span>
+name.substr(0, 5);          <span class="cmt">// "Alice"</span>
+name.find("Smith");         <span class="cmt">// 6</span>
+name.empty();               <span class="cmt">// false</span>
+name[0];                    <span class="cmt">// 'A'</span>
+
+<span class="cmt">// Сравнение</span>
+if (name == "Alice Smith") { <span class="cmt">/* ... */</span> }
+
+<span class="cmt">// Ввод строки с пробелами</span>
+std::getline(std::cin, name);</pre>
+    </div>
+
+    <h3>10.9. Структуры</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="struct Point {
+    double x;
+    double y;
+};
+
+struct Student {
+    std::string name;
+    int age;
+    double average;
+};
+
+// Использование
+Point p1{1.5, 2.5};
+Point p2 = {0, 0};
+
+Student s;
+s.name = &quot;Ivan&quot;;
+s.age = 18;
+s.average = 4.5;
+
+// Массив структур
+Student group[3] = {
+    {&quot;Alice&quot;, 17, 4.8},
+    {&quot;Bob&quot;,   18, 4.2},
+    {&quot;Carol&quot;, 17, 4.9}
+};
+
+// Передача структуры по ссылке (без копирования)
+void printStudent(const Student&amp; s) {
+    std::cout &lt;&lt; s.name &lt;&lt; &quot; (&quot; &lt;&lt; s.age &lt;&lt; &quot;)&quot;;
+}">📋 Копировать</button>
+      <pre>struct Point {
+    double x;
+    double y;
+};
+
+struct Student {
+    std::string name;
+    int age;
+    double average;
+};
+
+<span class="cmt">// Использование</span>
+Point p1{1.5, 2.5};
+Point p2 = {0, 0};
+
+Student s;
+s.name = "Ivan";
+s.age = 18;
+s.average = 4.5;
+
+<span class="cmt">// Массив структур</span>
+Student group[3] = {
+    {"Alice", 17, 4.8},
+    {"Bob",   18, 4.2},
+    {"Carol", 17, 4.9}
+};
+
+<span class="cmt">// Передача структуры по ссылке (без копирования)</span>
+void printStudent(const Student&amp; s) {
+    std::cout &lt;&lt; s.name &lt;&lt; " (" &lt;&lt; s.age &lt;&lt; ")";
+}</pre>
+    </div>
+
+    <h3>10.10. Препроцессор</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// Директивы препроцессора выполняются ДО компиляции
+
+#include &lt;iostream&gt;    // подключение заголовочного файла
+
+#define PI 3.14159      // макрос-константа (лучше const)
+#define SQUARE(x) ((x)*(x))  // макрос-функция (осторожно!)
+
+const double PI_GOOD = 3.14159;  // лучше константа
+constexpr int MAX_SIZE = 100;    // ещё лучше — на этапе компиляции
+
+// Условная компиляция (защита от повторного подключения)
+#ifndef MYHEADER_H
+#define MYHEADER_H
+
+// ... код ...
+
+#endif
+
+// Отладочный вывод
+#ifdef DEBUG
+    std::cout &lt;&lt; &quot;Debug: x = &quot; &lt;&lt; x &lt;&lt; std::endl;
+#endif">📋 Копировать</button>
+      <pre><span class="cmt">// Директивы препроцессора выполняются ДО компиляции</span>
+
+#include &lt;iostream&gt;    <span class="cmt">// подключение заголовочного файла</span>
+
+#define PI 3.14159      <span class="cmt">// макрос-константа (лучше const)</span>
+#define SQUARE(x) ((x)*(x))  <span class="cmt">// макрос-функция (осторожно!)</span>
+
+const double PI_GOOD = 3.14159;  <span class="cmt">// лучше константа</span>
+constexpr int MAX_SIZE = 100;    <span class="cmt">// ещё лучше — на этапе компиляции</span>
+
+<span class="cmt">// Условная компиляция (защита от повторного подключения)</span>
+#ifndef MYHEADER_H
+#define MYHEADER_H
+
+<span class="cmt">// ... код ...</span>
+
+#endif
+
+<span class="cmt">// Отладочный вывод</span>
+#ifdef DEBUG
+    std::cout &lt;&lt; "Debug: x = " &lt;&lt; x &lt;&lt; std::endl;
+#endif</pre>
+    </div>
+
+    <h3>10.11. Работа с файлами</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="#include &lt;fstream&gt;
+#include &lt;string&gt;
+
+// Запись в файл
+std::ofstream out(&quot;data.txt&quot;);
+if (out.is_open()) {
+    out &lt;&lt; &quot;Строка 1&quot; &lt;&lt; std::endl;
+    out &lt;&lt; &quot;Строка 2&quot; &lt;&lt; std::endl;
+    out.close();
+}
+
+// Чтение из файла
+std::ifstream in(&quot;data.txt&quot;);
+std::string line;
+while (std::getline(in, line)) {
+    std::cout &lt;&lt; line &lt;&lt; std::endl;
+}
+in.close();
+
+// Дозапись в конец
+std::ofstream append(&quot;data.txt&quot;, std::ios::app);
+append &lt;&lt; &quot;Строка 3&quot; &lt;&lt; std::endl;
+append.close();">📋 Копировать</button>
+      <pre>#include &lt;fstream&gt;
+#include &lt;string&gt;
+
+<span class="cmt">// Запись в файл</span>
+std::ofstream out("data.txt");
+if (out.is_open()) {
+    out &lt;&lt; "Строка 1" &lt;&lt; std::endl;
+    out &lt;&lt; "Строка 2" &lt;&lt; std::endl;
+    out.close();
+}
+
+<span class="cmt">// Чтение из файла</span>
+std::ifstream in("data.txt");
+std::string line;
+while (std::getline(in, line)) {
+    std::cout &lt;&lt; line &lt;&lt; std::endl;
+}
+in.close();
+
+<span class="cmt">// Дозапись в конец</span>
+std::ofstream append("data.txt", std::ios::app);
+append &lt;&lt; "Строка 3" &lt;&lt; std::endl;
+append.close();</pre>
+    </div>
+
+    <h3>10.12. Системы контроля версий</h3>
+
+    <p><b>Git</b> — стандарт де-факто для командной работы. Основные команды:</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="git init                    # создать репозиторий
+git clone URL               # клонировать проект
+
+git status                  # что изменено
+git add file.txt            # добавить в staging
+git add .                   # добавить всё
+
+git commit -m &quot;Message&quot;     # зафиксировать
+git push                    # отправить на сервер
+git pull                    # получить изменения
+
+git branch feature-x        # создать ветку
+git checkout feature-x      # переключиться
+git merge feature-x         # слить в текущую
+
+git log --oneline           # история коммитов
+git diff                    # что изменилось
+git reset --hard HEAD       # откатить все изменения (ОСТОРОЖНО)">📋 Копировать</button>
+      <pre>git init                    <span class="cmt"># создать репозиторий</span>
+git clone URL               <span class="cmt"># клонировать проект</span>
+
+git status                  <span class="cmt"># что изменено</span>
+git add file.txt            <span class="cmt"># добавить в staging</span>
+git add .                   <span class="cmt"># добавить всё</span>
+
+git commit -m "Message"     <span class="cmt"># зафиксировать</span>
+git push                    <span class="cmt"># отправить на сервер</span>
+git pull                    <span class="cmt"># получить изменения</span>
+
+git branch feature-x        <span class="cmt"># создать ветку</span>
+git checkout feature-x      <span class="cmt"># переключиться</span>
+git merge feature-x         <span class="cmt"># слить в текущую</span>
+
+git log --oneline           <span class="cmt"># история коммитов</span>
+git diff                    <span class="cmt"># что изменилось</span>
+git reset --hard HEAD       <span class="cmt"># откатить все изменения (ОСТОРОЖНО)</span></pre>
+    </div>
+
+    <div class="box note">
+      <div class="label">.gitignore</div>
+      Файл, в котором перечислены пути, которые Git должен игнорировать:
+      <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:6px;">*.exe
+*.obj
+build/
+.vs/
+*.log
+.env</pre>
+      Это исключает мусор из репозитория.
+    </div>
+
+    <h3>Практические работы</h3>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №1 · Введение в C++ <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> освоить базовый синтаксис, ввод-вывод.</div>
+      <ol>
+        <li>Установите компилятор: Visual Studio (Windows), GCC/Clang (Linux/macOS) или онлайн-среду (replit.com, onlinegdb.com).</li>
+        <li>Напишите программу, которая:
+          <ul>
+            <li>Спрашивает имя пользователя</li>
+            <li>Спрашивает возраст</li>
+            <li>Выводит приветствие: «Привет, [имя]! Тебе [возраст] лет.»</li>
+          </ul>
+        </li>
+        <li>Скомпилируйте и запустите.</li>
+        <li>Измените программу: если возраст &lt; 18, добавьте в вывод «(ты ещё несовершеннолетний)».</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №2 · Циклы и массивы <span class="badge">50 мин</span></div>
+      <div class="goal"><b>Задача:</b> решить 5 задач на циклы и массивы.</div>
+      <ol>
+        <li><b>Сумма чисел от 1 до N.</b> Пользователь вводит N, программа выводит сумму.</li>
+        <li><b>Таблица умножения.</b> Выведите таблицу умножения 10×10.</li>
+        <li><b>Поиск максимума.</b> Пользователь вводит 10 чисел, программа находит максимум.</li>
+        <li><b>Реверс массива.</b> Дан массив из 8 элементов — вывести его в обратном порядке.</li>
+        <li><b>Числа Фибоначчи.</b> Вывести первые 20 чисел Фибоначчи.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №3 · Функции и указатели <span class="badge">50 мин</span></div>
+      <div class="goal"><b>Задача:</b> освоить функции и работу с указателями.</div>
+      <ol>
+        <li>Напишите функцию <code>swap(int&amp; a, int&amp; b)</code>, которая меняет значения местами. Проверьте.</li>
+        <li>Напишите функцию <code>max3(int a, int b, int c)</code>, возвращающую максимум из трёх.</li>
+        <li>Напишите функцию, которая принимает указатель на массив и его размер, возвращает сумму.</li>
+        <li>Напишите функцию, которая увеличивает число через указатель: <code>void increment(int* p)</code>.</li>
+        <li>Динамический массив: <code>new int[n]</code>, заполнить, вывести, освободить через <code>delete[]</code>.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №4 · Структуры и файлы <span class="badge">60 мин</span></div>
+      <div class="goal"><b>Задача:</b> разработать мини-базу студентов.</div>
+      <ol>
+        <li>Создайте структуру <code>Student</code>: имя, возраст, средний балл.</li>
+        <li>Реализуйте функции:
+          <ul>
+            <li><code>addStudent()</code> — добавить в массив</li>
+            <li><code>printAll()</code> — вывести всех</li>
+            <li><code>findBest()</code> — вернуть студента с лучшим баллом</li>
+            <li><code>saveToFile()</code> — сохранить в <code>students.txt</code></li>
+            <li><code>loadFromFile()</code> — загрузить при старте</li>
+          </ul>
+        </li>
+        <li>Оформите меню:
+          <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:6px;">1. Добавить студента
+2. Показать всех
+3. Найти лучшего
+4. Сохранить
+0. Выход</pre>
+        </li>
+      </ol>
+      <div class="goal"><b>Результат:</b> рабочая программа, файл <code>students.txt</code> с данными.</div>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Чем C++ отличается от Python/JS?</summary>
+      <div class="answer">
+        <ul>
+          <li><b>Компилируемый.</b> Код превращается в машинный файл, потом выполняется. Python/JS — интерпретируемые.</li>
+          <li><b>Статическая типизация.</b> Тип проверяется на этапе компиляции.</li>
+          <li><b>Ручное управление памятью.</b> <code>new</code>/<code>delete</code>, умные указатели. Python/JS — сборщик мусора.</li>
+          <li><b>Скорость.</b> C++ в 10-100 раз быстрее интерпретируемых языков.</li>
+          <li><b>Сложность.</b> Больше кода для той же задачи, но полный контроль.</li>
+        </ul>
+        C++ выбирают: игры (Unity C# использует C++ движок), ОС (Linux ядро), браузеры (Chrome, Firefox), СУБД (MySQL, PostgreSQL), встраиваемые системы, HPC.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Что такое утечка памяти и как её избежать?</summary>
+      <div class="answer">
+        <b>Утечка памяти</b> — ситуация, когда программа выделила память через <code>new</code>, но не освободила через <code>delete</code>. Память «теряется» — система не может её переиспользовать.<br><br>
+        <b>Пример:</b>
+        <pre style="background:#f5f5f5;padding:10px;border-radius:6px;font-size:13px;margin-top:6px;">while (true) {
+    int* p = new int[1000000];  // утечка: p теряется при следующей итерации
+}</pre>
+        Через час работы — гигабайты утеряны.<br><br>
+        <b>Как избежать:</b>
+        <ul>
+          <li>Использовать умные указатели (<code>unique_ptr</code>, <code>shared_ptr</code>) — они автоматически вызывают <code>delete</code>.</li>
+          <li>RAII (Resource Acquisition Is Initialization) — ресурс живёт, пока жив объект.</li>
+          <li>Контейнеры STL (<code>vector</code>, <code>string</code>) сами управляют памятью.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Чем отличается ссылка (&amp;) от указателя (*)?</summary>
+      <div class="answer">
+        <table style="margin-top:8px;">
+          <tr><th>Свойство</th><th>Ссылка</th><th>Указатель</th></tr>
+          <tr><td>Может быть null</td><td>Нет</td><td>Да</td></tr>
+          <tr><td>Менять адрес</td><td>Нет (после инициализации)</td><td>Да</td></tr>
+          <tr><td>Синтаксис</td><td>Как обычная переменная</td><td>Нужно <code>*</code> и <code>&amp;</code></td></tr>
+          <tr><td>Арифметика</td><td>Нет</td><td>Да (ptr+1 — следующий элемент)</td></tr>
+        </table>
+        <b>Правило:</b> используйте ссылку, когда объект точно есть. Указатель — когда возможен null или нужна арифметика.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание</div>
+      Сдать 4 программы (ПР №1-4) + <code>practice-cpp-basics.docx</code> с пояснениями.
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="09-docs.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">9. Документирование ПО</span>
+  </a>
+  <a href="11-cpp-oop.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">11. C++ — ООП</span>
+  </a>
+</div>
+
+<footer>
+  ПМ.01 Разработка модулей ПО · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>

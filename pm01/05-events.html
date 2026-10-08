@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПМ.01 · 5. Событийное программирование · Академия ТОП</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body data-profiles="dev" class="profile-dev">
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../index.html">🎓 Академия ТОП</a>
+    <span class="sub">· ПМ.01 · Тема 5</span>
+  </div>
+</header>
+
+<nav class="course-nav">
+  <a href="pm01-index.html">← К оглавлению</a>
+  <span class="sep">·</span>
+  <a href="01-lifecycle.html">1. ЖЦ ПО</a>
+  <a href="02-structured.html">2. Структурное</a>
+  <a href="03-oop-basics.html">3. ООП</a>
+  <a href="04-patterns.html">4. Паттерны</a>
+  <a href="05-events.html" class="current">5. События</a>
+  <a href="06-refactoring.html">6. Рефакторинг</a>
+  <a href="07-ui.html">7. UI</a>
+  <a href="08-testing.html">8. Тестирование</a>
+  <a href="09-docs.html">9. Документация</a>
+</nav>
+
+<div class="layout no-sidebar">
+  <main>
+
+  <section class="block">
+    <h2><span class="num">5</span>Событийно-управляемое программирование</h2>
+
+    <p>Парадигма, в которой программа <b>реагирует на события</b>, а не выполняется линейно. Пользователь кликнул — сработал обработчик. Пришло сообщение — вызван код. Это основа всех современных GUI-приложений: Windows Forms, WPF, веб, мобильных.</p>
+
+    <h3>5.1. Основные понятия</h3>
+
+    <table>
+      <tr><th>Понятие</th><th>Что это</th><th>Пример</th></tr>
+      <tr><td><b>Событие</b></td><td>Сигнал «что-то произошло»</td><td>Click, KeyPress, Load, Timer</td></tr>
+      <tr><td><b>Источник</b> (Publisher)</td><td>Объект, который генерирует событие</td><td>Кнопка, форма, таймер</td></tr>
+      <tr><td><b>Подписчик</b> (Subscriber)</td><td>Кто реагирует на событие</td><td>Класс с методом OnClick</td></tr>
+      <tr><td><b>Обработчик</b> (Handler)</td><td>Метод, который вызывается при событии</td><td><code>void OnButtonClick(...)</code></td></tr>
+      <tr><td><b>Делегат</b> / <b>Listener</b></td><td>Ссылка на метод-обработчик</td><td><code>EventHandler</code></td></tr>
+    </table>
+
+    <h3>5.2. Схема событийной модели</h3>
+
+    <div class="viz">
+      <svg viewBox="0 0 620 240" width="620">
+        <!-- Источник -->
+        <rect x="30" y="80" width="140" height="80" fill="#eef0ff" stroke="#4f46e5" stroke-width="2" rx="8"/>
+        <text x="100" y="105" text-anchor="middle" font-size="13" fill="#4f46e5" font-weight="600">Источник</text>
+        <text x="100" y="125" text-anchor="middle" font-size="11" fill="#1c2331">Button</text>
+        <text x="100" y="145" text-anchor="middle" font-size="10" fill="#889">Click</text>
+
+        <!-- Центр: механизм событий -->
+        <rect x="230" y="60" width="160" height="120" fill="#fff9e6" stroke="#d97706" stroke-width="2" rx="8"/>
+        <text x="310" y="85" text-anchor="middle" font-size="13" fill="#d97706" font-weight="600">Механизм</text>
+        <text x="310" y="105" text-anchor="middle" font-size="11" fill="#1c2331">событий</text>
+        <text x="310" y="130" text-anchor="middle" font-size="10" fill="#889">+ подписки</text>
+        <text x="310" y="145" text-anchor="middle" font-size="10" fill="#889">+ делегаты</text>
+        <text x="310" y="165" text-anchor="middle" font-size="10" fill="#889">+ очередь сообщений</text>
+
+        <!-- Подписчики -->
+        <rect x="450" y="30" width="140" height="60" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.5" rx="8"/>
+        <text x="520" y="55" text-anchor="middle" font-size="12" fill="#16a34a">Обработчик 1</text>
+        <text x="520" y="73" text-anchor="middle" font-size="10" fill="#889">SaveData()</text>
+
+        <rect x="450" y="105" width="140" height="60" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.5" rx="8"/>
+        <text x="520" y="130" text-anchor="middle" font-size="12" fill="#16a34a">Обработчик 2</text>
+        <text x="520" y="148" text-anchor="middle" font-size="10" fill="#889">UpdateUI()</text>
+
+        <rect x="450" y="180" width="140" height="60" fill="#ecfdf3" stroke="#16a34a" stroke-width="1.5" rx="8"/>
+        <text x="520" y="205" text-anchor="middle" font-size="12" fill="#16a34a">Обработчик 3</text>
+        <text x="520" y="223" text-anchor="middle" font-size="10" fill="#889">LogEvent()</text>
+
+        <!-- Стрелки -->
+        <defs><marker id="ar-ev" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8891a6"/></marker></defs>
+        <g stroke="#8891a6" stroke-width="1.4" marker-end="url(#ar-ev)">
+          <line x1="170" y1="120" x2="225" y2="120"/>
+          <line x1="390" y1="90" x2="445" y2="60"/>
+          <line x1="390" y1="120" x2="445" y2="130"/>
+          <line x1="390" y1="155" x2="445" y2="200"/>
+        </g>
+        <text x="200" y="112" font-size="10" fill="#889">Raise</text>
+        <text x="410" y="80" font-size="10" fill="#889">Notify</text>
+      </svg>
+      <div class="cap">Источник генерирует событие, механизм уведомляет всех подписчиков.</div>
+    </div>
+
+    <h3>5.3. Пример на C# (Windows Forms)</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="public partial class MainForm : Form {
+    private Button btnSave;
+    private TextBox txtName;
+
+    public MainForm() {
+        btnSave = new Button { Text = &quot;Сохранить&quot;, Location = new Point(50, 100) };
+        txtName = new TextBox { Location = new Point(50, 50), Width = 200 };
+
+        // Подписка на событие
+        btnSave.Click += BtnSave_Click;
+
+        Controls.Add(btnSave);
+        Controls.Add(txtName);
+    }
+
+    // Обработчик
+    private void BtnSave_Click(object sender, EventArgs e) {
+        MessageBox.Show($&quot;Сохранено: {txtName.Text}&quot;);
+    }
+}">📋 Копировать код</button>
+      <pre>public partial class MainForm : Form {
+    private Button btnSave;
+    private TextBox txtName;
+
+    public MainForm() {
+        btnSave = new Button { Text = "Сохранить", Location = new Point(50, 100) };
+        txtName = new TextBox { Location = new Point(50, 50), Width = 200 };
+
+        <span class="cmt">// Подписка на событие</span>
+        btnSave.Click += BtnSave_Click;
+
+        Controls.Add(btnSave);
+        Controls.Add(txtName);
+    }
+
+    <span class="cmt">// Обработчик</span>
+    private void BtnSave_Click(object sender, EventArgs e) {
+        MessageBox.Show($"Сохранено: {txtName.Text}");
+    }
+}</pre>
+      <div class="desc">Классическая схема: подписка через <code>+=</code>, обработчик получает объект-источник и данные события.</div>
+    </div>
+
+    <h3>5.4. Основные элементы управления (Controls)</h3>
+
+    <table>
+      <tr><th>Элемент</th><th>Назначение</th><th>Основные события</th></tr>
+      <tr><td><b>Button</b></td><td>Кнопка</td><td>Click, MouseEnter, MouseLeave</td></tr>
+      <tr><td><b>TextBox</b></td><td>Поле ввода</td><td>TextChanged, KeyPress, GotFocus</td></tr>
+      <tr><td><b>Label</b></td><td>Текстовая подпись</td><td>Click (редко)</td></tr>
+      <tr><td><b>CheckBox</b></td><td>Флажок</td><td>CheckedChanged</td></tr>
+      <tr><td><b>RadioButton</b></td><td>Переключатель</td><td>CheckedChanged</td></tr>
+      <tr><td><b>ComboBox</b></td><td>Выпадающий список</td><td>SelectedIndexChanged</td></tr>
+      <tr><td><b>ListBox</b></td><td>Список</td><td>SelectedIndexChanged, DoubleClick</td></tr>
+      <tr><td><b>DataGridView</b></td><td>Таблица</td><td>CellClick, CellValueChanged</td></tr>
+      <tr><td><b>Timer</b></td><td>Таймер</td><td>Tick</td></tr>
+      <tr><td><b>MenuStrip</b></td><td>Меню</td><td>Click на пунктах</td></tr>
+    </table>
+
+    <h3>5.5. Диалоговые окна</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// Сообщение
+MessageBox.Show(&quot;Текст&quot;, &quot;Заголовок&quot;, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+// Вопрос с ответом Да/Нет
+var result = MessageBox.Show(&quot;Сохранить?&quot;, &quot;Подтверждение&quot;, MessageBoxButtons.YesNo);
+if (result == DialogResult.Yes) { /* сохранить */ }
+
+// Открытие файла
+using var dialog = new OpenFileDialog();
+dialog.Filter = &quot;Текстовые файлы|*.txt|Все файлы|*.*&quot;;
+if (dialog.ShowDialog() == DialogResult.OK) {
+    string path = dialog.FileName;
+}
+
+// Сохранение файла
+using var save = new SaveFileDialog();
+save.Filter = &quot;Изображения|*.png;*.jpg&quot;;
+if (save.ShowDialog() == DialogResult.OK) {
+    string path = save.FileName;
+}">📋 Копировать код</button>
+      <pre><span class="cmt">// Сообщение</span>
+MessageBox.Show("Текст", "Заголовок", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+<span class="cmt">// Вопрос с ответом Да/Нет</span>
+var result = MessageBox.Show("Сохранить?", "Подтверждение", MessageBoxButtons.YesNo);
+if (result == DialogResult.Yes) { <span class="cmt">/* сохранить */</span> }
+
+<span class="cmt">// Открытие файла</span>
+using var dialog = new OpenFileDialog();
+dialog.Filter = "Текстовые файлы|*.txt|Все файлы|*.*";
+if (dialog.ShowDialog() == DialogResult.OK) {
+    string path = dialog.FileName;
+}
+
+<span class="cmt">// Сохранение файла</span>
+using var save = new SaveFileDialog();
+save.Filter = "Изображения|*.png;*.jpg";
+if (save.ShowDialog() == DialogResult.OK) {
+    string path = save.FileName;
+}</pre>
+    </div>
+
+    <h3>5.6. Работа с несколькими формами</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="// Открыть вторую форму как диалог (модально — блокирует первую)
+var about = new AboutForm();
+about.ShowDialog();
+
+// Открыть немодально (не блокирует)
+var editor = new EditorForm();
+editor.Show();
+
+// Передать данные из второй формы в первую
+var dialog = new InputForm();
+if (dialog.ShowDialog() == DialogResult.OK) {
+    txtName.Text = dialog.UserName;
+}">📋 Копировать код</button>
+      <pre><span class="cmt">// Открыть вторую форму как диалог (модально — блокирует первую)</span>
+var about = new AboutForm();
+about.ShowDialog();
+
+<span class="cmt">// Открыть немодально (не блокирует)</span>
+var editor = new EditorForm();
+editor.Show();
+
+<span class="cmt">// Передать данные из второй формы в первую</span>
+var dialog = new InputForm();
+if (dialog.ShowDialog() == DialogResult.OK) {
+    txtName.Text = dialog.UserName;
+}</pre>
+    </div>
+
+    <h3>5.7. Работа с графикой (GDI+)</h3>
+
+    <p>Рисование на форме через объект <code>Graphics</code>:</p>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="private void Form1_Paint(object sender, PaintEventArgs e) {
+    var g = e.Graphics;
+
+    // Линия
+    g.DrawLine(Pens.Black, 10, 10, 200, 10);
+
+    // Прямоугольник
+    g.DrawRectangle(Pens.Red, 50, 50, 100, 80);
+    g.FillRectangle(Brushes.Yellow, 50, 50, 100, 80);
+
+    // Эллипс
+    g.DrawEllipse(Pens.Blue, 200, 50, 150, 100);
+
+    // Текст
+    g.DrawString(&quot;Hello, GDI+&quot;, new Font(&quot;Arial&quot;, 14), Brushes.Black, 50, 150);
+}">📋 Копировать код</button>
+      <pre>private void Form1_Paint(object sender, PaintEventArgs e) {
+    var g = e.Graphics;
+
+    <span class="cmt">// Линия</span>
+    g.DrawLine(Pens.Black, 10, 10, 200, 10);
+
+    <span class="cmt">// Прямоугольник</span>
+    g.DrawRectangle(Pens.Red, 50, 50, 100, 80);
+    g.FillRectangle(Brushes.Yellow, 50, 50, 100, 80);
+
+    <span class="cmt">// Эллипс</span>
+    g.DrawEllipse(Pens.Blue, 200, 50, 150, 100);
+
+    <span class="cmt">// Текст</span>
+    g.DrawString("Hello, GDI+", new Font("Arial", 14), Brushes.Black, 50, 150);
+}</pre>
+      <div class="desc">Событие Paint вызывается при необходимости перерисовать форму.</div>
+    </div>
+
+    <h3>5.8. Анимация через Timer</h3>
+
+    <div class="cmd">
+      <button class="copy-btn" data-copy="private int x = 0;
+private Timer timer;
+
+public MainForm() {
+    timer = new Timer { Interval = 16 };  // ~60 fps
+    timer.Tick += Timer_Tick;
+    timer.Start();
+}
+
+private void Timer_Tick(object sender, EventArgs e) {
+    x = (x + 5) % ClientSize.Width;
+    Invalidate();  // вызывает Paint
+}
+
+private void Form1_Paint(object sender, PaintEventArgs e) {
+    e.Graphics.FillEllipse(Brushes.Red, x, 100, 40, 40);
+}">📋 Копировать код</button>
+      <pre>private int x = 0;
+private Timer timer;
+
+public MainForm() {
+    timer = new Timer { Interval = 16 };  <span class="cmt">// ~60 fps</span>
+    timer.Tick += Timer_Tick;
+    timer.Start();
+}
+
+private void Timer_Tick(object sender, EventArgs e) {
+    x = (x + 5) % ClientSize.Width;
+    Invalidate();  <span class="cmt">// вызывает Paint</span>
+}
+
+private void Form1_Paint(object sender, PaintEventArgs e) {
+    e.Graphics.FillEllipse(Brushes.Red, x, 100, 40, 40);
+}</pre>
+      <div class="desc">Мяч движется по экрану. Interval = 16 мс даёт ~60 кадров в секунду.</div>
+    </div>
+
+    <h3>Практические работы</h3>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №1 · Приложение с текстовыми компонентами <span class="badge">60 мин</span></div>
+      <div class="goal"><b>Задача:</b> создать приложение «Заметки».</div>
+      <ol>
+        <li>Создайте Windows Forms приложение <code>NotesApp</code>.</li>
+        <li>Добавьте компоненты:
+          <ul>
+            <li><code>TextBox</code> для заголовка заметки</li>
+            <li><code>RichTextBox</code> (многострочный) для текста</li>
+            <li><code>Button</code> «Сохранить»</li>
+            <li><code>Button</code> «Очистить»</li>
+            <li><code>Label</code> для счётчика символов</li>
+          </ul>
+        </li>
+        <li>Кнопка «Сохранить» — диалог SaveFileDialog, сохранение в файл.</li>
+        <li>Кнопка «Очистить» — вопрос YesNo через MessageBox, при подтверждении очистка полей.</li>
+        <li>Label обновляется при вводе текста (событие <code>TextChanged</code>) — показывает число символов.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №2 · Приложение с несколькими формами <span class="badge">45 мин</span></div>
+      <div class="goal"><b>Задача:</b> сделать приложение с главным меню и 3 формами.</div>
+      <ol>
+        <li>Главная форма <code>MainForm</code> — <code>MenuStrip</code> с пунктами:
+          <ul>
+            <li><b>Файл</b> → Выход</li>
+            <li><b>Окна</b> → О программе, Калькулятор, Справка</li>
+          </ul>
+        </li>
+        <li>Форма <code>AboutForm</code> — модальный диалог с информацией.</li>
+        <li>Форма <code>CalcForm</code> — простой калькулятор (два поля ввода + кнопки + − × ÷).</li>
+        <li>Форма <code>HelpForm</code> — немодальное окно со справкой.</li>
+      </ol>
+    </div>
+
+    <div class="trainer">
+      <div class="head">🔧 ПР №3 · Приложение с анимацией <span class="badge">60 мин</span></div>
+      <div class="goal"><b>Задача:</b> создать игру «Поймай кнопку».</div>
+      <ol>
+        <li>На форме — большая кнопка «Поймай меня».</li>
+        <li>По <code>MouseEnter</code> — кнопка перемещается в случайную позицию (через <code>Random</code>).</li>
+        <li>По <code>Click</code> — увеличивается счёт, показывается в Label.</li>
+        <li>Через Timer — счётчик времени. При 30 секундах — игра окончена.</li>
+        <li>Финал — MessageBox с результатом + кнопка «Играть заново».</li>
+      </ol>
+      <div class="goal"><b>Бонус:</b> изменяйте размер и цвет кнопки по мере игры, чтобы усложнить.</div>
+    </div>
+
+    <h3>Вопросы для самопроверки</h3>
+
+    <details class="task">
+      <summary>Вопрос 1. Что такое делегат в C# и зачем он нужен для событий?</summary>
+      <div class="answer">
+        <b>Делегат</b> — тип, описывающий сигнатуру метода. Это «указатель на метод» безопасным способом.<br><br>
+        Пример:
+        <pre style="background:#f5f5f5;padding:10px;border-radius:6px;font-size:13px;margin-top:6px;">public delegate void EventHandler(object sender, EventArgs e);</pre>
+        Событие <code>Click</code> имеет тип <code>EventHandler</code>. Когда вы пишете <code>btn.Click += OnClick</code>, вы добавляете свой метод в список делегатов. При клике кнопка проходит по списку и вызывает все методы.<br><br>
+        Одно событие может иметь <b>несколько</b> подписчиков — они все будут вызваны по очереди.
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 2. Чем отличается Show() от ShowDialog()?</summary>
+      <div class="answer">
+        <b>Show()</b> — немодальное окно. Открывается и не блокирует родительскую форму. Пользователь может работать с обеими формами одновременно. Родитель не ждёт закрытия.<br><br>
+        <b>ShowDialog()</b> — модальное окно. Блокирует родителя, пока пользователь не закроет диалог. Возвращает <code>DialogResult</code> — результат нажатия кнопки.<br><br>
+        Когда использовать: <b>ShowDialog</b> — для подтверждений, форм ввода (нужно дождаться ответа). <b>Show</b> — для независимых окон (редактор, справка).
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 3. Почему Invalidate() вызывается в Timer, а не рисуем напрямую?</summary>
+      <div class="answer">
+        В Windows Forms рисование происходит <b>асинхронно</b> в событии <code>Paint</code>. Если рисовать напрямую из Timer:<br>
+        <ul>
+          <li>На графику могут наложиться другие окна — рисунок «затрётся».</li>
+          <li>При перекрытии окна система не знает, что надо перерисовать.</li>
+        </ul>
+        <code>Invalidate()</code> помечает область как «требует перерисовки». Windows сам вызовет <code>Paint</code> в подходящий момент — учитывая пересечения окон, обновления системы.<br><br>
+        Для плавной анимации иногда используют <code>DoubleBuffered = true</code> — рисует в буфер, потом показывает целиком (без мерцания).
+      </div>
+    </details>
+
+    <details class="task">
+      <summary>Вопрос 4. Как передать данные из одной формы в другую?</summary>
+      <div class="answer">
+        Три способа:
+        <ol>
+          <li><b>Через свойство диалога:</b>
+            <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:6px;">var input = new InputForm();
+if (input.ShowDialog() == DialogResult.OK)
+    name = input.UserName;</pre>
+            Во второй форме создаётся публичное свойство <code>UserName</code>, заполняемое по нажатию ОК.
+          </li>
+          <li><b>Через конструктор:</b>
+            <pre style="background:#f5f5f5;padding:8px;border-radius:6px;font-size:12px;margin-top:6px;">var dialog = new EditForm(existingData);</pre>
+          </li>
+          <li><b>Через события:</b> вторая форма генерирует событие <code>DataReady</code>, первая на него подписана.
+          </li>
+        </ol>
+        Способ 1 — самый распространённый для диалогов.
+      </div>
+    </details>
+
+    <div class="box example">
+      <div class="label">Итоговое задание по теме</div>
+      Сдать проект (Windows Forms) + <code>practice-events.docx</code>:
+      <ol>
+        <li><b>NotesApp</b> — приложение заметок (ПР №1)</li>
+        <li><b>MultiFormApp</b> — приложение с 3 формами и меню (ПР №2)</li>
+        <li><b>CatchButton</b> — игра «Поймай кнопку» (ПР №3)</li>
+        <li>Скриншоты работающих приложений</li>
+        <li>Письменные ответы на 4 вопроса самопроверки</li>
+      </ol>
+    </div>
+
+  </section>
+
+  </main>
+</div>
+
+<div class="topic-pager">
+  <a href="04-patterns.html">
+    <span class="dir">← Предыдущая</span>
+    <span class="title">4. Паттерны проектирования</span>
+  </a>
+  <a href="06-refactoring.html" class="next">
+    <span class="dir">Следующая →</span>
+    <span class="title">6. Оптимизация и рефакторинг</span>
+  </a>
+</div>
+
+<footer>
+  ПМ.01 Разработка модулей ПО · 2 курс · Академия ТОП
+</footer>
+
+<script src="../scripts.js"></script>
+</body>
+</html>
